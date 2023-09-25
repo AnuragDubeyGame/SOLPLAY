@@ -2,16 +2,29 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const gameInfoSchema = new Schema({
-  title: String,
-  banner: String,
-  description: String,
-  category: String,
-  developer: String,
-  publisher: String,
-  releaseDate: Date,
+  title: {
+    type: String
+  },
+  banner:  {
+    type: String
+  },
+  description:  {
+    type: String
+  },
+  category:  {
+    type: String
+  },
+  developer:  {
+    type: String
+  },
+  publisher:  {
+    type: String
+  },
+  releaseDate:  {
+    type: String
+  },
   price: Number,
 });
 
-const gameInfo = mongoose.model("gameInfo", gameInfoSchema);
-
-module.exports = gameInfo;
+// Export the gameInfo model
+module.exports = mongoose.model("gameInfo", gameInfoSchema);
