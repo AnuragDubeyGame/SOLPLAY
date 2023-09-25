@@ -6,16 +6,27 @@ const gameInfo = require('./gameInfo'); // Import the gameInfo model
 const app = express();
 const port = 5000;
 
-const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/'; // Correct database name
+const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB'; // Correct database name
 
 mongoose.connect(mongoURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 });
 
-// Middleware to parse JSON request bodies
 app.use(express.json());
 
+//Get All Games
+app.get("/api/getAllGames", async (req, res) => {
+    try {
+        const games = await gameInfo.find({});
+        res.json(games);
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+//Create New Game
 app.post("/api/createNewGame", async (req, res) => {
     try {
         const {
@@ -28,7 +39,7 @@ app.post("/api/createNewGame", async (req, res) => {
             releaseDate,
             price,
         } = req.body;
-console.log('****fields****', req.body);
+        console.log('****fields****', req.body);
 
         if (!title || !banner || !description || !category || !developer || !publisher || !releaseDate || !price) {
             return res.status(400).json({ error: 'All fields are required' });
@@ -44,7 +55,7 @@ console.log('****fields****', req.body);
             releaseDate,
             price,
         });
-        
+
         await samplegame.save();
 
         const result = await gameInfo.find({}); // Use the model directly
@@ -56,5 +67,5 @@ console.log('****fields****', req.body);
 });
 
 app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    console.log(`Server is running on port ${port}`);
 });

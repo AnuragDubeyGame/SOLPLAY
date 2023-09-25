@@ -5,13 +5,14 @@
   "main": "gameInfo.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "express.js": "^1.0.0",
-    "mongoose": "^7.5.2"
+    "mongoose": "^7.5.2",
+    "nodemon": "^3.0.1"
   }
 }

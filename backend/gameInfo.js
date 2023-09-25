@@ -24,7 +24,8 @@ const gameInfoSchema = new Schema({
     type: String
   },
   price: Number,
+},{
+  collection: 'gamesInfoCollection', 
 });
 
-// Export the gameInfo model
 module.exports = mongoose.model("gameInfo", gameInfoSchema);
