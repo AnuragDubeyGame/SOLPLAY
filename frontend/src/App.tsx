@@ -1,51 +1,43 @@
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
-import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
-import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import { PhantomWalletAdapter, UnsafeBurnerWalletAdapter } from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
-import React, { FC, ReactNode, useMemo } from 'react';
+import React, { FC, Suspense  } from 'react';
+import Context from './components/Context'; // Import the Context component
+import Content from './components/Content'; // Import the Content component
+import SideBar from './components/SideBar';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'; // Import BrowserRouter
+import { routes } from './utils/routes';
+
 
 require('./App.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 const App: FC = () => {
+    const SuspenseTrigger = () => {
+        throw new Promise(() => {});
+      };
     return (
-        <Context>
+        <>
+        <Suspense fallback={<div>loading...</div>}>
+        <Context> 
             <Content />
-        </Context>
-    );
-};
-export default App;
-
-const Context: FC<{ children: ReactNode }> = ({ children }) => {
-    // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
-    const network = WalletAdapterNetwork.Devnet;
-
-    // You can also provide a custom RPC endpoint.
-    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-    const wallets = useMemo(
-        () => [
-            new PhantomWalletAdapter(),
-            new UnsafeBurnerWalletAdapter(),
-        ],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [network]
-    );
-
-    return (
-        <ConnectionProvider endpoint={endpoint}>
-            <WalletProvider wallets={wallets} autoConnect>
-                <WalletModalProvider>{children}</WalletModalProvider>
-            </WalletProvider>
-        </ConnectionProvider>
-    );
-};
-
-const Content: FC = () => {
-    return (
-        <div className="App">
-            <WalletMultiButton />
+        <Router> 
+        <div className="flex">
+          <SideBar />
+          <div className="flex-1">
+            <Routes>
+              {routes.map((route, index) => (
+                <Route
+                key={index}
+                path={route.path}
+                element={route.element}
+                />
+                ))}
+            </Routes>
+          </div>
         </div>
+      </Router>
+                </Context>
+                </Suspense>
+      </>
     );
 };
+
+export default App;
