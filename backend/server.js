@@ -1,12 +1,14 @@
 // Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
-const gameInfo = require('./gameInfo'); // Import the gameInfo model
+const gameInfo = require('./gameInfo');
+const userInfo = require('./userInfo');
 const cors = require('cors');
+const axios = require('axios');
 const app = express();
 const port = 5000;
 app.use(cors());
-const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB'; // Correct database name
+const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB';
 
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
@@ -14,6 +16,19 @@ mongoose.connect(mongoURL, {
 });
 
 app.use(express.json());
+
+
+const {
+    Keypair,
+    Transaction,
+    SystemProgram,
+    Connection,
+    sendAndConfirmTransaction,
+    LAMPORTS_PER_SOL,
+  } = require("@solana/web3.js");
+  
+  const connection = new Connection("https://api.devnet.solana.com");
+
 
 // ============================= API's ============================
 
@@ -110,7 +125,117 @@ app.post("/api/createNewGame", async (req, res) => {
     }
 });
 
-// ===============================================================
+// Transaction Generator - Send SOL
+app.post("/api/buyGame", async (req, res) => {
+    try {
+      const { senderPrivateKey, recipientPublicKey } = req.body;
+  
+      // Create sender Keypair from private key
+      const senderKeypair = Keypair.fromSecretKey(new Uint8Array(senderPrivateKey));
+  
+      // Create a new transaction
+      const transaction = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: senderKeypair.publicKey,
+          toPubkey: recipientPublicKey,
+          lamports: LAMPORTS_PER_SOL, // Sending 1 SOL (in lamports)
+        })
+      );
+  
+      // Sign the transaction
+      transaction.recentBlockhash = (await connection.getRecentBlockhash()).blockhash;
+      transaction.sign(senderKeypair);
+  
+      // Send and confirm the transaction
+      const signature = await sendAndConfirmTransaction(
+        connection,
+        transaction,
+        [senderKeypair]
+      );
+  
+      // Check if the transaction was successful
+      if (signature) {
+        res.json({ status: "Success" });
+      } else {
+        res.json({ status: "Failed" });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      res.json({ status: "Failed", error: error.message });
+    }
+});
+
+// SaveUserData
+app.post("/api/saveUserData", async (req, res) => {
+    try {
+      const { username, publicKey, purchasedGames } = req.body;
+  
+      // Check if a user with the same public key already exists
+      let existingUser = await userInfo.findOne({ publicKey });
+  
+      if (!existingUser) {
+        // If the user does not exist, create a new user record
+        existingUser = new userInfo({ username, publicKey, gamesPurchased: [] });
+      }
+  
+      // Add the purchased games to the user's gamesPurchased array
+      existingUser.gamesPurchased = [...existingUser.gamesPurchased, ...purchasedGames];
+  
+      // Save the updated user record
+      await existingUser.save();
+  
+      res.status(201).json({ message: "User data saved successfully." });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal server error." });
+    }
+});
+  
+// Get My Games
+app.post("/api/getMyGames", async (req, res) => {
+    try {
+      const { publicKey } = req.body;
+  
+      // Fetch user data based on the provided publicKey
+      const user = await userInfo.findOne({ publicKey });
+  
+      if (!user) {
+        res.status(404).json({ message: "User not found." });
+        return;
+      }
+  
+      // Fetch game information for each game ID in gamesPurchased
+      const gamesInfo = await Promise.all(
+        user.gamesPurchased.map(async (gameId) => {
+          try {
+            // Convert the gameId to a string if needed
+            const gameIdString = String(gameId);
+  
+            // Replace with your actual API endpoint for fetching game data
+            const gameResponse = await axios.get(`http://localhost:5000/api/getGame/${gameIdString}`);
+  
+            // Check if the response is valid (e.g., status 200) before returning
+            if (gameResponse.status === 200) {
+              return gameResponse.data;
+            } else {
+              console.error("Error fetching game data:", gameResponse.statusText);
+              return null; // Handle error or missing data as needed
+            }
+          } catch (error) {
+            console.error("Error fetching game data:", error);
+            return null; // Handle error or missing data as needed
+          }
+        })
+      );
+  
+      res.status(200).json({ user, gamesInfo });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(500).json({ error: "Internal server error." });
+    }
+});
+  
+// ==================================================================
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
