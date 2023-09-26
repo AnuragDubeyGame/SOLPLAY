@@ -1,5 +1,7 @@
 // Import required modules
 const express = require('express');
+const fileUpload = require("express-fileupload");
+const AdmZip = require("adm-zip");
 const mongoose = require('mongoose');
 const bs58 = require('bs58');
 const web3 = require('@solana/web3.js');
@@ -7,6 +9,8 @@ const gameInfo = require('./gameInfo');
 const userInfo = require('./userInfo');
 const cors = require('cors');
 const axios = require('axios');
+const path = require("path");
+const fs = require("fs");
 const app = express();
 const port = 5000;
 app.use(cors());
@@ -18,9 +22,12 @@ const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-});
-
-
+  });
+app.use(
+    fileUpload({
+      limits: { fileSize: 1024 * 1024 * 1024 }, 
+    })
+);
 
 
 
@@ -79,46 +86,86 @@ app.get("/api/getGamesByCategory", async (req, res) => {
     }
 });
 
-//Create New Game
+// Create New Game with Zip Folder
 app.post("/api/createNewGame", async (req, res) => {
-    try {
-        const {
-            title,
-            banner,
-            description,
-            category,
-            developer,
-            publisher,
-            publicKey,
-            releaseDate,
-            price,
-        } = req.body;
-        console.log('****fields****', req.body);
+  try {
+    const {
+      title,
+      banner,
+      description,
+      category,
+      developer,
+      publisher,
+      publicKey,
+      releaseDate,
+      price,
+    } = req.body;
 
-        if (!title || !banner || !description || !category || !developer || !publisher || !releaseDate || !price) {
-            return res.status(400).json({ error: 'All fields are required' });
-        }
-
-        const samplegame = new gameInfo({
-            title,
-            banner,
-            description,
-            category,
-            developer,
-            publisher,
-            publicKey,
-            releaseDate,
-            price,
-        });
-
-        await samplegame.save();
-
-        const result = await gameInfo.find({}); // Use the model directly
-        res.json(result);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+    if (
+      !title ||
+      !banner ||
+      !description ||
+      !category ||
+      !developer ||
+      !publisher ||
+      !releaseDate ||
+      !price
+    ) {
+      return res.status(400).json({ error: "All fields are required" });
     }
+
+    const samplegame = new gameInfo({
+      title,
+      banner,
+      description,
+      category,
+      developer,
+      publisher,
+      publicKey,
+      releaseDate,
+      price,
+    });
+
+    // Save the game data to the database
+    await samplegame.save();
+
+    // Get the _id of the saved MongoDB element
+    const gameId = samplegame._id.toString();
+
+    // Create a new folder with the _id as the folder name
+    const folderPath = path.join(__dirname, "Games", gameId);
+
+    // Use fs.promises.mkdir to create the folder asynchronously
+    await fs.promises.mkdir(folderPath);
+
+    console.log(`Folder created for game with _id: ${gameId}`);
+
+    if (!req.files || Object.keys(req.files).length === 0) {
+      return res.status(400).json({ error: "No files were uploaded." });
+    }
+
+    const zipFile = req.files.GameFile;
+
+    const zipFilePath = path.join(folderPath, `${gameId}.zip`);
+    await zipFile.mv(zipFilePath);
+
+    console.log(`Zip file saved for game with _id: ${gameId}`);
+
+    // Unzip the uploaded ZIP file
+    const zip = new AdmZip(zipFilePath);
+    zip.extractAllTo(folderPath, true); // Extract to the same folder
+
+    // Delete the ZIP file after extraction
+    await fs.promises.unlink(zipFilePath);
+
+    console.log(`Zip file extracted and deleted for game with _id: ${gameId}`);
+
+    const result = await gameInfo.find({});
+    res.json(result);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 });
 
 // Transaction Generator - Send SOL
@@ -151,8 +198,10 @@ app.post("/api/sendSolana", async (req, res) => {
     // Check if the transaction was successful
     if (signature) {
       console.log( "Success" );
+      //Display a Pop Up
     } else {
       console.log( "Failed" );
+      //Display a Pop Up
     }
   } catch (error) {
     console.error("Error:", error);
@@ -230,8 +279,60 @@ app.post("/api/getMyGames", async (req, res) => {
     }
 });
 
+
+
 // ==================================================================
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
+
+
+
+/*
+const bs58 = require('bs58');
+const web3 = require('@solana/web3.js');
+
+const connection = new web3.Connection("https://api.devnet.solana.com");
+
+async function sendSolanaTransaction(senderPrivateKey, recipientPublicKey, amount) {
+  try {
+    // Create sender Keypair from private key
+    const senderKeypair = web3.Keypair.fromSecretKey(new Uint8Array(bs58.decode(senderPrivateKey)));
+
+    // Create a new transaction
+    const transaction = new web3.Transaction().add(
+      web3.SystemProgram.transfer({
+        fromPubkey: senderKeypair.publicKey,
+        toPubkey: recipientPublicKey,
+        lamports: amount * web3.LAMPORTS_PER_SOL,
+      })
+    );
+
+    console.log("Transaction Created");
+
+    // Send and confirm the transaction
+    const signature = await web3.sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [senderKeypair]
+    );
+
+    console.log("Transaction Initiated");
+
+    // Check if the transaction was successful
+    if (signature) {
+      console.log("Success");
+      // Display a Pop Up
+    } else {
+      console.log("Failed");
+      // Display a Pop Up
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    // Handle the error as needed
+  }
+}
+
+sendSolanaTransaction("48BasJ4q1DYwsN1ikwe3oYmtmZnrZnFxzVc2CZfn4yfkgYXLPgvJPzuenbBf9xJyFdUA7nzhBW6FfxQkpUe1HwXM", "3jNpFr6MMVQiSSrT1Bx4skNMptwBWRPbWifBqoRUQqfB", 0.2);
+*/
