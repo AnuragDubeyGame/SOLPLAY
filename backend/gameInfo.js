@@ -20,6 +20,9 @@ const gameInfoSchema = new Schema({
   publisher:  {
     type: String
   },
+  publicKey:  {
+    type: String
+  },
   releaseDate:  {
     type: String
   },

@@ -13,6 +13,7 @@
   "dependencies": {
     "@solana/web3.js": "^1.78.5",
     "axios": "^1.5.0",
+    "bs58": "^4.0.1",
     "cors": "^2.8.5",
     "express.js": "^1.0.0",
     "mongoose": "^7.5.2",

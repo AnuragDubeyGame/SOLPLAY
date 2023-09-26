@@ -1,6 +1,8 @@
 // Import required modules
 const express = require('express');
 const mongoose = require('mongoose');
+const bs58 = require('bs58');
+const web3 = require('@solana/web3.js');
 const gameInfo = require('./gameInfo');
 const userInfo = require('./userInfo');
 const cors = require('cors');
@@ -8,26 +10,18 @@ const axios = require('axios');
 const app = express();
 const port = 5000;
 app.use(cors());
-const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB';
+app.use(express.json());
 
+
+const connection = new web3.Connection("https://api.devnet.solana.com");
+const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB';
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
-app.use(express.json());
 
 
-const {
-    Keypair,
-    Transaction,
-    SystemProgram,
-    Connection,
-    sendAndConfirmTransaction,
-    LAMPORTS_PER_SOL,
-  } = require("@solana/web3.js");
-  
-  const connection = new Connection("https://api.devnet.solana.com");
 
 
 // ============================= API's ============================
@@ -95,6 +89,7 @@ app.post("/api/createNewGame", async (req, res) => {
             category,
             developer,
             publisher,
+            publicKey,
             releaseDate,
             price,
         } = req.body;
@@ -111,6 +106,7 @@ app.post("/api/createNewGame", async (req, res) => {
             category,
             developer,
             publisher,
+            publicKey,
             releaseDate,
             price,
         });
@@ -126,43 +122,42 @@ app.post("/api/createNewGame", async (req, res) => {
 });
 
 // Transaction Generator - Send SOL
-app.post("/api/buyGame", async (req, res) => {
-    try {
-      const { senderPrivateKey, recipientPublicKey } = req.body;
-  
-      // Create sender Keypair from private key
-      const senderKeypair = Keypair.fromSecretKey(new Uint8Array(senderPrivateKey));
-  
-      // Create a new transaction
-      const transaction = new Transaction().add(
-        SystemProgram.transfer({
-          fromPubkey: senderKeypair.publicKey,
-          toPubkey: recipientPublicKey,
-          lamports: LAMPORTS_PER_SOL, // Sending 1 SOL (in lamports)
-        })
-      );
-  
-      // Sign the transaction
-      transaction.recentBlockhash = (await connection.getRecentBlockhash()).blockhash;
-      transaction.sign(senderKeypair);
-  
-      // Send and confirm the transaction
-      const signature = await sendAndConfirmTransaction(
-        connection,
-        transaction,
-        [senderKeypair]
-      );
-  
-      // Check if the transaction was successful
-      if (signature) {
-        res.json({ status: "Success" });
-      } else {
-        res.json({ status: "Failed" });
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      res.json({ status: "Failed", error: error.message });
+app.post("/api/sendSolana", async (req, res) => {
+  try {
+    const { senderPrivateKey, recipientPublicKey, amount } = req.body;
+    console.log(req.body);
+
+   // Create sender Keypair from private key
+   const senderKeypair = web3.Keypair.fromSecretKey(new Uint8Array(bs58.decode(senderPrivateKey)));
+
+    // Create a new transaction
+    const transaction = new web3.Transaction().add(
+      web3.SystemProgram.transfer({
+        fromPubkey: senderKeypair.publicKey,
+        toPubkey: recipientPublicKey,
+        lamports: amount * web3.LAMPORTS_PER_SOL,
+      })
+    );
+
+    console.log("Transaction Created")
+
+    // Send and confirm the transaction
+    const signature = await web3.sendAndConfirmTransaction(
+      connection,
+      transaction,
+      [senderKeypair]
+    );
+    console.log("Transaction Initiated")
+    // Check if the transaction was successful
+    if (signature) {
+      console.log( "Success" );
+    } else {
+      console.log( "Failed" );
     }
+  } catch (error) {
+    console.error("Error:", error);
+    res.json({ status: "Failed", error: error.message });
+  }
 });
 
 // SaveUserData
@@ -234,7 +229,7 @@ app.post("/api/getMyGames", async (req, res) => {
       res.status(500).json({ error: "Internal server error." });
     }
 });
-  
+
 // ==================================================================
 
 app.listen(port, () => {
