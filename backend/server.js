@@ -279,7 +279,36 @@ app.post("/api/getMyGames", async (req, res) => {
     }
 });
 
+// Serve the index.html file for a specific game by _id
+app.get("/api/playGame/:id", async (req, res) => {
+  try {
+    const gameId = req.params.id;
+    const folderPath = path.join(__dirname, "Games", gameId, "Builds"); // Include "Builds" subfolder
 
+    // Check if the folder exists
+    const folderExists = await fs.promises.stat(folderPath).catch(() => false);
+
+    if (!folderExists) {
+      return res.status(404).json({ error: "Game folder not found." });
+    }
+
+    // Define the path to the index.html file within the "Builds" subfolder
+    const indexPath = path.join(folderPath, "index.html");
+
+    // Check if the index.html file exists within the "Builds" subfolder
+    const fileExists = await fs.promises.stat(indexPath).catch(() => false);
+
+    if (!fileExists) {
+      return res.status(404).json({ error: "index.html file not found within the game folder." });
+    }
+
+    // Serve the index.html file from within the "Builds" subfolder
+    res.sendFile(indexPath);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 // ==================================================================
 
