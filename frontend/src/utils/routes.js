@@ -3,6 +3,7 @@ import React from 'react';
 const Home = React.lazy(() => import('../components/Home'));
 const About = React.lazy(() => import('../components/About'));
 const Contact = React.lazy(() => import('../components/Contact'));
+const CategoryGames = React.lazy(()=> import('../components/CategoryGames'))
 
 export const routes = [
   {
@@ -17,4 +18,8 @@ export const routes = [
     path: '/contact',
     element: <Contact />,
   },
+  {
+    path:"/category/:category" ,
+    element:<CategoryGames />
+  }
 ];

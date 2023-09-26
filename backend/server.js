@@ -2,10 +2,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const gameInfo = require('./gameInfo'); // Import the gameInfo model
-
+const cors = require('cors');
 const app = express();
 const port = 5000;
-
+app.use(cors());
 const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB'; // Correct database name
 
 mongoose.connect(mongoURL, {
