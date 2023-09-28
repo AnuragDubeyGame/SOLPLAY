@@ -67,22 +67,36 @@ app.get('/api/getAllGames', async (req, res) => {
 
 // Get a Single Game by ID
 app.get("/api/getGame/:id", async (req, res) => {
-    try {
-        const gameId = req.params.id;
+  try {
+      const gameId = req.params.id;
 
-        // Use the Mongoose findById method to find the game by ID
-        const game = await gameInfo.findById(gameId);
+      // Use the Mongoose findById method to find the game by ID
+      const game = await gameInfo.findById(gameId);
 
-        if (!game) {
-            return res.status(404).json({ error: 'Game not found' });
-        }
+      if (!game) {
+          return res.status(404).json({ error: 'Game not found' });
+      }
 
-        res.json(game);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+      if (game.banner) {
+          try {
+              // Read the image file synchronously and convert it to a buffer
+              const imageBuffer = fs.readFileSync(game.banner);
+              // Convert the buffer to a base64 string
+              const imageBase64 = imageBuffer.toString('base64');
+              // Update the game object's banner field with the base64 image data
+              game.banner = imageBase64;
+          } catch (error) {
+              console.error('Error reading image file:', error);
+          }
+      }
+
+      res.json(game);
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
+
 
 // Get Games by Category
 app.get("/api/getGamesByCategory", async (req, res) => {
