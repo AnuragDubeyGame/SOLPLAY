@@ -328,6 +328,14 @@ app.get('/api/playGame/:id', (req, res) => {
 
   // Redirect the user to the dynamically assigned port
   res.redirect(`http://localhost:${gamePort}`);
+
+  // Schedule a task to stop the Python server and release the port after 1 hour
+  setTimeout(() => {
+    if (gamePorts[gamePort]) {
+      pythonProcess.kill(); // Terminate the game server process
+      delete gamePorts[gamePort];
+    }
+  }, 3600000 / 4); // 1 hour = 3600000 milliseconds
 });
 
 // Add a route to delete all games
