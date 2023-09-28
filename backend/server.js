@@ -330,6 +330,36 @@ app.get('/api/playGame/:id', (req, res) => {
   res.redirect(`http://localhost:${gamePort}`);
 });
 
+// Add a route to delete all games
+app.get('/api/deleteAllGames', async (req, res) => {
+  try {
+    // Delete all game records from the database
+    await gameInfo.deleteMany({});
+    res.json({ message: 'All games deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting games' });
+  }
+});
+
+// Add a route to delete a game by ID
+app.get('/api/deleteGame/:id', async (req, res) => {
+  const gameId = req.params.id;
+
+  try {
+    // Find and delete the game by ID from the database
+    const deletedGame = await gameInfo.findByIdAndDelete(gameId);
+
+    if (!deletedGame) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    res.json({ message: 'Game deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'An error occurred while deleting the game' });
+  }
+});
 // ==================================================================
 
 app.listen(port, () => {
