@@ -101,30 +101,29 @@ app.get("/api/getGamesByCategory", async (req, res) => {
       }
 
       // Iterate through the games and append the base64 image data to each game object
-      const gamesWithImages = await Promise.all(
-          games.map(async (game) => {
-              if (game.banner) {
-                  try {
-                      // Read the image file synchronously and convert it to a buffer
-                      const imageBuffer = fs.readFileSync(game.banner);
-                      // Convert the buffer to a base64 string
-                      const imageBase64 = imageBuffer.toString('base64');
-                      // Add the base64 image data to the game object
-                      game.banner = imageBase64;
-                  } catch (error) {
-                      console.error('Error reading image file:', error);
-                  }
+      for (let i = 0; i < games.length; i++) {
+          const game = games[i];
+          if (game.banner) {
+              try {
+                  // Read the image file synchronously and convert it to a buffer
+                  const imageBuffer = fs.readFileSync(game.banner);
+                  // Convert the buffer to a base64 string
+                  const imageBase64 = imageBuffer.toString('base64');
+                  // Add the base64 image data to the game object
+                  game.banner = imageBase64;
+              } catch (error) {
+                  console.error('Error reading image file:', error);
               }
-              return game;
-          })
-      );
+          }
+      }
 
-      res.json(gamesWithImages);
+      res.json(games);
   } catch (error) {
       console.error('Error:', error);
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 
 // Create New Game with Zip Folder
