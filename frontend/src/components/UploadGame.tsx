@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
+import { API_URL } from '../utils/constant';
 
 const UploadGame = () => {
   const [formData, setFormData] = useState({
@@ -11,9 +12,8 @@ const UploadGame = () => {
     publicKey: '',
     releaseDate: '',
     price: '',
-    zipFile: null as File | null,
+    GameFile: null as File | null,
   });
-  const [bannerBase64, setBannerBase64] = useState<string>('');
   const [bannerFileName, setBannerFileName] = useState<string>('');
   const [zipFileName, setZipFileName] = useState<string>('');
 
@@ -24,53 +24,46 @@ const UploadGame = () => {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
-    const selectedFile = files ? files[0] : null;
+    setFormData({ ...formData, [name]: files ? files[0] : null });
 
-    if (selectedFile) {
-      setFormData({ ...formData, [name]: selectedFile });
-
-      // Convert the selected image to base64
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedFile);
-      reader.onload = () => {
-        if (typeof reader.result === 'string') {
-          setBannerBase64(reader.result);
-        }
-      };
-    }
     // Display the selected file name
     const fileName = files ? files[0].name : '';
     if (name === 'banner') {
       setBannerFileName(fileName);
-    } else if (name === 'zipFile') {
+    } else if (name === 'GameFile') {
       setZipFileName(fileName);
     }
   };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
+  
+    // Create FormData
+    const form = new FormData();
+    for (const key in formData) {
+      if (formData[key as keyof typeof formData] !== null) {
+        form.append(key, formData[key as keyof typeof formData] as File | string);
+      }
+    }
+  
     try {
       const response = await fetch('http://localhost:5000/api/createNewGame', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
+        body: form,
       });
-
+  
       if (response.ok) {
-        // Handle success, e.g., show a success message to the user
-        console.log('Game data submitted successfully');
+        // Handle success, e.g., show a success message
+        console.log('Game uploaded successfully!');
       } else {
-        // Handle error, e.g., show an error message to the user
-        console.error('Failed to submit game data');
+        // Handle error, e.g., show an error message
+        console.error('Error uploading game:', response.statusText);
       }
     } catch (error) {
-      // Handle network error, e.g., show an error message to the user
-      console.error('Network error:', error);
+      console.error('Error uploading game:', error);
     }
   };
-
+  
   return (
     <div className="bg-gray-800 p-8 rounded-lg">
       <h2 className="text-2xl font-bold mt-16 text-white mb-4">Upload Game</h2>
@@ -211,7 +204,7 @@ const UploadGame = () => {
           <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
             <input
               type="file"
-              name="zipFile"
+              name="GameFile"
               onChange={handleFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />

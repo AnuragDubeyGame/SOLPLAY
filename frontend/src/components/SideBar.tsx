@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../utils/constant';
 
 const Sidebar = () => {
   const [categories, setCategories] = useState<string[]>([]);
@@ -7,7 +8,7 @@ const Sidebar = () => {
 
   // Fetch the list of game categories
   useEffect(() => {
-    fetch('http://localhost:5000/api/getAllGames')
+    fetch(`${API_URL}/api/getAllGames`)
       .then((response) => response.json())
       .then((data: { category: string }[]) => {
         const uniqueCategories = Array.from(new Set(data.map((game) => game.category)));
