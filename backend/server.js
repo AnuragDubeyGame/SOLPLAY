@@ -12,8 +12,7 @@ const axios = require('axios');
 const path = require("path");
 const fs = require("fs");
 const app = express();
-const pythonServerPort = 8000; // Port for the Python server
-const { exec } = require('child_process');
+const { spawn } = require('child_process');
 const port = 5000;
 app.use(cors());
 app.use(express.json());
@@ -282,46 +281,42 @@ app.post("/api/getMyGames", async (req, res) => {
 });
 
 // Serve the Unity WebGL game by _id
-app.get("/api/playGame/:id", async (req, res) => {
-  try {
-    const gameId = req.params.id;
-    const folderPath = path.join(__dirname, "Games", gameId, "Builds"); // Use path.join to construct folder path
+app.get('/api/playGame/:id', (req, res) => {
+  const gameId = req.params.id;
+  const gameDirectory = path.join(__dirname, 'Games', gameId);
 
-    // Check if the folder exists
-    const folderExists = await fs.promises.stat(folderPath).catch(() => false);
-
-    if (!folderExists) {
-      return res.status(404).json({ error: "Game folder not found." });
-    }
-
-    // Serve the index.html file from within the "Builds" subfolder
-    const indexPath = path.join(folderPath, "index.html");
-
-    // Use the exec function to run the Python HTTP server command
-    exec(`python -m http.server ${pythonServerPort}`, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error running Python server: ${error.message}`);
-        return res.status(500).json({ error: 'Internal Server Error' });
-      }
-      if (stderr) {
-        console.error(`Python server STDERR: ${stderr}`);
-      }
-      console.log(`Python server STDOUT: ${stdout}`);
-      
-      // Send an OK response
-      res.sendStatus(200);
-  
-      // Redirect the user to the Python server's port
-      res.redirect(`http://localhost:${pythonServerPort}`);
-    });
-
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+  // Check if the game directory exists
+  if (!fs.existsSync(gameDirectory)) {
+    return res.status(404).json({ error: 'Game not found' });
   }
+
+  const buildsDirectory = path.join(gameDirectory, 'Builds');
+
+  // Check if the Builds directory exists
+  if (!fs.existsSync(buildsDirectory)) {
+    return res.status(404).json({ error: 'Builds directory not found' });
+  }
+
+  // Execute the Python server command
+  const pythonProcess = spawn('python', ['-m', 'http.server', '8000'], {
+    cwd: buildsDirectory,
+  });
+
+  pythonProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  pythonProcess.on('close', (code) => {
+    console.log(`child process exited with code ${code}`);
+  });
+
+  // Redirect the user to localhost:8000
+  res.redirect('http://localhost:8000');
 });
-
-
 
 // ==================================================================
 
