@@ -86,26 +86,46 @@ app.get("/api/getGame/:id", async (req, res) => {
 
 // Get Games by Category
 app.get("/api/getGamesByCategory", async (req, res) => {
-    try {
-        const category = req.query.category;
+  try {
+      const category = req.query.category;
 
-        if (!category) {
-            return res.status(400).json({ error: 'Category parameter is required' });
-        }
+      if (!category) {
+          return res.status(400).json({ error: 'Category parameter is required' });
+      }
 
-        // Use the Mongoose find method to find games by category
-        const games = await gameInfo.find({ category: category });
+      // Use the Mongoose find method to find games by category
+      const games = await gameInfo.find({ category: category });
 
-        if (games.length === 0) {
-            return res.status(404).json({ error: 'No games found in the specified category' });
-        }
+      if (games.length === 0) {
+          return res.status(404).json({ error: 'No games found in the specified category' });
+      }
 
-        res.json(games);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+      // Iterate through the games and append the base64 image data to each game object
+      const gamesWithImages = await Promise.all(
+          games.map(async (game) => {
+              if (game.banner) {
+                  try {
+                      // Read the image file synchronously and convert it to a buffer
+                      const imageBuffer = fs.readFileSync(game.banner);
+                      // Convert the buffer to a base64 string
+                      const imageBase64 = imageBuffer.toString('base64');
+                      // Add the base64 image data to the game object
+                      game.banner = imageBase64;
+                  } catch (error) {
+                      console.error('Error reading image file:', error);
+                  }
+              }
+              return game;
+          })
+      );
+
+      res.json(gamesWithImages);
+  } catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
+
 
 // Create New Game with Zip Folder
 app.post("/api/createNewGame", async (req, res) => {
