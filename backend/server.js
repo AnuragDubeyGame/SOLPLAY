@@ -34,15 +34,35 @@ app.use(
 
 // ============================= API's ============================
 
-//Get All Games
-app.get("/api/getAllGames", async (req, res) => {
-    try {
-        const games = await gameInfo.find({});
-        res.json(games);
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+// Get all Games
+app.get('/api/getAllGames', async (req, res) => {
+  try {
+    const games = await gameInfo.find({});
+
+    // Iterate through the games and append the base64 image data to each game object
+    const gamesWithImages = await Promise.all(
+      games.map(async (game) => {
+        if (game.banner) {
+          try {
+            // Read the image file synchronously and convert it to a buffer
+            const imageBuffer = fs.readFileSync(game.banner);
+            // Convert the buffer to a base64 string
+            const imageBase64 = imageBuffer.toString('base64');
+            // Add the base64 image data to the game object
+            game.banner = imageBase64;
+          } catch (error) {
+            console.error('Error reading image file:', error);
+          }
+        }
+        return game;
+      })
+    );
+
+    res.json(gamesWithImages);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
 });
 
 // Get a Single Game by ID
@@ -102,9 +122,9 @@ app.post("/api/createNewGame", async (req, res) => {
       price,
     } = req.body;
 
+    console.log(req.body);
     if (
       !title ||
-      !banner ||
       !description ||
       !category ||
       !developer ||
@@ -145,10 +165,15 @@ app.post("/api/createNewGame", async (req, res) => {
       return res.status(400).json({ error: "No files were uploaded." });
     }
 
+
     const zipFile = req.files.GameFile;
 
     const zipFilePath = path.join(folderPath, `${gameId}.zip`);
     await zipFile.mv(zipFilePath);
+
+    const imgFile = req.files.banner;
+    const imgFilePath = path.join(folderPath, `${imgFile.name}`);
+    await imgFile.mv(imgFilePath);
 
     console.log(`Zip file saved for game with _id: ${gameId}`);
 
@@ -160,6 +185,9 @@ app.post("/api/createNewGame", async (req, res) => {
     await fs.promises.unlink(zipFilePath);
 
     console.log(`Zip file extracted and deleted for game with _id: ${gameId}`);
+
+    samplegame.banner = imgFilePath;
+    await samplegame.save();
 
     const result = await gameInfo.find({});
     res.json(result);
