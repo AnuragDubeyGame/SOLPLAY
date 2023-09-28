@@ -283,7 +283,7 @@ app.post("/api/getMyGames", async (req, res) => {
 app.get("/api/playGame/:id", async (req, res) => {
   try {
     const gameId = req.params.id;
-    const folderPath = path.join(__dirname, "Games", gameId, "Builds"); // Include "Builds" subfolder
+    const folderPath = path.join(__dirname, "Games", gameId, "Builds"); // Use path.join to construct folder path
 
     // Check if the folder exists
     const folderExists = await fs.promises.stat(folderPath).catch(() => false);
@@ -293,13 +293,20 @@ app.get("/api/playGame/:id", async (req, res) => {
     }
 
     // Serve the index.html file from within the "Builds" subfolder
-    console.log("Folder : ",folderPath)
-    res.sendFile(path.join(folderPath, "index.html"));
+    const indexPath = path.join(folderPath, "index.html");
+
+    // Set appropriate MIME types for .js, .css, and .ico files
+    res.set('Content-Type', 'text/html'); // For index.html
+    res.sendFile(indexPath);
+
   } catch (error) {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
+
+
 // ==================================================================
 
 app.listen(port, () => {
