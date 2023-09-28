@@ -212,30 +212,34 @@ app.post("/api/sendSolana", async (req, res) => {
 
 // SaveUserData
 app.post("/api/saveUserData", async (req, res) => {
-    try {
-      const { username, publicKey, purchasedGames } = req.body;
-  
-      // Check if a user with the same public key already exists
-      let existingUser = await userInfo.findOne({ publicKey });
-  
-      if (!existingUser) {
-        // If the user does not exist, create a new user record
-        existingUser = new userInfo({ username, publicKey, gamesPurchased: [] });
-      }
-  
-      // Add the purchased games to the user's gamesPurchased array
-      existingUser.gamesPurchased = [...existingUser.gamesPurchased, ...purchasedGames];
-  
-      // Save the updated user record
-      await existingUser.save();
-  
-      res.status(201).json({ message: "User data saved successfully." });
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Internal server error." });
+  try {
+    const { username, publicKey, purchasedGames } = req.body;
+
+    // Check if a user with the same public key already exists
+    let existingUser = await userInfo.findOne({ publicKey });
+
+    if (!existingUser) {
+      // If the user does not exist, create a new user record
+      existingUser = new userInfo({ username, publicKey, gamesPurchased: [] });
     }
+
+    // Convert the purchasedGames to an array if it's a single string
+    const validPurchasedGames = Array.isArray(purchasedGames) ? purchasedGames : [purchasedGames];
+
+    // Add the purchased games to the user's gamesPurchased array without overriding
+    const updatedGamesPurchased = [...existingUser.gamesPurchased, ...validPurchasedGames];
+    existingUser.gamesPurchased = updatedGamesPurchased;
+
+    // Save the updated user record
+    await existingUser.save();
+
+    res.status(201).json({ message: "User data saved successfully." });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
 });
-  
+
 // Get My Games
 app.post("/api/getMyGames", async (req, res) => {
     try {
@@ -284,7 +288,7 @@ app.post("/api/getMyGames", async (req, res) => {
 const gamePorts = {};
 
 // Serve the Unity WebGL game by _id
-app.get('/api/playGame/:id', (req, res) => {
+app.get('/api/playGame/:id/:publicKey', async (req, res) => {
   const gameId = req.params.id;
   const gameDirectory = path.join(__dirname, 'Games', gameId);
 
@@ -300,42 +304,62 @@ app.get('/api/playGame/:id', (req, res) => {
     return res.status(404).json({ error: 'Builds directory not found' });
   }
 
-  // Generate a unique port for this game based on gameId
-  let gamePort = 8000;
-  while (gamePorts[gamePort]) { 
-    gamePort++; // Increment the port until an available one is found
-  }
-  gamePorts[gamePort] = true;
+  // Fetch the publicKey from the request body
+  const publicKey = req.params.publicKey;
 
-  // Execute the Python server command on the unique port
-  const pythonProcess = spawn('python', ['-m', 'http.server', gamePort.toString()], {
-    cwd: buildsDirectory,
-  });
+  try {
+    // Find the user in the MongoDB collection based on publicKey
+    const user = await userInfo.findOne({ publicKey });
 
-  pythonProcess.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
-
-  pythonProcess.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`);
-  });
-
-  pythonProcess.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-    // Release the port when the game server stops
-    delete gamePorts[gamePort];
-  });
-
-  // Redirect the user to the dynamically assigned port
-  res.redirect(`http://localhost:${gamePort}`);
-
-  // Schedule a task to stop the Python server and release the port after 1 hour
-  setTimeout(() => {
-    if (gamePorts[gamePort]) {
-      pythonProcess.kill(); // Terminate the game server process
-      delete gamePorts[gamePort];
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
     }
-  }, 3600000 / 4); // 1 hour = 3600000 milliseconds
+
+    // Check if the gameID is present in the gamesPurchased array of the user
+    if (!user.gamesPurchased.includes(gameId)) {
+      return res.status(403).json({ error: 'Please buy the game first' });
+    }
+
+    // Generate a unique port for this game based on gameId
+    let gamePort = 8000;
+    while (gamePorts[gamePort]) {
+      gamePort++; // Increment the port until an available one is found
+    }
+    gamePorts[gamePort] = true;
+
+    // Execute the Python server command on the unique port
+    const pythonProcess = spawn('python', ['-m', 'http.server', gamePort.toString()], {
+      cwd: buildsDirectory,
+    });
+
+    pythonProcess.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+
+    pythonProcess.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+    });
+
+    pythonProcess.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+      // Release the port when the game server stops
+      delete gamePorts[gamePort];
+    });
+
+    // Redirect the user to the dynamically assigned port
+    res.redirect(`http://localhost:${gamePort}`);
+
+    // Schedule a task to stop the Python server and release the port after 1 hour
+    setTimeout(() => {
+      if (gamePorts[gamePort]) {
+        pythonProcess.kill(); // Terminate the game server process
+        delete gamePorts[gamePort];
+      }
+    }, 3600000 / 4); // 1 hour = 3600000 milliseconds
+  } catch (error) {
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
 });
 
 // Add a route to delete all games
