@@ -1,4 +1,5 @@
 import React from 'react';
+import UploadGame from '../components/UploadGame';
 
 const Home = React.lazy(() => import('../components/Home'));
 const About = React.lazy(() => import('../components/About'));
@@ -21,5 +22,9 @@ export const routes = [
   {
     path:"/category/:category" ,
     element:<CategoryGames />
+  },
+  {
+    path:"/upload-game" ,
+    element:<UploadGame />
   }
 ];
