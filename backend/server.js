@@ -280,6 +280,9 @@ app.post("/api/getMyGames", async (req, res) => {
     }
 });
 
+// Create an object to store game-to-port mappings
+const gamePorts = {};
+
 // Serve the Unity WebGL game by _id
 app.get('/api/playGame/:id', (req, res) => {
   const gameId = req.params.id;
@@ -297,8 +300,15 @@ app.get('/api/playGame/:id', (req, res) => {
     return res.status(404).json({ error: 'Builds directory not found' });
   }
 
-  // Execute the Python server command
-  const pythonProcess = spawn('python', ['-m', 'http.server', '8000'], {
+  // Generate a unique port for this game based on gameId
+  let gamePort = 6000;
+  while (gamePorts[gamePort]) { 
+    gamePort++; // Increment the port until an available one is found
+  }
+  gamePorts[gamePort] = true;
+
+  // Execute the Python server command on the unique port
+  const pythonProcess = spawn('python', ['-m', 'http.server', gamePort.toString()], {
     cwd: buildsDirectory,
   });
 
@@ -312,10 +322,12 @@ app.get('/api/playGame/:id', (req, res) => {
 
   pythonProcess.on('close', (code) => {
     console.log(`child process exited with code ${code}`);
+    // Release the port when the game server stops
+    delete gamePorts[gamePort];
   });
 
-  // Redirect the user to localhost:8000
-  res.redirect('http://localhost:8000');
+  // Redirect the user to the dynamically assigned port
+  res.redirect(`http://localhost:${gamePort}`);
 });
 
 // ==================================================================
