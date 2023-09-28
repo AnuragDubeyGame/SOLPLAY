@@ -301,7 +301,7 @@ app.get('/api/playGame/:id', (req, res) => {
   }
 
   // Generate a unique port for this game based on gameId
-  let gamePort = 6000;
+  let gamePort = 8000;
   while (gamePorts[gamePort]) { 
     gamePort++; // Increment the port until an available one is found
   }
