@@ -27,7 +27,7 @@ const Sidebar = () => {
   // Conditionally render content based on the current route
   const renderSidebarContent = () => {
     if (location.pathname === '/upload-game') {
-      return <div>Hello</div>;
+      return null;
     }
     return (
       <>
@@ -63,7 +63,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-gray-900 h-100vh p-4 w-1/4 overflow-auto">
+    <div className="bg-gray-900  h-100vh p-4 w-screen-auto">
       {renderSidebarContent()}
     </div>
   );

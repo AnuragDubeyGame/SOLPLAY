@@ -21,21 +21,35 @@ const GameDetails = () => {
   }
 
   return (
-    <div className="p-4 bg-gray-800 min-h-screen text-white pt-20">
-      <h1 className="text-2xl font-bold mb-4">{game.title} Details</h1>
-      <div className="bg-black rounded overflow-hidden shadow-lg min-w-0">
-        <img
-          className="w-full h-48 object-cover"
-          src={`data:image/png;base64,${game.banner}`}
-          alt={game.title}
-        />
-        <div className="p-4">
-          <h2 className="font-bold text-xl mb-2 bg-purple-800 text-white p-4">{game.title}</h2>
-          <p className="text-gray-300 text-base">{game.description}</p>
-          <p className="mt-2"><strong>Developer:</strong> {game.developer}</p>
-          <p><strong>Publisher:</strong> {game.publisher}</p>
-          <p><strong>Release Date:</strong> {game.releaseDate}</p>
-          <p><strong>Price:</strong> {game.price}</p>
+    <div className="p-4 w-full bg-blue-900 min-h-screen text-white pt-20">
+      <div className="max-w-screen-lg mx-auto">
+        <div className="bg-black rounded-lg overflow-hidden shadow-lg">
+          <img
+            className="w-full h-72 object-cover"
+            src={`data:image/png;base64,${game.banner}`}
+            alt={game.title}
+          />
+          <div className="p-6">
+            <h1 className="text-3xl font-bold mb-4 text-white">{game.title}</h1>
+            <p className="text-gray-400 text-base">{game.description}</p>
+            <div className="mt-4">
+              <p className="text-gray-300">
+                <strong>Developer:</strong> {game.developer}
+              </p>
+              <p className="text-gray-300">
+                <strong>Publisher:</strong> {game.publisher}
+              </p>
+              <p className="text-gray-300">
+                <strong>Release Date:</strong> {game.releaseDate}
+              </p>
+              <p className="text-gray-300">
+                <strong>Price:</strong> ${game.price}
+              </p>
+            </div>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">
+              Buy Now
+            </button>
+          </div>
         </div>
       </div>
     </div>
