@@ -29,7 +29,6 @@ const Sidebar = () => {
     if (location.pathname === '/upload-game') {
       return <div>Hello</div>;
     }
-
     return (
       <>
         <div className="text-white font-bold text-2xl mb-4">Categories</div>
@@ -64,7 +63,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-gray-900 h-100vh p-4 w-1/4 overflow-auto pt-20">
+    <div className="bg-gray-900 h-100vh p-4 w-1/4 overflow-auto">
       {renderSidebarContent()}
     </div>
   );
