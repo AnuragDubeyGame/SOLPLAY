@@ -44,7 +44,7 @@ const Home = () => {
   return (
     <div className="p-4 bg-gradient-to-r from-black to-purple-800 pt-20 text-white">
       <h1 className="text-2xl font-bold mb-4">All Games</h1>
-      <Slider {...settings}>
+      {/* <Slider {...settings}>
         {actionGames.map((game, index) => (
           <div key={index} className="relative max-w-10">
             <Link to={`/game/${game._id}`} className="block">
@@ -60,7 +60,7 @@ const Home = () => {
             </Link>
           </div>
         ))}
-      </Slider>
+      </Slider> */}
       <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {games.map((game, index) => (
           <CSSTransition key={index} classNames="slide" timeout={500}>
@@ -76,7 +76,7 @@ const Home = () => {
                 <p className="text-gray-300 text-base">{truncateText(game.description, 100)}</p>
                 <p className="mt-2">
                   <strong>Developer:</strong> {game.developer}
-                </p>
+                </p>  
                 <p>
                   <strong>Publisher:</strong> {game.publisher}
                 </p>

@@ -46,7 +46,7 @@ const CategoryGames: React.FC<CategoryGamesProps> = ({ category: propCategory })
       <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {games.map((game, index) => (
           <CSSTransition key={index} classNames="slide" timeout={500}>
-            <div className="bg-black rounded overflow-hidden shadow-lg min-w-0">
+            <div className="bg-black rounded overflow-hidden shadow-lg min-w-0 max-w-8">
               <Link to={`/game/${game._id}`} className="block">
               <img
                 className="w-full h-48 object-cover"

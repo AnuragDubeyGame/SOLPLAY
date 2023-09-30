@@ -24,7 +24,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-gray-900 h-100vh p-4 w-1/4 overflow-auto pt-20">
+    <div className="bg-gray-900 h-screen p-4 w-1/4 lg:w-1/5 xl:w-1/6 overflow-auto pt-20">
       <div className="text-white font-bold text-2xl mb-4">Categories</div>
       <ul className="space-y-2">
         <li>
