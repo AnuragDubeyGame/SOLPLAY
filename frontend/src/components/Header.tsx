@@ -4,7 +4,7 @@ import Context from './Context';
 
 const glossyHeaderStyles = {
   position: 'relative', // Change from 'sticky' to 'relative'
-  background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.75))',
+  background: 'linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.9))', // Non-linear gradient
   boxShadow: '0 0 10px 2px rgba(0, 0, 0, 0.3)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
   padding: '5px',
@@ -17,9 +17,9 @@ const glossyHeaderStyles = {
 const logoStyles = {
   width: '180px',
   height: 'auto',
-  marginRight: '5px',
-  position: 'absolute', // Add position absolute
-  left: '0', // Stick to the left
+  marginRight: '10px', // Add a small right margin
+  position: 'absolute',
+  left: '5px',
 };
 
 
