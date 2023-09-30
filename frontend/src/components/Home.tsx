@@ -28,6 +28,15 @@ const Home = () => {
       });
   }, []);
 
+  // Group games by category
+  const groupedGames = games.reduce((acc, game) => {
+    if (!acc[game.category]) {
+      acc[game.category] = [];
+    }
+    acc[game.category].push(game);
+    return acc;
+  }, {});
+
   const settings = {
     dots: true,
     infinite: true,
@@ -39,43 +48,49 @@ const Home = () => {
   return (
     <div className="p-4 bg-black bg-opacity-90 text-white min-h-screen">
       <h1 className="text-2xl font-semibold mb-8 text-center">All Games</h1>
-      <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {games.map((game, index) => (
-          <CSSTransition key={index} classNames="slide" timeout={500}>
-            <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform hover:transform hover:scale-105 duration-200">
-              <Link to={`/game/${game._id}`} className="block">
-                <div className="aspect-w-16 aspect-h-9">
-                  <img
-                    className="w-full h-full object-cover"
-                    src={`data:image/png;base64,${game.banner}`}
-                    alt={game.title}
-                  />
+
+      {Object.keys(groupedGames).map((category, index) => (
+        <div key={index} className="mb-8">
+          <h2 className="text-xl font-semibold mb-4">{category}</h2>
+          <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {groupedGames[category].map((game, index) => (
+              <CSSTransition key={index} classNames="slide" timeout={500}>
+                <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition-transform hover:transform hover:scale-105 duration-200">
+                  <Link to={`/game/${game._id}`} className="block">
+                    <div className="aspect-w-16 aspect-h-9">
+                      <img
+                        className="w-full h-full object-cover"
+                        src={`data:image/png;base64,${game.banner}`}
+                        alt={game.title}
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h2 className="font-semibold text-xl mb-2">{game.title}</h2>
+                      <div className="details-container w-full h-48 overflow-hidden">
+                        <p className="text-gray-400 text-base line-clamp-2">
+                          {truncateText(game.description, 100)}
+                        </p>
+                        <p className="mt-2 text-gray-300">
+                          <strong>Developer:</strong> {game.developer}
+                        </p>
+                        <p className="text-gray-300">
+                          <strong>Publisher:</strong> {game.publisher}
+                        </p>
+                        <p className="text-gray-300">
+                          <strong>Release Date:</strong> {game.releaseDate}
+                        </p>
+                        <p className="text-gray-300">
+                          <strong>Price:</strong> {game.price}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-                <div className="p-4">
-                  <h2 className="font-semibold text-xl mb-2">{game.title}</h2>
-                  <div className="details-container w-full h-48 overflow-hidden"> {/* Increase the height */}
-                    <p className="text-gray-400 text-base line-clamp-2">
-                      {truncateText(game.description, 100)}
-                    </p>
-                    <p className="mt-2 text-gray-300">
-                      <strong>Developer:</strong> {game.developer}
-                    </p>
-                    <p className="text-gray-300">
-                      <strong>Publisher:</strong> {game.publisher}
-                    </p>
-                    <p className="text-gray-300">
-                      <strong>Release Date:</strong> {game.releaseDate}
-                    </p>
-                    <p className="text-gray-300">
-                      <strong>Price:</strong> {game.price}
-                    </p>
-                  </div>
-                </div>
-              </Link>
-            </div>
-          </CSSTransition>
-        ))}
-      </TransitionGroup>
+              </CSSTransition>
+            ))}
+          </TransitionGroup>
+        </div>
+      ))}
     </div>
   );
 };
