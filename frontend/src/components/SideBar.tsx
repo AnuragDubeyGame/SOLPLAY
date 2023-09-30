@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { API_URL } from '../utils/constant';
 
 const Sidebar = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const location = useLocation(); // Get the current route location
 
   // Fetch the list of game categories
   useEffect(() => {
@@ -23,35 +24,48 @@ const Sidebar = () => {
     window.open('/upload-game', '_blank');
   };
 
-  return (
-    <div className="bg-gray-900 h-100vh p-4 w-1/4 overflow-auto pt-20">
-      <div className="text-white font-bold text-2xl mb-4">Categories</div>
-      <ul className="space-y-2">
-        <li>
-          <Link to="/" className="text-white hover:text-gray-400">
-            All Games
-          </Link>
-        </li>
-        {categories.map((category) => (
-          <li key={category}>
-            <Link
-              to={`/category/${encodeURIComponent(category)}`} // Encode category name in the URL
-              className={`text-white hover:text-gray-400 ${
-                selectedCategory === category ? 'font-bold' : ''
-              }`}
-              onClick={() => setSelectedCategory(category)}
-            >
-              {category}
+  // Conditionally render content based on the current route
+  const renderSidebarContent = () => {
+    if (location.pathname === '/upload-game') {
+      return <div>Hello</div>;
+    }
+
+    return (
+      <>
+        <div className="text-white font-bold text-2xl mb-4">Categories</div>
+        <ul className="space-y-2">
+          <li>
+            <Link to="/" className="text-white hover:text-gray-400">
+              All Games
             </Link>
           </li>
-        ))}
-      </ul>
-      <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
-        onClick={handleUploadGame}
-      >
-        Upload Game
-      </button>
+          {categories.map((category) => (
+            <li key={category}>
+              <Link
+                to={`/category/${encodeURIComponent(category)}`} // Encode category name in the URL
+                className={`text-white hover:text-gray-400 ${
+                  selectedCategory === category ? 'font-bold' : ''
+                }`}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+          onClick={handleUploadGame}
+        >
+          Upload Game
+        </button>
+      </>
+    );
+  };
+
+  return (
+    <div className="bg-gray-900 h-100vh p-4 w-1/4 overflow-auto pt-20">
+      {renderSidebarContent()}
     </div>
   );
 };

@@ -65,7 +65,7 @@ const UploadGame = () => {
   };
   
   return (
-    <div className="bg-gray-800 p-8 rounded-lg">
+    <div className="bg-gray-800 p-8 rounded-lg w-full">
       <h2 className="text-2xl font-bold mt-16 text-white mb-4">Upload Game</h2>
       <form className="max-w-lg mt-3" onSubmit={handleSubmit}>
         <label className="block mb-4">
