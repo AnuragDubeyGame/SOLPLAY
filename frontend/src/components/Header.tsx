@@ -3,12 +3,14 @@ import Content from './Content';
 import Context from './Context';
 
 const glossyHeaderStyles = {
-  position: 'relative',
+  position: 'relative', // Change from 'sticky' to 'relative'
   background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.75))',
   boxShadow: '0 0 10px 2px rgba(0, 0, 0, 0.3)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
   padding: '5px',
   color: 'white',
+  display: 'flex', // Add this line to enable flex layout
+  alignItems: 'center', // Vertically align items in the center
   height: '7vh',
 };
 
@@ -16,31 +18,52 @@ const logoStyles = {
   width: '180px',
   height: 'auto',
   marginRight: '5px',
-  position: 'absolute',
-  top: '8px',
-  left: '0px',
+  position: 'absolute', // Add position absolute
+  left: '0', // Stick to the left
 };
 
+
 const labelStyles = {
-  position: 'absolute',
-  top: '20px',
-  right: '200px', // Align the label to the right with a margin
+  flex: '1', // Allow the label to expand and take up available space
+  textAlign: 'right', // Align the label to the right
   color: 'white',
   fontSize: '18px',
   fontWeight: 'bold',
 };
 
+const buttonStyles = {
+  marginLeft: 'auto',
+  marginRight: '10px',
+  position: 'absolute',
+  right: '190px',
+  top: '50%',
+  transform: 'translateY(-50%)',
+  backgroundColor: 'rgb(85, 60, 154)', // Set default background color
+  border: 'none', // Remove the border
+  borderRadius: '5px', // Add some border radius for a slightly rounded look
+  padding: '10px 15px',
+  color: 'white',
+  transition: 'background-color 0.3s ease',
+};
+
+
 const contentStyles = {
   marginLeft: '240px',
 };
 
+// Add hover styles
+const buttonHoverStyles = {
+  backgroundColor: '#4a90e2', // Change background color on hover
+};
+
 const Header = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     // Use window.innerWidth to check the screen width and set isMobile accordingly
     const checkIsMobile = () => {
-      if (window.innerWidth <= 500) {
+      if (window.innerWidth <= 700) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -59,6 +82,16 @@ const Header = () => {
     };
   }, []);
 
+  const handleUploadGame = () => {
+    window.open('/upload-game', '_blank');
+  };
+
+  // Merge the styles based on hover state
+  const combinedButtonStyles = {
+    ...buttonStyles,
+    ...(isHovered ? buttonHoverStyles : {}),
+  };
+
   return (
     <header style={glossyHeaderStyles}>
       <div className="container mx-auto text-white">
@@ -69,13 +102,22 @@ const Header = () => {
                 <p>Please open it in desktop.</p>
               </div>
             ) : (
-              <div style={{ display: 'relative' }}>
+              <div style={{ display: 'flex', alignItems: 'center' }}>
                 <img
                   src={require("../assets/SOLPLAYBANNER.png")}
                   alt="Logo"
                   style={logoStyles}
                 />
-                <span style={labelStyles}>AboutUs</span>
+                <span style={labelStyles}>
+                  <button
+                    style={combinedButtonStyles}
+                    onMouseEnter={() => setIsHovered(true)} // Handle mouse enter event
+                    onMouseLeave={() => setIsHovered(false)} // Handle mouse leave event
+                    onClick={handleUploadGame}
+                  >
+                    Upload Game
+                  </button>
+                </span>
                 <Content style={contentStyles} />
               </div>
             )}

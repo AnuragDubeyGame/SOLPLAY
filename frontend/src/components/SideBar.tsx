@@ -20,9 +20,6 @@ const Sidebar = () => {
       });
   }, []);
 
-  const handleUploadGame = () => {
-    window.open('/upload-game', '_blank');
-  };
 
   // Conditionally render content based on the current route
   const renderSidebarContent = () => {
@@ -52,12 +49,7 @@ const Sidebar = () => {
             </li>
           ))}
         </ul>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
-          onClick={handleUploadGame}
-        >
-          Upload Game
-        </button>
+        
       </>
     );
   };

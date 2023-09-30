@@ -46,24 +46,34 @@ const CategoryGames: React.FC<CategoryGamesProps> = ({ category: propCategory })
       <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {games.map((game, index) => (
           <CSSTransition key={index} classNames="slide" timeout={500}>
-            <div className="bg-black rounded overflow-hidden shadow-lg min-w-0 max-w-8">
+            <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-200">
               <Link to={`/game/${game._id}`} className="block">
-              <img
-                className="w-full h-48 object-cover"
-                src={`data:image/png;base64,${game.banner}`}
-                alt={game.title}
-              />
-              <div className="p-0">
-                <h2 className="font-bold text-xl mb-2 bg-purple-800 text-white p-4">{game.title}</h2>
-                <p className="text-gray-300 text-base">
-                  {truncateText(game.description, 100)} {/* Adjust the maximum length as needed */}
-                </p>
-                <p className="mt-2"><strong>Developer:</strong> {game.developer}</p>
-                <p><strong>Publisher:</strong> {game.publisher}</p>
-                <p><strong>Release Date:</strong> {game.releaseDate}</p>
-                <p><strong>Price:</strong> {game.price}</p>
-              </div>
-            </Link>
+                <div className="aspect-w-16 aspect-h-9">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={`data:image/png;base64,${game.banner}`}
+                    alt={game.title}
+                  />
+                </div>
+                <div className="p-4">
+                  <h2 className="font-semibold text-xl mb-2">{game.title}</h2>
+                  <p className="text-gray-400 text-base line-clamp-2">
+                    {truncateText(game.description, 100)} {/* Adjust the maximum length as needed */}
+                  </p>
+                  <p className="mt-2 text-gray-300">
+                    <strong>Developer:</strong> {game.developer}
+                  </p>
+                  <p className="text-gray-300">
+                    <strong>Publisher:</strong> {game.publisher}
+                  </p>
+                  <p className="text-gray-300">
+                    <strong>Release Date:</strong> {game.releaseDate}
+                  </p>
+                  <p className="text-gray-300">
+                    <strong>Price:</strong> {game.price}
+                  </p>
+                </div>
+              </Link>
             </div>
           </CSSTransition>
         ))}

@@ -1,0 +1,23 @@
+/* Hide the scrollbar when enabled */
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent; /* Optional: Set the background to match your design */
+}
+
+/* Hide the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  width: 0;
+}
+
+/* Add hover effect and card enlargement */
+/* Adjust the values as needed */
+
+/* Card hover effect */
+.transition-transform {
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Enlarge the card on hover */
+.hover\:transform:hover {
+  transform: scale(1.05); /* Adjust the scale factor for card enlargement */
+}
