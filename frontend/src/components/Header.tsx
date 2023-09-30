@@ -3,6 +3,7 @@ import Content from './Content';
 import Context from './Context';
 
 const glossyHeaderStyles = {
+  position: 'relative',
   background: 'linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.75))',
   boxShadow: '0 0 10px 2px rgba(0, 0, 0, 0.3)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',

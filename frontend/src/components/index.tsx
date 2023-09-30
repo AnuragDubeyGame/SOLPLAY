@@ -15,7 +15,7 @@ const Index: FC = () => {
         <>
             <Suspense fallback={<LoadingSpinner />}>
                 <Context>
-                    <div className="fixed top-0 left-0 right-0 z-50">
+                    <div className="relative top-0 left-0 right-0">
                         <Header />
                     </div>
                 </Context>
@@ -38,4 +38,3 @@ const Index: FC = () => {
 };
 
 export default Index;
-  
