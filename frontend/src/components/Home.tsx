@@ -40,7 +40,7 @@ const Home = () => {
     };
 
     return (
-        <div className="p-10 bg-gradient-to-r from-black to-purple-800 pt-20 text-white">
+        <div className="p-10 bg-gradient-to-r from-black to-purple-800 pt-20 text-white min-h-screen">
             <h1 className="text-2xl font-bold mb-4">All Games</h1>
             {/* <Slider {...settings} >
                 {actionGames.map((game, index) => (

@@ -11,34 +11,31 @@ require('../components/Styles/Home.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 const Index: FC = () => {
-  return (
-    <>
-      <Suspense fallback={<LoadingSpinner />}>
-        <Context>
-          <div className="fixed top-0 left-0 right-0 z-50">
-            <Header />
-          </div>
+    return (
+        <>
+            <Suspense fallback={<LoadingSpinner />}>
+                <Context>
+                    <div className="fixed top-0 left-0 right-0 z-50">
+                        <Header />
+                    </div>
                 </Context>
-          <Router>
-            <div className="flex">
-              <SideBar />
-              <div className="flex-grow overflow-auto">
-                <Routes>
-                  {routes.map((route, index) => (
-                    <Route
-                      key={index}
-                      path={route.path}
-                      element={route.element}
-                      />
-                  ))}
-                </Routes>
-              </div>
-              {/* <RightSidebar /> */}
-            </div>
-          </Router>
-                      </Suspense>
-    </>
-  );
+                <Router>
+                    <div className="flex">
+                        <SideBar />
+                        <div className="flex-grow overflow-auto" style={{ height: '100vh' }}>
+                            <Routes>
+                                {routes.map((route, index) => (
+                                    <Route key={index} path={route.path} element={route.element} />
+                                ))}
+                            </Routes>
+                        </div>
+                        {/* <RightSidebar /> */}
+                    </div>
+                </Router>
+            </Suspense>
+        </>
+    );
 };
 
 export default Index;
+  
