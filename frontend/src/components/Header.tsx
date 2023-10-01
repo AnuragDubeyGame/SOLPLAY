@@ -1,4 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import Content from './Content';
 import Context from './Context';
 
@@ -57,6 +58,14 @@ const buttonHoverStyles = {
 };
 
 const Header = () => {
+  const { publicKey } = useWallet(); // Moved this here
+  
+  useEffect(() => {
+    console.log('Public Key:', publicKey?.toBase58());
+    localStorage.setItem('publicKey', publicKey?.toBase58() || '');
+  
+  }, [publicKey]);
+
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 

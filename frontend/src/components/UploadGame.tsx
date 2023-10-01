@@ -1,5 +1,5 @@
 import React, { useState, ChangeEvent } from 'react';
-import { API_URL } from '../utils/constant';
+
 
 const categoryOptions = [
   'Action',
@@ -38,6 +38,7 @@ const UploadGame = () => {
     price: '', // Store price as a string to allow user input
     GameFile: null as File | null,
   });
+  
   const [bannerFileName, setBannerFileName] = useState<string>('');
   const [zipFileName, setZipFileName] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -56,23 +57,46 @@ const UploadGame = () => {
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
     const selectedFile = files ? files[0] : null;
-
-    // Check if the uploaded file is a zip file
-    if (name === 'GameFile' && selectedFile && !selectedFile.name.endsWith('.zip')) {
-      alert('Please select a .zip file for the game.');
-      return;
-    }
-
-    setFormData({ ...formData, [name]: selectedFile });
-
-    // Display the selected file name
-    const fileName = selectedFile ? selectedFile.name : '';
+  
     if (name === 'banner') {
-      setBannerFileName(fileName);
+      // Check if the uploaded file is an image
+      if (selectedFile && selectedFile.type.startsWith('image/')) {
+        const image = new Image();
+  
+        image.onload = () => {
+          if (image.width === 315 && image.height === 250) {
+            // Valid dimensions, set the banner image
+            setFormData({ ...formData, [name]: selectedFile });
+  
+            // Display the selected file name
+            const fileName = selectedFile ? selectedFile.name : '';
+            setBannerFileName(fileName);
+          } else {
+            // Invalid dimensions, show an error message
+            alert('Banner image dimensions must be 315x250 pixels.');
+          }
+        };
+  
+        image.src = URL.createObjectURL(selectedFile);
+      } else {
+        // Not an image, show an error message
+        alert('Please select a valid image file for the banner.');
+      }
     } else if (name === 'GameFile') {
-      setZipFileName(fileName);
+      // Check if the uploaded file is a zip file
+      if (selectedFile && selectedFile.name.endsWith('.zip')) {
+        setFormData({ ...formData, [name]: selectedFile });
+  
+        // Display the selected file name
+        const fileName = selectedFile ? selectedFile.name : '';
+        setZipFileName(fileName);
+      } else {
+        // Invalid file type, show an error message
+        alert('Please select a .zip file for the game.');
+      }
     }
   };
+  
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
