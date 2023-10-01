@@ -96,6 +96,7 @@ app.get("/api/getGame/:id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 app.post('/api/rateGame/:id', async (req, res) => {
   try {
     const gameId = req.params.id;
@@ -173,7 +174,6 @@ app.get("/api/getGamesByCategory", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 // Create New Game with Zip Folder
 app.post("/api/createNewGame", async (req, res) => {
@@ -411,47 +411,51 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Check if the gameID is present in the gamesPurchased array of the user
-    if (!user.gamesPurchased.includes(gameId)) {
+    // Fetch the game price using a separate request
+    const gamePriceResponse = await axios.get(`http://localhost:5000/api/getGame/${gameId}`);
+    const gamePriceData = gamePriceResponse.data;
+
+    if (gamePriceData.price === 0) {
+      // Generate a unique port for this game based on gameId
+      let gamePort = 8000;
+      while (gamePorts[gamePort]) {
+        gamePort++; // Increment the port until an available one is found
+      }
+      gamePorts[gamePort] = true;
+
+      // Execute the Python server command on the unique port
+      const pythonProcess = spawn('python', ['-m', 'http.server', gamePort.toString()], {
+        cwd: buildsDirectory,
+      });
+
+      pythonProcess.stdout.on('data', (data) => {
+        console.log(`stdout: ${data}`);
+      });
+
+      pythonProcess.stderr.on('data', (data) => {
+        console.error(`stderr: ${data}`);
+      });
+
+      pythonProcess.on('close', (code) => {
+        console.log(`child process exited with code ${code}`);
+        // Release the port when the game server stops
+        delete gamePorts[gamePort];
+      });
+
+      // Redirect the user to the dynamically assigned port
+      res.redirect(`http://localhost:${gamePort}`);
+
+      // Schedule a task to stop the Python server and release the port after 1 hour
+      setTimeout(() => {
+        if (gamePorts[gamePort]) {
+          pythonProcess.kill(); // Terminate the game server process
+          delete gamePorts[gamePort];
+        }
+      }, 3600000 / 4); // 1 hour = 3600000 milliseconds
+    } else {
+      // Show the message to buy the game if the price is greater than 0
       return res.status(403).json({ error: 'Please buy the game first' });
     }
-
-    // Generate a unique port for this game based on gameId
-    let gamePort = 8000;
-    while (gamePorts[gamePort]) {
-      gamePort++; // Increment the port until an available one is found
-    }
-    gamePorts[gamePort] = true;
-
-    // Execute the Python server command on the unique port
-    const pythonProcess = spawn('python', ['-m', 'http.server', gamePort.toString()], {
-      cwd: buildsDirectory,
-    });
-
-    pythonProcess.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
-    });
-
-    pythonProcess.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
-    });
-
-    pythonProcess.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
-      // Release the port when the game server stops
-      delete gamePorts[gamePort];
-    });
-
-    // Redirect the user to the dynamically assigned port
-    res.redirect(`http://localhost:${gamePort}`);
-
-    // Schedule a task to stop the Python server and release the port after 1 hour
-    setTimeout(() => {
-      if (gamePorts[gamePort]) {
-        pythonProcess.kill(); // Terminate the game server process
-        delete gamePorts[gamePort];
-      }
-    }, 3600000 / 4); // 1 hour = 3600000 milliseconds
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ error: 'Internal server error' });
