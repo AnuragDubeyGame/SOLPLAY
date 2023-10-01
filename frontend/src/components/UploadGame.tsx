@@ -1,5 +1,5 @@
-import React, { useState, ChangeEvent } from 'react';
-
+import React, { useState, ChangeEvent, useEffect } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 
 const categoryOptions = [
   'Action',
@@ -25,6 +25,7 @@ const categoryOptions = [
 ];
 
 const UploadGame = () => {
+  const { publicKey } = useWallet(); // Moved this here
   const [formData, setFormData] = useState({
     title: '',
     banner: null as File | null,
@@ -32,7 +33,7 @@ const UploadGame = () => {
     category: categoryOptions[0], // Initialize with the first option
     developer: '',
     publisher: '',
-    publicKey: '',
+    publicKey: localStorage.getItem('publicKey') || '',
     releaseDate: '',
     isFree: false, // Add the 'isFree' checkbox state
     price: '', // Store price as a string to allow user input
@@ -42,7 +43,15 @@ const UploadGame = () => {
   const [bannerFileName, setBannerFileName] = useState<string>('');
   const [zipFileName, setZipFileName] = useState<string>('');
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  useEffect(() => {
+    getPublicKey()
 
+    
+  }, [publicKey]);
+  const getPublicKey = ()=>{
+   
+    console.log('public key get item......', localStorage.getItem('publicKey'))
+  }
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target;
 
@@ -149,7 +158,7 @@ const UploadGame = () => {
           developer: '',
           publisher: '',
           publicKey: '',
-          releaseDate: '',
+          releaseDate: getCurrentDate(),
           isFree: false, // Reset isFree to false
           price: '', // Reset price to an empty string
           GameFile: null,
@@ -163,6 +172,13 @@ const UploadGame = () => {
     } catch (error) {
       console.error('Error uploading game:', error);
     }
+  };
+  const getCurrentDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   return (
@@ -266,6 +282,7 @@ const UploadGame = () => {
             name="publicKey"
             value={formData.publicKey}
             onChange={handleChange}
+            readOnly={true}
             className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
           />
         </label>

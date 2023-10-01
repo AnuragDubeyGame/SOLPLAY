@@ -96,6 +96,43 @@ app.get("/api/getGame/:id", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+app.post('/api/rateGame/:id', async (req, res) => {
+  try {
+    const gameId = req.params.id;
+    const { rating } = req.body;
+
+    // Validate the rating (e.g., ensure it's between 1 and 5)
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ error: 'Invalid rating value' });
+    }
+
+    // Find the game by ID
+    const game = await gameInfo.findById(gameId);
+
+    if (!game) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    // Update the game's ratings and numRatings fields
+    game.ratings.push(rating);
+    game.numRatings += 1;
+
+    // Calculate the average rating
+    const totalRating = game.ratings.reduce((acc, curr) => acc + curr, 0);
+    const averageRating = totalRating / game.numRatings;
+
+    // Update the game's averageRating field (if you have one in your schema)
+    game.averageRating = averageRating;
+
+    // Save the updated game
+    await game.save();
+
+    res.json({ message: 'Rating submitted successfully' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 // Get Games by Category
 app.get("/api/getGamesByCategory", async (req, res) => {
