@@ -1,17 +1,41 @@
 import React, { useState, ChangeEvent } from 'react';
 import { API_URL } from '../utils/constant';
 
+const categoryOptions = [
+  'Action',
+  'Adventure',
+  'Role-Playing Game (RPG)',
+  'First-Person Shooter (FPS)',
+  'Third-Person Shooter (TPS)',
+  'Platformer',
+  'Puzzle',
+  'Racing',
+  'Sports',
+  'Simulation',
+  'Strategy',
+  'Fighting',
+  'Horror',
+  'Sandbox',
+  'Survival',
+  'Music/Rhythm',
+  'Educational',
+  'Casual',
+  'Massively Multiplayer Online (MMO)',
+  'Virtual Reality (VR)',
+];
+
 const UploadGame = () => {
   const [formData, setFormData] = useState({
     title: '',
     banner: null as File | null,
     description: '',
-    category: '',
+    category: categoryOptions[0], // Initialize with the first option
     developer: '',
     publisher: '',
     publicKey: '',
     releaseDate: '',
-    price: '',
+    isFree: false, // Add the 'isFree' checkbox state
+    price: '', // Store price as a string to allow user input
     GameFile: null as File | null,
   });
   const [bannerFileName, setBannerFileName] = useState<string>('');
@@ -19,8 +43,14 @@ const UploadGame = () => {
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value, type, checked } = e.target;
+
+    // If the input is a checkbox, set 'isFree' accordingly
+    if (type === 'checkbox') {
+      setFormData({ ...formData, [name]: checked, price: checked ? '0' : '' });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -46,30 +76,29 @@ const UploadGame = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-  
+
     // Validate required fields
     if (
       !formData.title ||
       !formData.description ||
-      !formData.category ||
       !formData.developer ||
       !formData.publisher ||
       !formData.publicKey ||
       !formData.releaseDate ||
-      !formData.price ||
+      (formData.isFree === false && (!formData.price || parseFloat(formData.price) < 0)) ||
       !formData.banner ||
       !formData.GameFile
     ) {
       alert('Please fill in all required fields.');
       return;
     }
-  
+
     // Check if the uploaded file is a zip file
     if (formData.GameFile && !formData.GameFile.name.endsWith('.zip')) {
       alert('Please select a .zip file for the game.');
       return;
     }
-  
+
     // Create FormData
     const form = new FormData();
     for (const key in formData) {
@@ -77,13 +106,13 @@ const UploadGame = () => {
         form.append(key, formData[key as keyof typeof formData] as File | string);
       }
     }
-  
+
     try {
       const response = await fetch('http://localhost:5000/api/createNewGame', {
         method: 'POST',
         body: form,
       });
-  
+
       if (response.ok) {
         // Handle success and show confirmation message
         setSuccessMessage('Game uploaded successfully!');
@@ -92,12 +121,13 @@ const UploadGame = () => {
           title: '',
           banner: null,
           description: '',
-          category: '',
+          category: categoryOptions[0], // Reset to the first option
           developer: '',
           publisher: '',
           publicKey: '',
           releaseDate: '',
-          price: '',
+          isFree: false, // Reset isFree to false
+          price: '', // Reset price to an empty string
           GameFile: null,
         });
         setBannerFileName('');
@@ -110,7 +140,7 @@ const UploadGame = () => {
       console.error('Error uploading game:', error);
     }
   };
-  
+
   return (
     <div className="bg-gray-800 p-8 rounded-lg w-full text-white">
       <h2 className="text-2xl font-bold mt-16 mb-4">Upload Game</h2>
@@ -169,13 +199,18 @@ const UploadGame = () => {
 
         <label className="block mb-4">
           <span className="text-white">Category:</span>
-          <input
-            type="text"
+          <select
             name="category"
             value={formData.category}
             onChange={handleChange}
             className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-          />
+          >
+            {categoryOptions.map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
         </label>
 
         <label className="block mb-4">
@@ -222,15 +257,29 @@ const UploadGame = () => {
           />
         </label>
 
-        <label className="block mb-4">
-          <span className="text-white">Price:</span>
+        <label className="block mb-4 flex items-center">
+          <span className="text-white mr-2">Free:</span>
+          <input
+            type="checkbox"
+            name="isFree"
+            checked={formData.isFree}
+            onChange={handleChange}
+            style={{ width: '20px', height: '20px' }}
+          />
+        </label>
+        <label className="block mb-4 flex items-center">
+          <span className="text-white mr-2">Price:</span>
           <input
             type="number"
             name="price"
             value={formData.price}
             onChange={handleChange}
-            className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
+            disabled={formData.isFree}
+            min="0"
+            style={{ width: '80px' }}
+            className="mt-1 block rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
           />
+          <span className="text-white ml-2">SOL</span>
         </label>
 
         <label className="block mb-4">
