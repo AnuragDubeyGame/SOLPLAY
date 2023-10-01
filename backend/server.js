@@ -421,11 +421,20 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
   }
 });
 
-// Add a route to delete all games
+
 app.get('/api/deleteAllGames', async (req, res) => {
   try {
     // Delete all game records from the database
     await gameInfo.deleteMany({});
+
+    // Delete all game folders
+    const gamesFolder = path.join(__dirname, 'Games');
+    fs.readdirSync(gamesFolder).forEach((folderName) => {      const folderPath = path.join(gamesFolder, folderName);
+      if (fs.statSync(folderPath).isDirectory()) {
+        fs.rmdirSync(folderPath, { recursive: true });
+      }
+    });
+
     res.json({ message: 'All games deleted successfully' });
   } catch (error) {
     console.error(error);
@@ -445,12 +454,19 @@ app.get('/api/deleteGame/:id', async (req, res) => {
       return res.status(404).json({ error: 'Game not found' });
     }
 
+    // Delete the game folder
+    const gameFolderPath = path.join(__dirname, 'Games', gameId);
+    if (fs.existsSync(gameFolderPath)) {
+      fs.rmdirSync(gameFolderPath, { recursive: true });
+    }
+
     res.json({ message: 'Game deleted successfully' });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while deleting the game' });
   }
 });
+
 // ==================================================================
 
 app.listen(port, () => {
