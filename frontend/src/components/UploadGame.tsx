@@ -4,9 +4,9 @@ import React, { useState, ChangeEvent } from 'react';
 const categoryOptions = [
   'Action',
   'Adventure',
-  'Role-Playing Game (RPG)',
-  'First-Person Shooter (FPS)',
-  'Third-Person Shooter (TPS)',
+  'RPG',
+  'FPS',
+  'TPS',
   'Platformer',
   'Puzzle',
   'Racing',
@@ -20,8 +20,8 @@ const categoryOptions = [
   'Music/Rhythm',
   'Educational',
   'Casual',
-  'Massively Multiplayer Online (MMO)',
-  'Virtual Reality (VR)',
+  'MMO',
+  'VR',
 ];
 
 const UploadGame = () => {
