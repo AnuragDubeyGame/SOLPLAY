@@ -41,7 +41,7 @@ const CategoryGames: React.FC<CategoryGamesProps> = ({ category: propCategory })
   }, [category]);
 
   return (
-    <div className="p-4 bg-gray-800 min-h-screen text-white pt-20 w-full">
+    <div className="p-4 bg-black text-white min-h-screen">
       <h1 className="text-2xl font-bold mb-4">{propCategory} Games</h1>
       <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {games.map((game, index) => (

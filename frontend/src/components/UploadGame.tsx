@@ -16,6 +16,7 @@ const UploadGame = () => {
   });
   const [bannerFileName, setBannerFileName] = useState<string>('');
   const [zipFileName, setZipFileName] = useState<string>('');
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -24,10 +25,18 @@ const UploadGame = () => {
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, files } = e.target;
-    setFormData({ ...formData, [name]: files ? files[0] : null });
+    const selectedFile = files ? files[0] : null;
+
+    // Check if the uploaded file is a zip file
+    if (name === 'GameFile' && selectedFile && !selectedFile.name.endsWith('.zip')) {
+      alert('Please select a .zip file for the game.');
+      return;
+    }
+
+    setFormData({ ...formData, [name]: selectedFile });
 
     // Display the selected file name
-    const fileName = files ? files[0].name : '';
+    const fileName = selectedFile ? selectedFile.name : '';
     if (name === 'banner') {
       setBannerFileName(fileName);
     } else if (name === 'GameFile') {
@@ -37,6 +46,29 @@ const UploadGame = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+  
+    // Validate required fields
+    if (
+      !formData.title ||
+      !formData.description ||
+      !formData.category ||
+      !formData.developer ||
+      !formData.publisher ||
+      !formData.publicKey ||
+      !formData.releaseDate ||
+      !formData.price ||
+      !formData.banner ||
+      !formData.GameFile
+    ) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+  
+    // Check if the uploaded file is a zip file
+    if (formData.GameFile && !formData.GameFile.name.endsWith('.zip')) {
+      alert('Please select a .zip file for the game.');
+      return;
+    }
   
     // Create FormData
     const form = new FormData();
@@ -53,8 +85,23 @@ const UploadGame = () => {
       });
   
       if (response.ok) {
-        // Handle success, e.g., show a success message
-        console.log('Game uploaded successfully!');
+        // Handle success and show confirmation message
+        setSuccessMessage('Game uploaded successfully!');
+        // Clear the form data
+        setFormData({
+          title: '',
+          banner: null,
+          description: '',
+          category: '',
+          developer: '',
+          publisher: '',
+          publicKey: '',
+          releaseDate: '',
+          price: '',
+          GameFile: null,
+        });
+        setBannerFileName('');
+        setZipFileName('');
       } else {
         // Handle error, e.g., show an error message
         console.error('Error uploading game:', response.statusText);
@@ -65,8 +112,11 @@ const UploadGame = () => {
   };
   
   return (
-    <div className="bg-gray-800 p-8 rounded-lg w-full">
-      <h2 className="text-2xl font-bold mt-16 text-white mb-4">Upload Game</h2>
+    <div className="bg-gray-800 p-8 rounded-lg w-full text-white">
+      <h2 className="text-2xl font-bold mt-16 mb-4">Upload Game</h2>
+      {successMessage && (
+        <div className="bg-green-500 text-black rounded p-2 mb-4">{successMessage}</div>
+      )}
       <form className="max-w-lg mt-3" onSubmit={handleSubmit}>
         <label className="block mb-4">
           <span className="text-white">Title:</span>
@@ -89,37 +139,21 @@ const UploadGame = () => {
               onChange={handleFileChange}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
-           {bannerFileName && (
+            {bannerFileName && formData.banner && (
               <img
                 src={URL.createObjectURL(formData.banner)}
                 alt="Uploaded Banner"
                 className="mt-2 rounded-md max-h-auto"
-                // style={{ maxHeight: '200px' }}
+                style={{ maxHeight: '250px', maxWidth: '315px' }}
               />
             )}
             <div className="flex flex-col items-center justify-center">
-              {
-                bannerFileName? '':
-              <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gray-500 mb-2"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a1 1 0 00-1 1v5H6a1 1 0 100 2h8a1 1 0 100-2h-3V3a1 1 0 00-1-1h-1zm-1 7H7a1 1 0 100 2h2a1 1 0 100-2zm4 0h-1a1 1 0 1000 2h1a1 1 0 100-2zm-1 4H7a1 1 0 100 2h5a1 1 0 100-2z"
-                  clipRule="evenodd"
-                  />
-              </svg>
-                }
-              {
-                bannerFileName? <span className="file-name text-white">{bannerFileName}</span>:
-                <span className="text-gray-500">Choose an image file</span>
-              }
-              {/* <span className="text-gray-500">Choose an image file</span> */}
+              {bannerFileName ? (
+                <span className="file-info text-green-500">Banner Image: {bannerFileName}</span>
+              ) : (
+                <span className="text-gray-500">Choose an image file (315x250 pixels)</span>
+              )}
             </div>
-            {/* <span className="file-name text-white">{bannerFileName}</span> */}
           </div>
         </label>
 
@@ -209,25 +243,12 @@ const UploadGame = () => {
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
             />
             <div className="flex flex-col items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-gray-500 mb-2"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 2a1 1 0 00-1 1v5H6a1 1 0 100 2h8a1 1 0 100-2h-3V3a1 1 0 00-1-1h-1zm-1 7H7a1 1 0 100 2h2a1 1 0 100-2zm4 0h-1a1 1 0 1000 2h1a1 1 0 100-2zm-1 4H7a1 1 0 100 2h5a1 1 0 100-2z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              {
-                zipFileName? <span className="file-name text-white">{zipFileName}</span>:
+              {zipFileName ? (
+                <span className="file-info text-green-500">Zip File: {zipFileName}</span>
+              ) : (
                 <span className="text-gray-500">Choose a zip file</span>
-              }
-              {/* <span className="text-gray-500">Choose a zip file</span> */}
+              )}
             </div>
-            {/* <span className="file-name text-white">{zipFileName}</span> */}
           </div>
         </label>
         <br />

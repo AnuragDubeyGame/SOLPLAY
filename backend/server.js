@@ -97,7 +97,6 @@ app.get("/api/getGame/:id", async (req, res) => {
   }
 });
 
-
 // Get Games by Category
 app.get("/api/getGamesByCategory", async (req, res) => {
   try {
@@ -137,7 +136,6 @@ app.get("/api/getGamesByCategory", async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
   }
 });
-
 
 
 // Create New Game with Zip Folder

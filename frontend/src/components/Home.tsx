@@ -46,8 +46,8 @@ const Home = () => {
   };
 
   return (
-    <div className="p-4 bg-black bg-opacity-90 text-white min-h-screen">
-      <h1 className="text-2xl font-semibold mb-8 text-center">All Games</h1>
+    <div className="p-4 bg-black text-white min-h-screen">
+     <h1 className="text-3xl font-semibold mb-8 text-center">Games</h1>
 
       {Object.keys(groupedGames).map((category, index) => (
         <div key={index} className="mb-8">

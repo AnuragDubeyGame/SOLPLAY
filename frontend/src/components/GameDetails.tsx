@@ -21,35 +21,55 @@ const GameDetails = () => {
   }
 
   return (
-    <div className="p-4 w-full bg-blue-900 min-h-screen text-white pt-20">
+    <div className="bg-black bg-opacity-90 text-white min-h-screen pt-20 relative">
       <div className="max-w-screen-lg mx-auto">
-        <div className="bg-black rounded-lg overflow-hidden shadow-lg">
-          <img
-            className="w-full h-72 object-cover"
-            src={`data:image/png;base64,${game.banner}`}
-            alt={game.title}
-          />
-          <div className="p-6">
-            <h1 className="text-3xl font-bold mb-4 text-white">{game.title}</h1>
-            <p className="text-gray-400 text-base">{game.description}</p>
-            <div className="mt-4">
-              <p className="text-gray-300">
-                <strong>Developer:</strong> {game.developer}
-              </p>
-              <p className="text-gray-300">
-                <strong>Publisher:</strong> {game.publisher}
-              </p>
-              <p className="text-gray-300">
-                <strong>Release Date:</strong> {game.releaseDate}
-              </p>
-              <p className="text-gray-300">
-                <strong>Price:</strong> ${game.price}
-              </p>
-            </div>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">
-              Buy Now
-            </button>
+        {/* Banner Image */}
+        <div
+          className="w-80 h-64 mx-auto" // 315x250 size, centered horizontally
+          style={{
+            backgroundImage: `url(data:image/png;base64,${game.banner})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center top',
+          }}
+        ></div>
+        {/* End of Banner Image */}
+        
+        <div className="p-6">
+          <h1 className="text-3xl font-bold mb-4">{game.title}</h1>
+
+          {/* Description Section */}
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Description</h2>
+            <p className="text-gray-300">{game.description}</p>
           </div>
+
+          {/* Developer Section */}
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Developer</h2>
+            <p className="text-gray-300">{game.developer}</p>
+          </div>
+
+          {/* Publisher Section */}
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Publisher</h2>
+            <p className="text-gray-300">{game.publisher}</p>
+          </div>
+
+          {/* Release Date Section */}
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Release Date</h2>
+            <p className="text-gray-300">{game.releaseDate}</p>
+          </div>
+
+          {/* Price Section */}
+          <div className="mb-4">
+            <h2 className="text-xl font-semibold">Price</h2>
+            <p className="text-gray-300">${game.price}</p>
+          </div>
+
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded">
+            Buy Now
+          </button>
         </div>
       </div>
     </div>

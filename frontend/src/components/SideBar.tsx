@@ -20,43 +20,40 @@ const Sidebar = () => {
       });
   }, []);
 
-
-  // Conditionally render content based on the current route
-  const renderSidebarContent = () => {
-    if (location.pathname === '/upload-game') {
-      return null;
-    }
-    return (
-      <>
-        <div className="text-white font-bold text-2xl mb-4">Categories</div>
-        <ul className="space-y-2">
-          <li>
-            <Link to="/" className="text-white hover:text-gray-400">
-              All Games
-            </Link>
-          </li>
-          {categories.map((category) => (
-            <li key={category}>
-              <Link
-                to={`/category/${encodeURIComponent(category)}`} // Encode category name in the URL
-                className={`text-white hover:text-gray-400 ${
-                  selectedCategory === category ? 'font-bold' : ''
-                }`}
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category}
-              </Link>
-            </li>
-          ))}
-        </ul>
-        
-      </>
-    );
+  // Function to check if a category is selected
+  const isCategorySelected = (category: string) => {
+    return category === selectedCategory || (category === 'Home' && location.pathname === '/');
   };
 
   return (
-    <div className="bg-gray-900  h-100vh p-4 w-screen-auto">
-      {renderSidebarContent()}
+    <div className="bg-gray-900 h-100vh p-4 w-64">
+      <div className="text-white font-bold text-2xl mb-4">Categories</div>
+      <ul className="space-y-2">
+        <li>
+          <Link
+            to="/"
+            className={`text-white hover:text-gray-400 ${
+              isCategorySelected('Home') ? 'font-bold text-xl underline' : 'text-xl'
+            }`}
+            onClick={() => setSelectedCategory('Home')}
+          >
+            Home
+          </Link>
+        </li>
+        {categories.map((category) => (
+          <li key={category}>
+            <Link
+              to={`/category/${encodeURIComponent(category)}`} // Encode category name in the URL
+              className={`text-white hover:text-gray-400 ${
+                isCategorySelected(category) ? 'font-bold text-xl underline' : 'text-xl'
+              }`}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
