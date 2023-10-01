@@ -22,4 +22,67 @@
     transform: translateX(100%);
     transition: opacity 500ms, transform 500ms;
   }
-  
+  /* Home.css */
+/* Game Card Styles */
+.card {
+  height: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s;
+  cursor: pointer;
+  position: relative;
+}
+.text-shadow {
+  /* text-shadow: 1px 2px 10px rgb(0, 0, 0);  */
+}
+
+
+
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  /* max-height: 180px; */
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.card-details {
+  font-size: 14px;
+  color: #b0b0b0;
+}
+
+/* Additional Details on Hover */
+.card:hover .additional-details {
+  transform: translateY(0);
+  opacity: 1;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.additional-details {
+  transform: translateY(100%);
+  opacity: 0;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.8);
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
