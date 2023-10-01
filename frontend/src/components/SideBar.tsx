@@ -26,14 +26,14 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="bg-gray-900 h-100vh p-4 w-70">
+    <div className="bg-gray-900 h-screen p-4 w-70">
       <div className="text-white font-bold text-2xl mb-4">Categories</div>
       <ul className="space-y-2">
         <li>
           <Link
             to="/"
-            className={`text-white hover:text-gray-400 ${
-              isCategorySelected('Home') ? 'font-bold text-xl underline' : 'text-xl'
+            className={`text-white hover:text-gray-400 transition-all ease-in-out duration-300 ${
+              isCategorySelected('Home') ? '   bg-gradient-to-r from-blue-500 via-purple-500 to-white' : 'text-xl'
             }`}
             onClick={() => setSelectedCategory('Home')}
           >
@@ -44,8 +44,8 @@ const Sidebar = () => {
           <li key={category}>
             <Link
               to={`/category/${encodeURIComponent(category)}`} // Encode category name in the URL
-              className={`text-white hover:text-gray-400 ${
-                isCategorySelected(category) ? 'font-bold text-xl underline' : 'text-xl'
+              className={`text-white rounded-lg w-full hover:text-gray-400 p-2 transition-all ease-in-out duration-300 ${
+                isCategorySelected(category) ? ' w-full rounded-lg px-2 bg-gradient-to-r from-blue-500 via-purple-500 to-white' : ''
               }`}
               onClick={() => setSelectedCategory(category)}
             >

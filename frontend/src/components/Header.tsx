@@ -13,6 +13,7 @@ const glossyHeaderStyles = {
   display: 'flex', // Add this line to enable flex layout
   alignItems: 'center', // Vertically align items in the center
   height: '7vh',
+  
 };
 
 const logoStyles = {
@@ -45,11 +46,13 @@ const buttonStyles = {
   padding: '10px 15px',
   color: 'white',
   transition: 'background-color 0.3s ease',
+  
 };
 
 
 const contentStyles = {
   marginLeft: '240px',
+  
 };
 
 // Add hover styles

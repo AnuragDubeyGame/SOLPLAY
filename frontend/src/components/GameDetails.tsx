@@ -32,13 +32,13 @@ const GameDetails = () => {
     }
 
     return (
-        <div className="bg-gray-800 text-white min-h-screen relative">
-            <div className="max-w-screen-lg mx-auto p-6">
+        <div className="bg-gray-800 text-white min-h-screen  relative">
+            <div className="max-w-screen-lg mx-auto">
                 {/* Banner Image */}
                 <div className="relative w-full h-96 mb-6">
                     {/* Blurred Background */}
                     <div
-                        className="absolute inset-0 bg-center bg-cover filter blur-lg blur-3xl"
+                        className="absolute inset-0 bg-center bg-cover filter  blur-3xl"
                         style={{
                             backgroundImage: `url(data:image/png;base64,${game.banner})`,
                         }}
