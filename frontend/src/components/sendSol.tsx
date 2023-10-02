@@ -17,16 +17,27 @@ export const SendTenLamportToRandomAddress: FC = () => {
     const transaction = new Transaction().add(
       SystemProgram.transfer({
         fromPubkey: new PublicKey("3jNpFr6MMVQiSSrT1Bx4skNMptwBWRPbWifBqoRUQqfB"),
-        toPubkey: new PublicKey("3jNpFr6MMVQiSSrT1Bx4skNMptwBWRPbWifBqoRUQqfB"),
-        lamports: 1_000_000 * 0.2,
+        toPubkey: new PublicKey("ERc1QGRcUgUGiGaGBKrYRQhzt9brQa6Yt7N1yNFeixuV"),
+        lamports: (await web3).LAMPORTS_PER_SOL * 0.2,
       })
     );
 
     const signature = await sendTransaction(transaction, connection);
-    await connection.confirmTransaction(signature, "processed");
+    const result = await connection.confirmTransaction(signature, "processed");
+    console.log("transaction Resuilt",result);
 
+    if(result.value.err == null){
+      console.log("Transaction Successful")
+
+      
+
+    }else{
+      console.log("Transaction UnSuccessful")
+    }
+    
   }, [publicKey, sendTransaction, connection]);
 
+  
   return (
     <button onClick={onClick} disabled={!publicKey}>
       Send 1 lamport to a random address!
