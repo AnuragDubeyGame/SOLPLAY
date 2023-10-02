@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';
-import SendTenLamportToRandomAddress from './sendSol';
-import { useWallet } from '@solana/wallet-adapter-react';
-import BuyGame from './BuyGame';
+import SendTenLamportToRandomAddress from './sendSol';  
 import Context from './Context';
 const GameDetails = () => {
     const { id } = useParams<{ id: string }>();
@@ -35,7 +33,7 @@ const GameDetails = () => {
                         } else {
                             // 'id' is not present in the 'gamesPurchased' array
                             console.log(`User with publicKey ${publicKey} has not purchased the game with id ${id}`);
-                            setShowPopup(true);
+                            setShowPopup(!showPopup);
                         }
                     })
                     .catch(error => {
@@ -140,6 +138,7 @@ const GameDetails = () => {
                                 toPublicKey={game.publicKey}
                                 amount={game.price}
                                 gameId={game._id}
+                                banner={game.banner}
                             />
                         </Context>
                     )}
