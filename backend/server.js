@@ -3,8 +3,6 @@ const express = require('express');
 const fileUpload = require("express-fileupload");
 const AdmZip = require("adm-zip");
 const mongoose = require('mongoose');
-const bs58 = require('bs58');
-const web3 = require('@solana/web3.js');
 const gameInfo = require('./gameInfo');
 const userInfo = require('./userInfo');
 const cors = require('cors');
@@ -18,7 +16,7 @@ app.use(cors());
 app.use(express.json());
 
 
-const connection = new web3.Connection("https://api.devnet.solana.com");
+
 const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB';
 mongoose.connect(mongoURL, {
     useNewUrlParser: true,
@@ -33,6 +31,9 @@ app.use(
 
 
 // ============================= API's ============================
+
+// Create an object to store game-to-port mappings
+const gamePorts = {};
 
 // Get all Games
 app.get('/api/getAllGames', async (req, res) => {
@@ -251,12 +252,12 @@ app.post("/api/createNewGame", async (req, res) => {
 
     // Delete the ZIP file after extraction
     await fs.promises.unlink(zipFilePath);
-
+    
     console.log(`Zip file extracted and deleted for game with _id: ${gameId}`);
-
+    
     samplegame.banner = imgFilePath;
     await samplegame.save();
-
+    
     const result = await gameInfo.find({});
     res.json(result);
   } catch (error) {
@@ -265,60 +266,18 @@ app.post("/api/createNewGame", async (req, res) => {
   }
 });
 
-// Transaction Generator - Send SOL
-app.post("/api/sendSolana", async (req, res) => {
-  try {
-    const { senderPrivateKey, recipientPublicKey, amount } = req.body;
-    console.log(req.body);
-
-   // Create sender Keypair from private key
-   const senderKeypair = web3.Keypair.fromSecretKey(new Uint8Array(bs58.decode(senderPrivateKey)));
-
-    // Create a new transaction
-    const transaction = new web3.Transaction().add(
-      web3.SystemProgram.transfer({
-        fromPubkey: senderKeypair.publicKey,
-        toPubkey: recipientPublicKey,
-        lamports: amount * web3.LAMPORTS_PER_SOL,
-      })
-    );
-
-    console.log("Transaction Created")
-
-    // Send and confirm the transaction
-    const signature = await web3.sendAndConfirmTransaction(
-      connection,
-      transaction,
-      [senderKeypair]
-    );
-    console.log("Transaction Initiated")
-    // Check if the transaction was successful
-    if (signature) {
-      console.log( "Success" );
-      //Display a Pop Up
-    } else {
-      console.log( "Failed" );
-      //Display a Pop Up
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.json({ status: "Failed", error: error.message });
-  }
-});
-
 // SaveUserData
 app.post("/api/saveUserData", async (req, res) => {
   try {
     const { username, publicKey, purchasedGames } = req.body;
-
+    
     // Check if a user with the same public key already exists
     let existingUser = await userInfo.findOne({ publicKey });
-
+    
     if (!existingUser) {
-      // If the user does not exist, create a new user record
       existingUser = new userInfo({ username, publicKey, gamesPurchased: [] });
     }
-
+    
     // Convert the purchasedGames to an array if it's a single string
     const validPurchasedGames = Array.isArray(purchasedGames) ? purchasedGames : [purchasedGames];
 
@@ -379,9 +338,6 @@ app.post("/api/getMyGames", async (req, res) => {
       res.status(500).json({ error: "Internal server error." });
     }
 });
-
-// Create an object to store game-to-port mappings
-const gamePorts = {};
 
 // Serve the Unity WebGL game by _id
 app.get('/api/playGame/:id/:publicKey', async (req, res) => {
@@ -462,7 +418,6 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
   }
 });
 
-
 app.get('/api/deleteAllGames', async (req, res) => {
   try {
     // Delete all game records from the database
@@ -513,53 +468,3 @@ app.get('/api/deleteGame/:id', async (req, res) => {
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });
-
-
-
-/*
-const bs58 = require('bs58');
-const web3 = require('@solana/web3.js');
-
-const connection = new web3.Connection("https://api.devnet.solana.com");
-
-async function sendSolanaTransaction(senderPrivateKey, recipientPublicKey, amount) {
-  try {
-    // Create sender Keypair from private key
-    const senderKeypair = web3.Keypair.fromSecretKey(new Uint8Array(bs58.decode(senderPrivateKey)));
-
-    // Create a new transaction
-    const transaction = new web3.Transaction().add(
-      web3.SystemProgram.transfer({
-        fromPubkey: senderKeypair.publicKey,
-        toPubkey: recipientPublicKey,
-        lamports: amount * web3.LAMPORTS_PER_SOL,
-      })
-    );
-
-    console.log("Transaction Created");
-
-    // Send and confirm the transaction
-    const signature = await web3.sendAndConfirmTransaction(
-      connection,
-      transaction,
-      [senderKeypair]
-    );
-
-    console.log("Transaction Initiated");
-
-    // Check if the transaction was successful
-    if (signature) {
-      console.log("Success");
-      // Display a Pop Up
-    } else {
-      console.log("Failed");
-      // Display a Pop Up
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    // Handle the error as needed
-  }
-}
-
-sendSolanaTransaction("48BasJ4q1DYwsN1ikwe3oYmtmZnrZnFxzVc2CZfn4yfkgYXLPgvJPzuenbBf9xJyFdUA7nzhBW6FfxQkpUe1HwXM", "3jNpFr6MMVQiSSrT1Bx4skNMptwBWRPbWifBqoRUQqfB", 0.2);
-*/
