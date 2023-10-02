@@ -14,21 +14,21 @@ const { spawn } = require('child_process');
 const port = 5000;
 app.use(cors());
 app.use(express.json());
+require('dotenv').config()
 
 
 
 const mongoURL = 'mongodb+srv://factboyuniverse:Factboy123@factsdatabasecluster.ej0bjql.mongodb.net/SolPlayDB';
 mongoose.connect(mongoURL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 app.use(
-    fileUpload({
-      limits: { fileSize: 1024 * 1024 * 1024 }, 
-    })
+  fileUpload({
+    limits: { fileSize: 1024 * 1024 * 1024 },
+  })
 );
-
-
+const apiSecret = process.env.API_SECRET;
 
 // ============================= API's ============================
 
@@ -69,34 +69,35 @@ app.get('/api/getAllGames', async (req, res) => {
 // Get a Single Game by ID
 app.get("/api/getGame/:id", async (req, res) => {
   try {
-      const gameId = req.params.id;
+    const gameId = req.params.id;
 
-      // Use the Mongoose findById method to find the game by ID
-      const game = await gameInfo.findById(gameId);
+    // Use the Mongoose findById method to find the game by ID
+    const game = await gameInfo.findById(gameId);
 
-      if (!game) {
-          return res.status(404).json({ error: 'Game not found' });
+    if (!game) {
+      return res.status(404).json({ error: 'Game not found' });
+    }
+
+    if (game.banner) {
+      try {
+        // Read the image file synchronously and convert it to a buffer
+        const imageBuffer = fs.readFileSync(game.banner);
+        // Convert the buffer to a base64 string
+        const imageBase64 = imageBuffer.toString('base64');
+        // Update the game object's banner field with the base64 image data
+        game.banner = imageBase64;
+      } catch (error) {
+        console.error('Error reading image file:', error);
       }
+    }
 
-      if (game.banner) {
-          try {
-              // Read the image file synchronously and convert it to a buffer
-              const imageBuffer = fs.readFileSync(game.banner);
-              // Convert the buffer to a base64 string
-              const imageBase64 = imageBuffer.toString('base64');
-              // Update the game object's banner field with the base64 image data
-              game.banner = imageBase64;
-          } catch (error) {
-              console.error('Error reading image file:', error);
-          }
-      }
-
-      res.json(game);
+    res.json(game);
   } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
 
 app.post('/api/rateGame/:id', async (req, res) => {
   try {
@@ -139,40 +140,40 @@ app.post('/api/rateGame/:id', async (req, res) => {
 // Get Games by Category
 app.get("/api/getGamesByCategory", async (req, res) => {
   try {
-      const category = req.query.category;
+    const category = req.query.category;
 
-      if (!category) {
-          return res.status(400).json({ error: 'Category parameter is required' });
+    if (!category) {
+      return res.status(400).json({ error: 'Category parameter is required' });
+    }
+
+    // Use the Mongoose find method to find games by category
+    const games = await gameInfo.find({ category: category });
+
+    if (games.length === 0) {
+      return res.status(404).json({ error: 'No games found in the specified category' });
+    }
+
+    // Iterate through the games and append the base64 image data to each game object
+    for (let i = 0; i < games.length; i++) {
+      const game = games[i];
+      if (game.banner) {
+        try {
+          // Read the image file synchronously and convert it to a buffer
+          const imageBuffer = fs.readFileSync(game.banner);
+          // Convert the buffer to a base64 string
+          const imageBase64 = imageBuffer.toString('base64');
+          // Add the base64 image data to the game object
+          game.banner = imageBase64;
+        } catch (error) {
+          console.error('Error reading image file:', error);
+        }
       }
+    }
 
-      // Use the Mongoose find method to find games by category
-      const games = await gameInfo.find({ category: category });
-
-      if (games.length === 0) {
-          return res.status(404).json({ error: 'No games found in the specified category' });
-      }
-
-      // Iterate through the games and append the base64 image data to each game object
-      for (let i = 0; i < games.length; i++) {
-          const game = games[i];
-          if (game.banner) {
-              try {
-                  // Read the image file synchronously and convert it to a buffer
-                  const imageBuffer = fs.readFileSync(game.banner);
-                  // Convert the buffer to a base64 string
-                  const imageBase64 = imageBuffer.toString('base64');
-                  // Add the base64 image data to the game object
-                  game.banner = imageBase64;
-              } catch (error) {
-                  console.error('Error reading image file:', error);
-              }
-          }
-      }
-
-      res.json(games);
+    res.json(games);
   } catch (error) {
-      console.error('Error:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -252,13 +253,28 @@ app.post("/api/createNewGame", async (req, res) => {
 
     // Delete the ZIP file after extraction
     await fs.promises.unlink(zipFilePath);
-    
+
     console.log(`Zip file extracted and deleted for game with _id: ${gameId}`);
-    
+
     samplegame.banner = imgFilePath;
     await samplegame.save();
-    
+
     const result = await gameInfo.find({});
+
+    const apiUrl = 'http://localhost:5000/api/saveUserData';
+    const payload = {
+      publicKey: publicKey, 
+      purchasedGames: gameId,
+    };
+
+    axios.post(apiUrl, payload)
+      .then(response => {
+        console.log('API response:', response.data);
+      })
+      .catch(error => {
+        console.error('API error:', error);
+      });
+
     res.json(result);
   } catch (error) {
     console.error("Error:", error);
@@ -289,14 +305,14 @@ app.get("/api/getUserData", async (req, res) => {
 app.post("/api/saveUserData", async (req, res) => {
   try {
     const { username, publicKey, purchasedGames } = req.body;
-    
+
     // Check if a user with the same public key already exists
     let existingUser = await userInfo.findOne({ publicKey });
-    
+
     if (!existingUser) {
       existingUser = new userInfo({ username, publicKey, gamesPurchased: [] });
     }
-    
+
     // Convert the purchasedGames to an array if it's a single string
     const validPurchasedGames = Array.isArray(purchasedGames) ? purchasedGames : [purchasedGames];
 
@@ -316,46 +332,46 @@ app.post("/api/saveUserData", async (req, res) => {
 
 // Get My Games
 app.post("/api/getMyGames", async (req, res) => {
-    try {
-      const { publicKey } = req.body;
-  
-      // Fetch user data based on the provided publicKey
-      const user = await userInfo.findOne({ publicKey });
-  
-      if (!user) {
-        res.status(404).json({ message: "User not found." });
-        return;
-      }
-  
-      // Fetch game information for each game ID in gamesPurchased
-      const gamesInfo = await Promise.all(
-        user.gamesPurchased.map(async (gameId) => {
-          try {
-            // Convert the gameId to a string if needed
-            const gameIdString = String(gameId);
-  
-            // Replace with your actual API endpoint for fetching game data
-            const gameResponse = await axios.get(`http://localhost:5000/api/getGame/${gameIdString}`);
-  
-            // Check if the response is valid (e.g., status 200) before returning
-            if (gameResponse.status === 200) {
-              return gameResponse.data;
-            } else {
-              console.error("Error fetching game data:", gameResponse.statusText);
-              return null; // Handle error or missing data as needed
-            }
-          } catch (error) {
-            console.error("Error fetching game data:", error);
+  try {
+    const { publicKey } = req.body;
+
+    // Fetch user data based on the provided publicKey
+    const user = await userInfo.findOne({ publicKey });
+
+    if (!user) {
+      res.status(404).json({ message: "User not found." });
+      return;
+    }
+
+    // Fetch game information for each game ID in gamesPurchased
+    const gamesInfo = await Promise.all(
+      user.gamesPurchased.map(async (gameId) => {
+        try {
+          // Convert the gameId to a string if needed
+          const gameIdString = String(gameId);
+
+          // Replace with your actual API endpoint for fetching game data
+          const gameResponse = await axios.get(`http://localhost:5000/api/getGame/${gameIdString}`);
+
+          // Check if the response is valid (e.g., status 200) before returning
+          if (gameResponse.status === 200) {
+            return gameResponse.data;
+          } else {
+            console.error("Error fetching game data:", gameResponse.statusText);
             return null; // Handle error or missing data as needed
           }
-        })
-      );
-  
-      res.status(200).json({ user, gamesInfo });
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Internal server error." });
-    }
+        } catch (error) {
+          console.error("Error fetching game data:", error);
+          return null; // Handle error or missing data as needed
+        }
+      })
+    );
+
+    res.status(200).json({ user, gamesInfo });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
 });
 
 // Serve the Unity WebGL game by _id
@@ -431,7 +447,7 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
         }
       }, 3600000 / 4); // 1 hour = 3600000 milliseconds
     } else {
-      
+
 
 
       return res.status(403).json({ error: 'Please buy the game first' });
@@ -443,13 +459,19 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
 });
 
 app.get('/api/deleteAllGames', async (req, res) => {
+  const { pass } = req.query;
+
+  if (pass !== apiSecret) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
   try {
     // Delete all game records from the database
     await gameInfo.deleteMany({});
 
     // Delete all game folders
     const gamesFolder = path.join(__dirname, 'Games');
-    fs.readdirSync(gamesFolder).forEach((folderName) => {      const folderPath = path.join(gamesFolder, folderName);
+    fs.readdirSync(gamesFolder).forEach((folderName) => {
+      const folderPath = path.join(gamesFolder, folderName);
       if (fs.statSync(folderPath).isDirectory()) {
         fs.rmdirSync(folderPath, { recursive: true });
       }
@@ -464,8 +486,13 @@ app.get('/api/deleteAllGames', async (req, res) => {
 
 // Add a route to delete a game by ID
 app.get('/api/deleteGame/:id', async (req, res) => {
-  const gameId = req.params.id;
+  const { pass } = req.query;
 
+  if (pass !== apiSecret) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+
+  const gameId = req.params.id;
   try {
     // Find and delete the game by ID from the database
     const deletedGame = await gameInfo.findByIdAndDelete(gameId);
@@ -490,5 +517,5 @@ app.get('/api/deleteGame/:id', async (req, res) => {
 // ==================================================================
 
 app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
+  console.log(`Server is running on port ${port}`);
 });
