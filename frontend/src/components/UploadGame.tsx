@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, useEffect } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { API_URL } from '../utils/constant';
 
 const categoryOptions = [
   'Action',
@@ -141,7 +142,7 @@ const UploadGame = () => {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/createNewGame', {
+      const response = await fetch(`${API_URL}/api/createNewGame`, {
         method: 'POST',
         body: form,
       });

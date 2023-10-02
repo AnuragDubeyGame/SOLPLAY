@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';
 import SendTenLamportToRandomAddress from './sendSol';  
 import Context from './Context';
+import { API_URL } from '../utils/constant';
 const GameDetails = () => {
     const { id } = useParams<{ id: string }>();
     const [game, setGame] = useState<any | null>(null);
@@ -10,11 +11,11 @@ const GameDetails = () => {
     const handlePlayButtonClick = () => {
         const publicKey = localStorage.getItem('publicKey');
         if (publicKey) {
-            const apiUrl = `http://localhost:5000/api/playgame/${id}/${publicKey}`;
+            const apiUrl = `${API_URL}/api/playgame/${id}/${publicKey}`;
             if (game.price === 0) {
                 window.open(apiUrl, '_blank');
             } else {
-                const fetchuserDataUrl = `http://localhost:5000/api/getUserData?publicKey=${publicKey}`;
+                const fetchuserDataUrl = `${API_URL}/api/getUserData?publicKey=${publicKey}`;
                 // Make a GET request to the API
                 fetch(fetchuserDataUrl)
                     .then(response => {
@@ -46,7 +47,7 @@ const GameDetails = () => {
     };
 
     useEffect(() => {
-        fetch(`http://localhost:5000/api/getGame/${id}`)
+        fetch(`${API_URL}/api/getGame/${id}`)
             .then((response) => response.json())
             .then((data) => {
                 setGame(data);

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import './Styles/CategoryGames.css'; // Create a CSS file for your animations
+import { API_URL } from '../utils/constant';
 
 interface Game {
   _id: string;
@@ -30,7 +31,7 @@ const CategoryGames: React.FC<CategoryGamesProps> = ({ category: propCategory })
   const [games, setGames] = useState<Game[]>([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/getGamesByCategory?category=${category}`)
+    fetch(`${API_URL}/api/getGamesByCategory?category=${category}`)
       .then((response) => response.json())
       .then((data) => {
         setGames(data);

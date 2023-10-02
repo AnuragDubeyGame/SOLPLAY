@@ -6,6 +6,7 @@ import {  SystemProgram, Transaction, PublicKey } from '@solana/web3.js';
 import React, { FC, useCallback, useState } from 'react';
 import axios from 'axios';
 import solanaLogoMark from '../assets/solanaLogoMark.png';
+import { API_URL } from '../utils/constant';
 const web3 = import('@solana/web3.js');
 global.Buffer = require('buffer').Buffer;
 
@@ -46,7 +47,7 @@ export const SendLamportToAddress: FC<{
                 purchasedGames: gameId,
             };
             axios
-                .post('http://localhost:5000/api/saveUserData', payload)
+                .post(`${API_URL}/api/saveUserData`, payload)
                 .then((response) => {
                     console.log('Game Purchased Succesful :', response.data);
                 })

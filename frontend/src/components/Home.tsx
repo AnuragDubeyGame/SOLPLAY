@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { API_URL } from '../utils/constant';
 const truncateText = (text, maxLength) => {
     if (text.length <= maxLength) {
         return text;
@@ -14,7 +15,7 @@ const Home = () => {
     const [games, setGames] = useState([]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/getAllGames')
+        fetch(`${API_URL}/api/getAllGames`)
             .then((response) => response.json())
             .then((data) => {
                 setGames(data);
