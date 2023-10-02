@@ -35,6 +35,7 @@
         "@solana/wallet-adapter-react-ui": "",
         "@solana/wallet-adapter-wallets": "",
         "@solana/web3.js": "^1.77.3",
+        "axios": "^1.5.1",
         "draft-js": "^0.11.7",
         "draft-js-plugins-editor": "^3.0.0",
         "react": "^18.2.0",
