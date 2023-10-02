@@ -4,7 +4,6 @@ import SideBar from './SideBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { routes } from '../utils/routes';
 import Header from '../components/Header';
-import SendTenLamportToRandomAddress from './sendSol';
 
 import LoadingSpinner from '../LoadingSpinner';
 

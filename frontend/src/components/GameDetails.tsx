@@ -139,8 +139,7 @@ const GameDetails = () => {
                                 fromPublicKey={localStorage.getItem('publicKey')}
                                 toPublicKey={game.publicKey}
                                 amount={game.price}
-                                username=""
-                                purchasedGameId={game._id}
+                                gameId={game._id}
                             />
                         </Context>
                     )}
