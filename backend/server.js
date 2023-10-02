@@ -28,6 +28,11 @@ app.use(
     limits: { fileSize: 1024 * 1024 * 1024 },
   })
 );
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 const apiSecret = process.env.API_SECRET;
 
 // ============================= API's ============================
