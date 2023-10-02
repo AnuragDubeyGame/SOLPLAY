@@ -1,6 +1,7 @@
 import React from 'react';
 import UploadGame from '../components/UploadGame';
 import GameDetails from '../components/GameDetails';
+import BuyGame from '../components/BuyGame';
 const Home = React.lazy(() => import('../components/Home'));
 const About = React.lazy(() => import('../components/About'));
 const Contact = React.lazy(() => import('../components/Contact'));
@@ -30,5 +31,9 @@ export const routes = [
   {
     path:"//game/:id" ,
     element:<GameDetails />
+  },
+  {
+    path:"//buy-game" ,
+    element:<BuyGame />
   }
 ];

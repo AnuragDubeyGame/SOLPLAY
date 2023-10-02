@@ -1,18 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import LoadingSpinner from '../LoadingSpinner';
 
 const GameDetails = () => {
     const { id } = useParams<{ id: string }>();
     const [game, setGame] = useState<any | null>(null);
-
+    const [showPopup, setShowPopup] = useState(false);
     const handlePlayButtonClick = () => {
         const publicKey = localStorage.getItem('publicKey');
         if (publicKey) {
-            // Construct the API URL with game_id and publicKey
             const apiUrl = `http://localhost:5000/api/playgame/${id}/${publicKey}`;
-
-            // Make the API request
-            window.open(apiUrl, '_blank');
+            if (game.price === 0) {
+                window.open(apiUrl, '_blank');
+            } else {
+                // Open the popup
+                setShowPopup(true);
+            }
         }
     };
 
@@ -28,7 +31,7 @@ const GameDetails = () => {
     }, [id]);
 
     if (!game) {
-        return <div>Loading...</div>;
+        return <div><LoadingSpinner/></div>;
     }
 
     return (
@@ -65,7 +68,7 @@ const GameDetails = () => {
                                     game.price === 0 ? 'bg-green-600' : 'bg-black'
                                 } px-2`}
                             >
-                                {game.price === 0 ? 'Free to Play' : `Price: ${game.price} SOL`}
+                                {game.price === 0 ? 'Free To Play' : `Price: ${game.price} SOL`}
                             </p>
                             
                         </div>
@@ -79,6 +82,7 @@ const GameDetails = () => {
                         Play
                     </button>
                 </div>
+
 
                 {/* Game Details */}
                 <div className="pt-32">
@@ -96,7 +100,21 @@ const GameDetails = () => {
                         <h2 className="text-xl font-semibold">Release Date</h2>
                         <p className="text-gray-300">{game.releaseDate}</p>
                     </div>
-
+                    {showPopup && (
+                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75">
+                    <div className="bg-white p-6 rounded-lg shadow-md">
+                        {/* Add your popup form content here */}
+                        <h2 className="text-xl font-semibold mb-4">Buy Game</h2>
+                        {/* Add form inputs and submit button */}
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                            onClick={() => setShowPopup(false)} // Close the popup
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            )}
 
                 </div>
             </div>

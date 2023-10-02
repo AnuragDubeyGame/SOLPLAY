@@ -5,8 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { routes } from '../utils/routes';
 import Header from '../components/Header';
 import LoadingSpinner from '../LoadingSpinner';
-import RightSidebar from '../components/RightSidebar';
-import Content from './Content';
+
 
 require('../components/Styles/Home.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
