@@ -30,27 +30,25 @@ const Sidebar = () => {
       <div className="text-white font-bold text-2xl mb-4">Categories</div>
       <ul className="space-y-2">
         <li>
-        <li>
-        <Link
-    to="/"
-    className={`text-white hover:text-gray-400 transition-all ease-in-out duration-300 ${
-      isCategorySelected('Home')
-        ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700 rounded-lg text-2xl p-2'
-        : 'rounded-lg text-2xl p-2'
-    }`}
-    onClick={() => setSelectedCategory('Home')}
-  >
-    Home
-</Link>
-</li>
+          <li>
+            <Link
+              to="/"
+              className={`text-white hover:text-gray-400 transition-all ease-in-out duration-300 ${isCategorySelected('Home')
+                  ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700 rounded-lg text-lg p-2' // Adjusted styles
+                  : 'rounded-lg text-2xl p-2'
+                }`}
+              onClick={() => setSelectedCategory('Home')}
+            >
+              Home
+            </Link>
+          </li>
         </li>
         {categories.map((category) => (
           <li key={category}>
             <Link
               to={`/category/${encodeURIComponent(category)}`} // Encode category name in the URL
-              className={`text-white rounded-lg w-full hover:text-gray-400 p-2 transition-all ease-in-out duration-300 ${
-                isCategorySelected(category) ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700' : ''
-              }`}
+              className={`text-white rounded-lg w-full hover:text-gray-400 p-2 transition-all ease-in-out duration-300 ${isCategorySelected(category) ? 'bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700' : ''
+                }`}
               onClick={() => setSelectedCategory(category)}
             >
               {category}
