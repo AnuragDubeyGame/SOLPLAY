@@ -16,9 +16,33 @@ const GameDetails = () => {
             if (game.price === 0) {
                 window.open(apiUrl, '_blank');
             } else {
+                const fetchuserDataUrl = `http://localhost:5000/api/getUserData?publicKey=${publicKey}`;
+                // Make a GET request to the API
+                fetch(fetchuserDataUrl)
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to fetch user data');
+                        }
+                    })
+                    .then(data => {
+                        // Check if the 'id' is present in the 'gamesPurchased' array
+                        if (data && data.user && data.user.gamesPurchased.includes(id)) {
+                            // 'id' is present in the 'gamesPurchased' array
+                            console.log(`User with publicKey ${publicKey} has purchased the game with id ${id}`);
+                            window.open(apiUrl, '_blank');
+                        } else {
+                            // 'id' is not present in the 'gamesPurchased' array
+                            console.log(`User with publicKey ${publicKey} has not purchased the game with id ${id}`);
+                            setShowPopup(true);
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
                 // Open the popup
-                setShowPopup(true);
-                
             }
         }
     };
@@ -80,9 +104,8 @@ const GameDetails = () => {
                                 Published by: {game.publisher}
                             </p>
                             <p
-                                className={`top-48 p-1 my-1 font-bold ml-3 w-40 relative inset-0 rounded-lg border-gray-500 border-1.5 ${
-                                    game.price === 0 ? 'bg-green-600' : 'bg-black'
-                                } px-2`}
+                                className={`top-48 p-1 my-1 font-bold ml-3 w-40 relative inset-0 rounded-lg border-gray-500 border-1.5 ${game.price === 0 ? 'bg-green-600' : 'bg-black'
+                                    } px-2`}
                             >
                                 {game.price === 0 ? 'Free To Play' : `Price: ${game.price} SOL`}
                             </p>
@@ -112,13 +135,13 @@ const GameDetails = () => {
 
                     {showPopup && (
                         <Context>
-                        <SendTenLamportToRandomAddress
-                            fromPublicKey={localStorage.getItem('publicKey')}
-                            toPublicKey={game.publicKey}
-                            amount={game.price}
-                            username=""
-                            purchasedGameId={game._id}
-                        />
+                            <SendTenLamportToRandomAddress
+                                fromPublicKey={localStorage.getItem('publicKey')}
+                                toPublicKey={game.publicKey}
+                                amount={game.price}
+                                username=""
+                                purchasedGameId={game._id}
+                            />
                         </Context>
                     )}
                 </div>
