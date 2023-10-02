@@ -26,6 +26,8 @@ mongoose.connect(mongoURL, {
 app.use(
   fileUpload({
     limits: { fileSize: 1024 * 1024 * 1024 },
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
   })
 );
 app.use(cors({
