@@ -4,10 +4,19 @@ import { WalletConnectButton } from "@solana/wallet-adapter-react-ui";
 import { NekoWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { Keypair, SystemProgram, Transaction, PublicKey } from "@solana/web3.js";
 import React, { FC, useCallback } from "react";
+import axios from 'axios';
+
+
 const web3 = import ('@solana/web3.js');
 global.Buffer = require("buffer").Buffer;
 
-export const SendTenLamportToRandomAddress: FC = () => {
+export const SendTenLamportToRandomAddress: FC<{
+  fromPublicKey: PublicKey;
+  toPublicKey: PublicKey;
+  amount: number;
+  username: string;
+  purchasedGameId: string;
+}> = ({ fromPublicKey, toPublicKey, amount, username, purchasedGameId }) => {
   const { connection } = useConnection();
   const { publicKey, sendTransaction } = useWallet();
 
@@ -16,31 +25,38 @@ export const SendTenLamportToRandomAddress: FC = () => {
 
     const transaction = new Transaction().add(
       SystemProgram.transfer({
-        fromPubkey: new PublicKey("3jNpFr6MMVQiSSrT1Bx4skNMptwBWRPbWifBqoRUQqfB"),
-        toPubkey: new PublicKey("ERc1QGRcUgUGiGaGBKrYRQhzt9brQa6Yt7N1yNFeixuV"),
-        lamports: (await web3).LAMPORTS_PER_SOL * 0.2,
+        fromPubkey: fromPublicKey,
+        toPubkey: toPublicKey,
+        lamports: (await web3).LAMPORTS_PER_SOL * amount,
       })
     );
 
     const signature = await sendTransaction(transaction, connection);
-    const result = await connection.confirmTransaction(signature, "processed");
-    console.log("transaction Resuilt",result);
+    const result = await connection.confirmTransaction(signature, 'processed');
 
-    if(result.value.err == null){
-      console.log("Transaction Successful")
+    if (result.value.err == null) {
+      console.log('Transaction Successful');
 
-      
+      const payload = {
+        username,
+        publicKey: publicKey.toBase58(),
+        purchasedGames: purchasedGameId,
+      };
 
-    }else{
-      console.log("Transaction UnSuccessful")
+      try {
+        const response = await axios.post('http://localhost:5000/api/saveUserData', payload);
+        console.log('API Response:', response.data);
+      } catch (error) {
+        console.error('API Error:', error);
+      }
+    } else {
+      console.log('Transaction Unsuccessful');
     }
-    
-  }, [publicKey, sendTransaction, connection]);
+  }, [publicKey, sendTransaction, connection, fromPublicKey, toPublicKey, amount, username, purchasedGameId]);
 
-  
   return (
     <button onClick={onClick} disabled={!publicKey}>
-      Send 1 lamport to a random address!
+      Send {amount} lamports to a random address!
     </button>
   );
 };

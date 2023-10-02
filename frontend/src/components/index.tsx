@@ -4,7 +4,7 @@ import SideBar from './SideBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { routes } from '../utils/routes';
 import Header from '../components/Header';
-import SendTenLamportToRandomAddress from './sendSol';
+import SendSolanaToBuyGame from './sendSol';
 import LoadingSpinner from '../LoadingSpinner';
 
 
@@ -20,7 +20,7 @@ const Index: FC = () => {
                     <div className="relative top-0 overflow-visible  left-0 right-0">
                         <div className='relative z-40'>
                         <Header />
-                        <SendTenLamportToRandomAddress />
+                        <SendSolanaToBuyGame />
                         </div>
                     </div>
                 </Context>
@@ -35,7 +35,6 @@ const Index: FC = () => {
                                 ))}
                             </Routes>
                         </div>
-                        {/* <RightSidebar /> */}
                     </div>
                 </Router>
             </Suspense>
