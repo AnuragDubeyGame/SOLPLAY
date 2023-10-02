@@ -266,6 +266,25 @@ app.post("/api/createNewGame", async (req, res) => {
   }
 });
 
+//Get User Data
+app.get("/api/getUserData", async (req, res) => {
+  try {
+    const publicKey = req.query.publicKey; // Retrieve publicKey from request query parameter
+
+    // Find user data based on the publicKey
+    const user = await userInfo.findOne({ publicKey });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found." });
+    }
+
+    res.status(200).json({ user });
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
 // SaveUserData
 app.post("/api/saveUserData", async (req, res) => {
   try {
@@ -369,9 +388,12 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
 
     // Fetch the game price using a separate request
     const gamePriceResponse = await axios.get(`http://localhost:5000/api/getGame/${gameId}`);
+    const fetchuserDataUrl = await axios.get(`http://localhost:5000/api/getUserData?publicKey=${publicKey}`);
     const gamePriceData = gamePriceResponse.data;
+    const userdata = fetchuserDataUrl.data;
 
-    if (gamePriceData.price === 0) {
+    console.log(userdata)
+    if (gamePriceData.price === 0 || userdata.user.gamesPurchased.includes(gameId)) {
       // Generate a unique port for this game based on gameId
       let gamePort = 8000;
       while (gamePorts[gamePort]) {
@@ -409,7 +431,9 @@ app.get('/api/playGame/:id/:publicKey', async (req, res) => {
         }
       }, 3600000 / 4); // 1 hour = 3600000 milliseconds
     } else {
-      // Show the message to buy the game if the price is greater than 0
+      
+
+
       return res.status(403).json({ error: 'Please buy the game first' });
     }
   } catch (error) {
