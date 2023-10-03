@@ -263,6 +263,30 @@ app.post("/api/createNewGame", async (req, res) => {
 
     console.log(`Zip file extracted and deleted for game with _id: ${gameId}`);
 
+    // List the contents of the folderPath directory
+    const contents = await fs.promises.readdir(folderPath);
+
+    // Find the subfolder within folderPath
+    const subfolderName = contents.find((item) => {
+      const itemPath = path.join(folderPath, item);
+      return fs.statSync(itemPath).isDirectory();
+    });
+
+    if (subfolderName) {
+      // Log the name of the subfolder before renaming
+      console.log(`Subfolder name inside ${folderPath} (before renaming): ${subfolderName}`);
+
+      // Rename the subfolder to "Builds"
+      const newSubfolderName = "Builds";
+      const oldSubfolderPath = path.join(folderPath, subfolderName);
+      const newSubfolderPath = path.join(folderPath, newSubfolderName);
+      
+      await fs.promises.rename(oldSubfolderPath, newSubfolderPath);
+
+      // Log the name of the subfolder after renaming
+      console.log(`Subfolder name inside ${folderPath} (after renaming): ${newSubfolderName}`);
+    }
+
     samplegame.banner = imgFilePath;
     await samplegame.save();
 
