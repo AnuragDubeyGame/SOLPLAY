@@ -87,6 +87,7 @@ const Header = () => {
 
   useEffect(() => {
     console.log('Public Key:', publicKey?.toBase58());
+    localStorage.setItem('publicKey', publicKey?.toBase58() || '');
     callSaveUserAPI(publicKey);
   }, [publicKey]);
 
