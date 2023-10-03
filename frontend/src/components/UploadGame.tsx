@@ -26,34 +26,37 @@ const categoryOptions = [
 ];
 
 const UploadGame = () => {
-    const { publicKey } = useWallet(); // Moved this here
+    const { publicKey } = useWallet();
     const [formData, setFormData] = useState({
         title: '',
         banner: null as File | null,
         description: '',
-        category: categoryOptions[0], // Initialize with the first option
+        category: categoryOptions[0],
         developer: '',
         publisher: '',
         publicKey: localStorage.getItem('publicKey') || '',
         releaseDate: '',
-        isFree: false, // Add the 'isFree' checkbox state
-        price: '', // Store price as a string to allow user input
+        isFree: false,
+        price: '',
         GameFile: null as File | null,
     });
 
     const [bannerFileName, setBannerFileName] = useState<string>('');
     const [zipFileName, setZipFileName] = useState<string>('');
-    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+    const [uploadSuccess, setUploadSuccess] = useState(false);
+
     useEffect(() => {
         getPublicKey();
     }, [publicKey]);
+
     const getPublicKey = () => {
         console.log('public key get item......', localStorage.getItem('publicKey'));
     };
+
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type, checked } = e.target;
 
-        // If the input is a checkbox, set 'isFree' accordingly
         if (type === 'checkbox') {
             setFormData({ ...formData, [name]: checked, price: checked ? '0' : '' });
         } else {
@@ -66,39 +69,29 @@ const UploadGame = () => {
         const selectedFile = files ? files[0] : null;
 
         if (name === 'banner') {
-            // Check if the uploaded file is an image
             if (selectedFile && selectedFile.type.startsWith('image/')) {
                 const image = new Image();
 
                 image.onload = () => {
                     if (image.width === 315 && image.height === 250) {
-                        // Valid dimensions, set the banner image
                         setFormData({ ...formData, [name]: selectedFile });
-
-                        // Display the selected file name
                         const fileName = selectedFile ? selectedFile.name : '';
                         setBannerFileName(fileName);
                     } else {
-                        // Invalid dimensions, show an error message
                         alert('Banner image dimensions must be 315x250 pixels.');
                     }
                 };
 
                 image.src = URL.createObjectURL(selectedFile);
             } else {
-                // Not an image, show an error message
                 alert('Please select a valid image file for the banner.');
             }
         } else if (name === 'GameFile') {
-            // Check if the uploaded file is a zip file
             if (selectedFile && selectedFile.name.endsWith('.zip')) {
                 setFormData({ ...formData, [name]: selectedFile });
-
-                // Display the selected file name
                 const fileName = selectedFile ? selectedFile.name : '';
                 setZipFileName(fileName);
             } else {
-                // Invalid file type, show an error message
                 alert('Please select a .zip file for the game.');
             }
         }
@@ -107,7 +100,6 @@ const UploadGame = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Validate required fields
         if (
             !formData.title ||
             !formData.description ||
@@ -123,19 +115,19 @@ const UploadGame = () => {
             return;
         }
 
-        // Check if the uploaded file is a zip file
         if (formData.GameFile && !formData.GameFile.name.endsWith('.zip')) {
             alert('Please select a .zip file for the game.');
             return;
         }
 
-        // Create FormData
         const form = new FormData();
         for (const key in formData) {
             if (formData[key as keyof typeof formData] !== null) {
                 form.append(key, formData[key as keyof typeof formData] as File | string);
             }
         }
+
+        setLoading(true);
 
         try {
             const response = await fetch(`${API_URL}/api/createNewGame`, {
@@ -144,44 +136,43 @@ const UploadGame = () => {
             });
 
             if (response.ok) {
-                // Handle success and show confirmation message
-                setSuccessMessage('Game uploaded successfully!');
-                // Clear the form data
+                setUploadSuccess(true);
                 setFormData({
                     title: '',
                     banner: null,
                     description: '',
-                    category: categoryOptions[0], // Reset to the first option
+                    category: categoryOptions[0],
                     developer: '',
                     publisher: '',
                     publicKey: '',
                     releaseDate: getCurrentDate(),
-                    isFree: false, // Reset isFree to false
-                    price: '', // Reset price to an empty string
+                    isFree: false,
+                    price: '',
                     GameFile: null,
                 });
                 setBannerFileName('');
                 setZipFileName('');
             } else {
-                // Handle error, e.g., show an error message
                 console.error('Error uploading game:', response.statusText);
             }
         } catch (error) {
             console.error('Error uploading game:', error);
+        } finally {
+            setLoading(false);
         }
     };
+
     const getCurrentDate = () => {
         const today = new Date();
         const year = today.getFullYear();
-        const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const month = String(today.getMonth() + 1).padStart(2, '0');
         const day = String(today.getDate()).padStart(2, '0');
         return `${year}-${month}-${day}`;
     };
 
     return (
-        <div className="bg-gray-800 p-8 rounded-lg w-full text-white">
+        <div className="bg-gray-800 pt-1 pl-12 w-full text-white">
             <h2 className="text-2xl font-bold mt-16 mb-4">Upload Game</h2>
-            {successMessage && <div className="bg-green-500 text-black rounded p-2 mb-4">{successMessage}</div>}
             <form className="max-w-lg mt-3" onSubmit={handleSubmit}>
                 <label className="block mb-4">
                     <span className="text-white">Title:</span>
@@ -303,6 +294,7 @@ const UploadGame = () => {
                         style={{ width: '20px', height: '20px' }}
                     />
                 </label>
+
                 <label className="block mb-4 flex items-center">
                     <span className="text-white mr-2">Price:</span>
                     <input
@@ -316,7 +308,6 @@ const UploadGame = () => {
                         style={{ width: '80px' }}
                         className="mt-1 block rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
                     />
-
                     <span className="text-white ml-2">SOL</span>
                 </label>
 
@@ -341,9 +332,10 @@ const UploadGame = () => {
                 <br />
                 <button
                     type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+                    disabled={loading || uploadSuccess}
                 >
-                    Upload Game
+                    {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
                 </button>
             </form>
         </div>
