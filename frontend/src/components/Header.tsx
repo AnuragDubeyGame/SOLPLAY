@@ -2,78 +2,98 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import Content from './Content';
 import Context from './Context';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+import { API_URL } from '../utils/constant';
+const axios = require('axios');
 
 const glossyHeaderStyles = {
-  position: 'relative', // Change from 'sticky' to 'relative'
-  background: 'linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.9))', // Non-linear gradient
+  position: 'relative',
+  background: 'linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.9))',
   boxShadow: '0 0 10px 2px rgba(0, 0, 0, 0.3)',
   borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
   padding: '5px',
   color: 'white',
-  display: 'flex', // Add this line to enable flex layout
-  alignItems: 'center', // Vertically align items in the center
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'space-between',
   height: '7vh',
-  
 };
 
 const logoStyles = {
   width: '180px',
   height: 'auto',
-  marginRight: '10px', // Add a small right margin
+  marginRight: '10px',
   position: 'absolute',
   left: '5px',
 };
 
-
 const labelStyles = {
-  flex: '1', // Allow the label to expand and take up available space
-  textAlign: 'right', // Align the label to the right
+  flex: '1',
+  textAlign: 'right',
   color: 'white',
   fontSize: '18px',
   fontWeight: 'bold',
 };
 
 const buttonStyles = {
-  marginLeft: 'auto',
-  marginRight: '10px',
-  position: 'absolute',
-  right: '190px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  backgroundColor: 'rgb(85, 60, 154)', // Set default background color
-  border: 'none', // Remove the border
-  borderRadius: '5px', // Add some border radius for a slightly rounded look
+  backgroundColor: 'rgb(85, 60, 154)',
+  border: 'none',
+  borderRadius: '5px',
   padding: '10px 15px',
   color: 'white',
   transition: 'background-color 0.3s ease',
-  
 };
-
 
 const contentStyles = {
-  marginLeft: '240px',
-  
+  marginLeft: 'auto',
 };
 
-// Add hover styles
 const buttonHoverStyles = {
-  backgroundColor: '#4a90e2', // Change background color on hover
+  backgroundColor: '#4a90e2',
 };
+
+
+function callSaveUserAPI(publicKey) {
+  if (publicKey) {
+    const payload = {
+      publicKey: publicKey.toBase58(), // Assuming publicKey is not null here
+      purchasedGames: "",
+    };
+
+    fetch(`${API_URL}/api/saveUserData`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log('Sent SaveUser API Successfully:', data);
+      })
+      .catch((error) => {
+        console.error('Error While Sending SaveUser API Purchasing:', error);
+      });
+  }
+}
 
 const Header = () => {
-  const { publicKey } = useWallet(); // Moved this here
-  
+  const { publicKey } = useWallet();
+
   useEffect(() => {
     console.log('Public Key:', publicKey?.toBase58());
-    localStorage.setItem('publicKey', publicKey?.toBase58() || '');
-  
+    callSaveUserAPI(publicKey);
   }, [publicKey]);
 
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    // Use window.innerWidth to check the screen width and set isMobile accordingly
     const checkIsMobile = () => {
       if (window.innerWidth <= 700) {
         setIsMobile(true);
@@ -82,13 +102,10 @@ const Header = () => {
       }
     };
 
-    // Initial check
     checkIsMobile();
 
-    // Add event listener to handle window resize
     window.addEventListener('resize', checkIsMobile);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('resize', checkIsMobile);
     };
@@ -98,7 +115,6 @@ const Header = () => {
     window.open('/upload-game', '_blank');
   };
 
-  // Merge the styles based on hover state
   const combinedButtonStyles = {
     ...buttonStyles,
     ...(isHovered ? buttonHoverStyles : {}),
@@ -106,14 +122,10 @@ const Header = () => {
 
   return (
     <header style={glossyHeaderStyles}>
-      <div className="container mx-auto text-white">
-        <Suspense fallback={<div>loading...</div>}>
-          <Context>
-            {isMobile ? (
-              <div>
-                <p>Please open it in desktop.</p>
-              </div>
-            ) : (
+      {publicKey ? (
+        <div className="container mx-auto text-white">
+          <Suspense fallback={<div>loading...</div>}>
+            <Context>
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <img
                   src={require("../assets/SOLPLAYBANNER.png")}
@@ -123,19 +135,37 @@ const Header = () => {
                 <span style={labelStyles}>
                   <button
                     style={combinedButtonStyles}
-                    onMouseEnter={() => setIsHovered(true)} // Handle mouse enter event
-                    onMouseLeave={() => setIsHovered(false)} // Handle mouse leave event
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
                     onClick={handleUploadGame}
                   >
                     Upload Game
                   </button>
                 </span>
-                <Content style={contentStyles} />
+                <div style={contentStyles}>
+                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                    <WalletMultiButton />
+                  </div>
+                </div>
               </div>
-            )}
-          </Context>
-        </Suspense>
-      </div>
+            </Context>
+          </Suspense>
+        </div>
+      ) : (
+        <>
+          <img
+            src={require("../assets/SOLPLAYBANNER.png")}
+            alt="Logo"
+            style={logoStyles}
+          />
+          <div className='flex justify-between'>
+            <div style={contentStyles}>
+              <WalletMultiButton />
+            </div>
+            Please Connect Your Wallet
+          </div>
+        </>
+      )}
     </header>
   );
 };
