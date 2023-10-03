@@ -347,9 +347,12 @@ app.post("/api/saveUserData", async (req, res) => {
     // Convert the purchasedGames to an array if it's a single string
     const validPurchasedGames = Array.isArray(purchasedGames) ? purchasedGames : [purchasedGames];
 
-    // Add the purchased games to the user's gamesPurchased array without overriding
-    const updatedGamesPurchased = [...existingUser.gamesPurchased, ...validPurchasedGames];
-    existingUser.gamesPurchased = updatedGamesPurchased;
+    // Check if purchasedGames is not null or undefined
+    if (validPurchasedGames && validPurchasedGames.length > 0) {
+      // Add the purchased games to the user's gamesPurchased array without overriding
+      const updatedGamesPurchased = [...existingUser.gamesPurchased, ...validPurchasedGames];
+      existingUser.gamesPurchased = updatedGamesPurchased;
+    }
 
     // Save the updated user record
     await existingUser.save();
