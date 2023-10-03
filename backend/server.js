@@ -335,23 +335,17 @@ app.get("/api/getUserData", async (req, res) => {
 // SaveUserData
 app.post("/api/saveUserData", async (req, res) => {
   try {
-    const { username, publicKey, purchasedGames } = req.body;
-
-    // Check if a user with the same public key already exists
+    const { publicKey, purchasedGames } = req.body;
     let existingUser = await userInfo.findOne({ publicKey });
 
     if (!existingUser) {
-      existingUser = new userInfo({ username, publicKey, gamesPurchased: [] });
+      existingUser = new userInfo({ publicKey, gamesPurchased: [] });
     }
-
-    // Convert the purchasedGames to an array if it's a single string
     const validPurchasedGames = Array.isArray(purchasedGames) ? purchasedGames : [purchasedGames];
 
-    // Add the purchased games to the user's gamesPurchased array without overriding
     const updatedGamesPurchased = [...existingUser.gamesPurchased, ...validPurchasedGames];
     existingUser.gamesPurchased = updatedGamesPurchased;
 
-    // Save the updated user record
     await existingUser.save();
 
     res.status(201).json({ message: "User data saved successfully." });
@@ -360,6 +354,7 @@ app.post("/api/saveUserData", async (req, res) => {
     res.status(500).json({ error: "Internal server error." });
   }
 });
+
 
 // Get My Games
 app.post("/api/getMyGames", async (req, res) => {

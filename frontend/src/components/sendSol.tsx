@@ -42,7 +42,6 @@ export const SendLamportToAddress: FC<{
             console.log('Transaction Successful');
 
             const payload = {
-                username: 'shroud',
                 publicKey: fromPublicKey,
                 purchasedGames: gameId,
             };
