@@ -5,10 +5,13 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { useLocation, BrowserRouter } from 'react-router-dom';
 
 ReactDOM.render(
     <React.StrictMode>
+        <BrowserRouter>
         <App />
+        </BrowserRouter>
     </React.StrictMode>,
     document.getElementById('root')
 );

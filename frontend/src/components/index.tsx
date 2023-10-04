@@ -1,40 +1,38 @@
 import React, { FC, Suspense, useState } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
+import { routes } from '../utils/routes';
+import LoadingSpinner from '../LoadingSpinner';
 import Context from './Context';
 import SideBar from './SideBar';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { routes } from '../utils/routes';
 import Header from '../components/Header';
-import { useWallet } from '@solana/wallet-adapter-react';
-import LoadingSpinner from '../LoadingSpinner';
 
 require('../components/Styles/Home.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 const Index: FC = () => {
-    const { publicKey } = useWallet();
-    const [publicKeyState, setPublicKey] = useState(publicKey);
+    const [publicKey, setPublicKey] = useState<string | null>(localStorage.getItem('publicKey'));
+    const location = useLocation();
+
+    const isAboutUsRoute = location.pathname === '/about-us';
+
     return (
         <>
             <Suspense fallback={<LoadingSpinner />}>
                 <Context>
-                    <div className="relative top-0 overflow-visible  left-0 right-0">
-                        <div className="relative z-40">
-                        <Header publicKey={publicKeyState} setPublicKey={setPublicKey} />
+                    <Header publicKey={publicKey} setPublicKey={setPublicKey} />
+                  
+                        <div className="flex">
+                            {!isAboutUsRoute && <SideBar />} {/* Render Sidebar conditionally */}
+                            <div className="flex-grow overflow-auto" style={{ height: '100vh' }}>
+                                <Routes>
+                                    {routes.map((route, index) => (
+                                        <Route key={index} path={route.path} element={route.element} />
+                                    ))}
+                                </Routes>
+                            </div>
                         </div>
-                    </div>
+                    
                 </Context>
-                <Router>
-                    <div className="flex">
-                        <SideBar />
-                        <div className="flex-grow overflow-auto" style={{ height: '100vh' }}>
-                            <Routes>
-                                {routes.map((route, index) => (
-                                    <Route key={index} path={route.path} element={route.element} />
-                                ))}
-                            </Routes>
-                        </div>
-                    </div>
-                </Router>
             </Suspense>
         </>
     );
