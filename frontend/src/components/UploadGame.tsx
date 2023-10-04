@@ -26,7 +26,7 @@ const categoryOptions = [
 ];
 
 const UploadGame = () => {
-    const { publicKey } = useWallet();
+    const publicKey = useWallet();
     const [formData, setFormData] = useState({
         title: '',
         banner: null as File | null,
@@ -34,7 +34,7 @@ const UploadGame = () => {
         category: categoryOptions[0],
         developer: '',
         publisher: '',
-        publicKey: localStorage.getItem('publicKey') ,
+        publicKey: localStorage.getItem('publicKey'),
         releaseDate: '',
         isFree: false,
         price: '',
@@ -48,10 +48,10 @@ const UploadGame = () => {
 
     useEffect(() => {
         getPublicKey();
-    }, [publicKey]);
+    }, [publicKey, localStorage.getItem('publicKey') || '']);
 
     const getPublicKey = () => {
-        console.log('public key get item......', localStorage.getItem('publicKey'));
+        console.log("Public Key From UploadGame : ", localStorage.getItem('publicKey'));
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -311,32 +311,36 @@ const UploadGame = () => {
                     <span className="text-white ml-2">SOL</span>
                 </label>
 
-                <label className="block mb-4">
-                    <span className="text-white">Zip File:</span>
-                    <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
-                        <input
-                            type="file"
-                            name="GameFile"
-                            onChange={handleFileChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                        <div className="flex flex-col items-center justify-center">
-                            {zipFileName ? (
-                                <span className="file-info text-green-500">Zip File: {zipFileName}</span>
-                            ) : (
-                                <span className="text-gray-500">Choose a zip file</span>
-                            )}
+                <div className="flex flex-wrap items-center mb-4">
+                    <label className="block">
+                        <span className="text-white">Zip File:</span>
+                        <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
+                            <input
+                                type="file"
+                                name="GameFile"
+                                onChange={handleFileChange}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            <div className="flex flex-col items-center justify-center">
+                                {zipFileName ? (
+                                    <span className="file-info text-green-500">Zip File: {zipFileName}</span>
+                                ) : (
+                                    <span className="text-gray-500">Choose a zip file</span>
+                                )}
+                            </div>
                         </div>
-                    </div>
-                </label>
-                <br />
-                <button
-                    type="submit"
-                    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                    disabled={loading || uploadSuccess}
-                >
-                    {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
-                </button>
+                    </label>
+
+                    <button
+                        type="submit"
+                        className={`ml-4 bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+                        disabled={loading || uploadSuccess}
+                    >
+                        {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
+                    </button>
+                </div>
+
+
             </form>
         </div>
     );

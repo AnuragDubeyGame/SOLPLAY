@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import LoadingSpinner from '../LoadingSpinner';
-import SendTenLamportToRandomAddress from './sendSol';  
+import SendTenLamportToRandomAddress from './sendSol';
 import Context from './Context';
 import { API_URL } from '../utils/constant';
 import { useWallet } from '@solana/wallet-adapter-react';
+import PublicKeyParent from '../utils/publicKeyParent';
 
-const GameDetails = () => {
+const GameDetails = ({ publicKey }) => {
     const { id } = useParams<{ id: string }>();
     const [game, setGame] = useState<any | null>(null);
     const [showPopup, setShowPopup] = useState(false);
-    const { publicKey } = useWallet();
+    // const { publicKey } = useWallet();
 
     const handlePlayButtonClick = () => {
         const publicKey = localStorage.getItem('publicKey');
@@ -19,8 +20,8 @@ const GameDetails = () => {
             if (game.price === 0) {
                 window.open(apiUrl, '_blank');
             } else {
-                
-                
+
+
                 const fetchuserDataUrl = `${API_URL}/api/getUserData?publicKey=${publicKey}`;
                 // Make a GET request to the API
                 fetch(fetchuserDataUrl)
@@ -61,7 +62,7 @@ const GameDetails = () => {
             .catch((error) => {
                 console.error('Error fetching game details:', error);
             });
-    }, [id]);
+    }, [id, publicKey]);
 
     if (!game) {
         return (
@@ -116,31 +117,30 @@ const GameDetails = () => {
                             </p>
                         </div>
                     </div>
-                    
-                    
-                        
-                        {
-                        localStorage.getItem('publicKey')? 
-                        
-                        
-                        <button
-                        
-                        className="absolute bottom-0 right-20 w-40 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                        onClick={handlePlayButtonClick} >
-                            Play
-                        </button>
-                        
-                        :      
-                        <>            
-                        <button
-                        
-                        className="absolute bottom-0 right-20 w-40 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-                        onClick={handlePlayButtonClick} >
-                            Play
-                        </button>
-                         <p className="absolute bottom-0 right-20 w-53 text-white bg-gradient-to-br from-red-600 to-red-500   font-medium rounded-sm text-sm  px-5 py-2.5 text-center mr-0 mb-[-3rem]">Connect your Wallet and click 'Play'</p>
-                   </> }
-                    
+
+
+
+                    {
+                        localStorage.getItem('publicKey') ?
+
+                            <button
+
+                                className="absolute bottom-0 right-20 w-40 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                                onClick={handlePlayButtonClick} >
+                                Play
+                            </button>
+
+                            :
+                            <>
+                                <button
+
+                                    className="absolute bottom-0 right-20 w-40 text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                                    onClick={handlePlayButtonClick} >
+                                    Play
+                                </button>
+                                <p className="absolute bottom-0 right-20 w-53 text-white bg-gradient-to-br from-red-600 to-red-500   font-medium rounded-sm text-sm  px-5 py-2.5 text-center mr-0 mb-[-3rem]">Connect your Wallet and click 'Play'</p>
+                            </>}
+
 
 
                 </div>

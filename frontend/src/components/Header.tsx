@@ -4,6 +4,7 @@ import Content from './Content';
 import Context from './Context';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { API_URL } from '../utils/constant';
+import PublicKeyParent from '../utils/publicKeyParent';
 const axios = require('axios');
 
 export const HeaderpublicKey = localStorage.getItem('publicKey');
@@ -78,7 +79,7 @@ function callSaveUserAPI(publicKey) {
             })
             .then((data) => {
                 console.log('Sent SaveUser API Successfully:', data);
-               
+
             })
             .catch((error) => {
                 console.error('Error While Sending SaveUser API Purchasing:', error);
@@ -86,16 +87,17 @@ function callSaveUserAPI(publicKey) {
     }
 }
 
-const Header = () => {
+const Header = ({ setPublicKey }) => {
     const { publicKey } = useWallet();
-    
+
 
     useEffect(() => {
         console.log('Public Key:', publicKey?.toBase58());
         localStorage.setItem('publicKey', publicKey?.toBase58() || '');
+        setPublicKey(publicKey?.toBase58() || null);
         callSaveUserAPI(publicKey);
-       
-    }, [publicKey]);
+
+    }, [publicKey, setPublicKey]);
 
     const [isMobile, setIsMobile] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
@@ -132,7 +134,7 @@ const Header = () => {
             {publicKey ? (
                 <div className="container mx-auto text-white">
                     <Suspense fallback={<div>loading...</div>}>
-                   
+
                         <Context>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" style={logoStyles} />
@@ -153,12 +155,12 @@ const Header = () => {
                                 </div>
                             </div>
                         </Context>
-                      
+
                     </Suspense>
                 </div>
             ) : (
                 <>
-                 
+
                     <div className="container mx-auto text-white">
                         <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" style={logoStyles} />
                         <div className="flex justify-between">
@@ -167,7 +169,7 @@ const Header = () => {
                             </div>
                         </div>
                     </div>
-                    
+
                 </>
             )}
         </header>
