@@ -3,8 +3,6 @@ import UploadGame from '../components/UploadGame';
 import GameDetails from '../components/GameDetails';
 import BuyGame from '../components/BuyGame';
 const Home = React.lazy(() => import('../components/Home'));
-const About = React.lazy(() => import('../components/About'));
-const Contact = React.lazy(() => import('../components/Contact'));
 const CategoryGames = React.lazy(()=> import('../components/CategoryGames'))
 
 export const routes = [
