@@ -162,6 +162,7 @@ const Header = ({ setPublicKey }) => {
                 <>
 
                     <div className="container mx-auto text-white">
+                        
                         <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" style={logoStyles} />
                         <div className="flex justify-between">
                             <div style={contentStyles}>

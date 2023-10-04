@@ -26,7 +26,7 @@ const categoryOptions = [
 ];
 
 const UploadGame = () => {
-    const publicKey = useWallet();
+    const { publicKey } = useWallet();
     const [formData, setFormData] = useState({
         title: '',
         banner: null as File | null,
@@ -34,7 +34,7 @@ const UploadGame = () => {
         category: categoryOptions[0],
         developer: '',
         publisher: '',
-        publicKey: localStorage.getItem('publicKey'),
+        publicKey: localStorage.getItem('publicKey') ,
         releaseDate: '',
         isFree: false,
         price: '',
@@ -48,10 +48,10 @@ const UploadGame = () => {
 
     useEffect(() => {
         getPublicKey();
-    }, [publicKey, localStorage.getItem('publicKey') || '']);
+    }, [publicKey]);
 
     const getPublicKey = () => {
-        console.log("Public Key From UploadGame : ", localStorage.getItem('publicKey'));
+        console.log('public key get item......', localStorage.getItem('publicKey'));
     };
 
     const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -171,8 +171,8 @@ const UploadGame = () => {
     };
 
     return (
-        <div className="bg-gray-800 pt-1 pl-12 w-full text-white">
-            <h2 className="text-2xl font-bold mt-16 mb-4">Upload Game</h2>
+        <div className="bg-gray-800 pt-5 pl-10 w-full text-white">
+            <h2 className="text-2xl font-bold mt-0 mb-4">Upload Game</h2>
             <form className="max-w-lg mt-3" onSubmit={handleSubmit}>
                 <label className="block mb-4">
                     <span className="text-white">Title:</span>
@@ -311,36 +311,32 @@ const UploadGame = () => {
                     <span className="text-white ml-2">SOL</span>
                 </label>
 
-                <div className="flex flex-wrap items-center mb-4">
-                    <label className="block">
-                        <span className="text-white">Zip File:</span>
-                        <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
-                            <input
-                                type="file"
-                                name="GameFile"
-                                onChange={handleFileChange}
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                            />
-                            <div className="flex flex-col items-center justify-center">
-                                {zipFileName ? (
-                                    <span className="file-info text-green-500">Zip File: {zipFileName}</span>
-                                ) : (
-                                    <span className="text-gray-500">Choose a zip file</span>
-                                )}
-                            </div>
+                <label className="block mb-4">
+                    <span className="text-white">Zip File:</span>
+                    <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
+                        <input
+                            type="file"
+                            name="GameFile"
+                            onChange={handleFileChange}
+                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                        />
+                        <div className="flex flex-col items-center justify-center">
+                            {zipFileName ? (
+                                <span className="file-info text-green-500">Zip File: {zipFileName}</span>
+                            ) : (
+                                <span className="text-gray-500">Choose a zip file</span>
+                            )}
                         </div>
-                    </label>
-
-                    <button
-                        type="submit"
-                        className={`ml-4 bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                        disabled={loading || uploadSuccess}
-                    >
-                        {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
-                    </button>
-                </div>
-
-
+                    </div>
+                </label>
+                <br />
+                <button
+                    type="submit"
+                    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+                    disabled={loading || uploadSuccess}
+                >
+                    {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
+                </button>
             </form>
         </div>
     );
