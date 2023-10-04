@@ -34,7 +34,7 @@ const UploadGame = () => {
         category: categoryOptions[0],
         developer: '',
         publisher: '',
-        publicKey: localStorage.getItem('publicKey') ,
+        publicKey: localStorage.getItem('publicKey'),
         releaseDate: '',
         isFree: false,
         price: '',
@@ -171,174 +171,193 @@ const UploadGame = () => {
     };
 
     return (
-        <div className="bg-gray-800 pt-5 pl-10 w-full text-white">
-            <h2 className="text-2xl font-bold mt-0 mb-4">Upload Game</h2>
-            <form className="max-w-lg mt-3" onSubmit={handleSubmit}>
-                <label className="block mb-4">
-                    <span className="text-white">Title:</span>
-                    <input
-                        type="text"
-                        name="title"
-                        value={formData.title}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Banner:</span>
-                    <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
-                        <input
-                            type="file"
-                            name="banner"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                        {bannerFileName && formData.banner && (
-                            <img
-                                src={URL.createObjectURL(formData.banner)}
-                                alt="Uploaded Banner"
-                                className="mt-2 rounded-md max-h-auto"
-                                style={{ maxHeight: '250px', maxWidth: '315px' }}
+        <div className="bg-gray-800 min-h-screen flex items-center justify-center">
+            <div className="bg-gray-800 text-white p-8 w-full max-w-screen-lg rounded-lg shadow-lg">
+                <h2 className="text-3xl font-bold mb-6">Upload Game</h2>
+                <form className="grid grid-cols-2 gap-8" onSubmit={handleSubmit}>
+                    {/* Left Section */}
+                    <div className="col-span-1">
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Title:</span>
+                            <input
+                                type="text"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
                             />
-                        )}
-                        <div className="flex flex-col items-center justify-center">
-                            {bannerFileName ? (
-                                <span className="file-info text-green-500">Banner Image: {bannerFileName}</span>
-                            ) : (
-                                <span className="text-gray-500">Choose an image file (315x250 pixels)</span>
-                            )}
+                        </label>
+
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Description:</span>
+                            <textarea
+                                name="description"
+                                value={formData.description}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                            />
+                        </label>
+
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Category:</span>
+                            <select
+                                name="category"
+                                value={formData.category}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                            >
+                                {categoryOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </label>
+
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Developer:</span>
+                            <input
+                                type="text"
+                                name="developer"
+                                value={formData.developer}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                            />
+                        </label>
+
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Publisher:</span>
+                            <input
+                                type="text"
+                                name="publisher"
+                                value={formData.publisher}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                            />
+                        </label>
+                    </div>
+
+                    {/* Right Section */}
+                    <div className="col-span-1">
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Banner:</span>
+                            <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
+                                <input
+                                    type="file"
+                                    name="banner"
+                                    accept="image/*"
+                                    onChange={handleFileChange}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                                {bannerFileName && formData.banner && (
+                                    <img
+                                        src={URL.createObjectURL(formData.banner)}
+                                        alt="Uploaded Banner"
+                                        className="flex justify-center"
+                                    />
+                                )}
+                                <div className="flex flex-col items-center justify-center mt-4">
+                                    {bannerFileName ? (
+                                        <span className="file-info text-green-500 text-lg">Banner Image: {bannerFileName}</span>
+                                    ) : (
+                                        <span className="text-gray-500 text-lg">Choose an image file (315x250 pixels)</span>
+                                    )}
+                                </div>
+                            </div>
+                        </label>
+
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Public Key:</span>
+                            <input
+                                type="text"
+                                name="publicKey"
+                                value={formData.publicKey}
+                                onChange={handleChange}
+                                readOnly={true}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                            />
+                        </label>
+
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Release Date:</span>
+                            <input
+                                type="date"
+                                name="releaseDate"
+                                value={formData.releaseDate}
+                                onChange={handleChange}
+                                className="mt-2 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                            />
+                        </label>
+                        <div className='flex'>
+
+                            <label className="block mb-6 mr-6 flex items-center">
+                                <span className="text-white text-lg mr-2">Free:</span>
+                                <input
+                                    className='px-4 py-3 text-lg'
+                                    type="checkbox"
+                                    name="isFree"
+                                    checked={formData.isFree}
+                                    onChange={handleChange}
+                                    style={{ width: '24px', height: '24px' }}
+                                />
+                            </label>
+
+                            <label className="block mb-6 flex items-center">
+                                <span className="text-white text-lg mr-2">Price:</span>
+                                <input
+                                    type="text"
+                                    name="price"
+                                    value={formData.price}
+                                    onChange={handleChange}
+                                    disabled={formData.isFree}
+                                    pattern="[0-9]+(\.[0-9]{1,2})?"
+                                    min="0"
+                                    style={{ width: '80px' }}
+                                    className="mt-2 block rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-4 py-3 text-lg"
+                                />
+                                <span className="text-white text-lg ml-2">SOL</span>
+                            </label>
                         </div>
                     </div>
-                </label>
 
-                <label className="block mb-4">
-                    <span className="text-white">Description:</span>
-                    <textarea
-                        name="description"
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Category:</span>
-                    <select
-                        name="category"
-                        value={formData.category}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    >
-                        {categoryOptions.map((option) => (
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Developer:</span>
-                    <input
-                        type="text"
-                        name="developer"
-                        value={formData.developer}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Publisher:</span>
-                    <input
-                        type="text"
-                        name="publisher"
-                        value={formData.publisher}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Public Key:</span>
-                    <input
-                        type="text"
-                        name="publicKey"
-                        value={formData.publicKey}
-                        onChange={handleChange}
-                        readOnly={true}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Release Date:</span>
-                    <input
-                        type="date"
-                        name="releaseDate"
-                        value={formData.releaseDate}
-                        onChange={handleChange}
-                        className="mt-1 block w-full rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                </label>
-
-                <label className="block mb-4 flex items-center">
-                    <span className="text-white mr-2">Free:</span>
-                    <input
-                        type="checkbox"
-                        name="isFree"
-                        checked={formData.isFree}
-                        onChange={handleChange}
-                        style={{ width: '20px', height: '20px' }}
-                    />
-                </label>
-
-                <label className="block mb-4 flex items-center">
-                    <span className="text-white mr-2">Price:</span>
-                    <input
-                        type="text"
-                        name="price"
-                        value={formData.price}
-                        onChange={handleChange}
-                        disabled={formData.isFree}
-                        pattern="[0-9]+(\.[0-9]{1,2})?"
-                        min="0"
-                        style={{ width: '80px' }}
-                        className="mt-1 block rounded-md bg-gray-700 border-transparent focus:border-blue-500 focus:bg-gray-700 focus:ring-0 px-3 py-2"
-                    />
-                    <span className="text-white ml-2">SOL</span>
-                </label>
-
-                <label className="block mb-4">
-                    <span className="text-white">Zip File:</span>
-                    <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
-                        <input
-                            type="file"
-                            name="GameFile"
-                            onChange={handleFileChange}
-                            className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                        />
-                        <div className="flex flex-col items-center justify-center">
-                            {zipFileName ? (
-                                <span className="file-info text-green-500">Zip File: {zipFileName}</span>
-                            ) : (
-                                <span className="text-gray-500">Choose a zip file</span>
-                            )}
-                        </div>
+                    {/* Zip File Section */}
+                    <div className="col-span-2">
+                        <label className="block mb-6">
+                            <span className="text-white text-lg">Zip File:</span>
+                            <div className="relative border-dotted border-2 border-gray-500 rounded-md p-4">
+                                <input
+                                    type="file"
+                                    name="GameFile"
+                                    onChange={handleFileChange}
+                                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                />
+                                <div className="flex flex-col items-center justify-center mt-1">
+                                    {zipFileName ? (
+                                        <span className="file-info text-green-500 text-lg">Zip File: {zipFileName}</span>
+                                    ) : (
+                                        <span className="text-gray-500 text-lg">Choose a zip file</span>
+                                    )}
+                                </div>
+                            </div>
+                        </label>
                     </div>
-                </label>
-                <br />
-                <button
-                    type="submit"
-                    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
-                    disabled={loading || uploadSuccess}
-                >
-                    {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
-                </button>
-            </form>
+
+                    {/* Submit Button */}
+                    <div className="col-span-2 flex items-center justify-center">
+  <button
+    type="submit"
+    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-6 rounded-full focus:outline-none focus:shadow-outline text-lg`}
+    disabled={loading || uploadSuccess}
+  >
+    {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
+  </button>
+</div>
+
+                </form>
+            </div>
         </div>
+
+
     );
 };
 
