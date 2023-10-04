@@ -27,6 +27,7 @@ const logoStyles = {
     marginRight: '10px',
     position: 'absolute',
     left: '5px',
+    cursor: 'pointer', // Add cursor style to indicate it's clickable
 };
 
 const labelStyles = {
@@ -60,7 +61,7 @@ const buttonHoverStyles = {
 function callSaveUserAPI(publicKey) {
     if (publicKey) {
         const payload = {
-            publicKey: publicKey.toBase58(), // Assuming publicKey is not null here
+            publicKey: publicKey.toBase58(),
             purchasedGames: '',
         };
 
@@ -137,7 +138,9 @@ const Header = ({ setPublicKey }) => {
 
                         <Context>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
-                                <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" style={logoStyles} />
+                                <a href="/" style={logoStyles}>
+                                    <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" />
+                                </a>
                                 <span style={labelStyles}>
                                     <button
                                         style={combinedButtonStyles}
@@ -162,8 +165,9 @@ const Header = ({ setPublicKey }) => {
                 <>
 
                     <div className="container mx-auto text-white">
-                        
-                        <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" style={logoStyles} />
+                        <a href="/" style={logoStyles}>
+                            <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" />
+                        </a>
                         <div className="flex justify-between">
                             <div style={contentStyles}>
                                 <WalletMultiButton />
