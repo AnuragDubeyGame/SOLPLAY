@@ -2,25 +2,34 @@
 
 /* Define the enter and exit animations */
 .slide-enter {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  
-  .slide-enter-active {
-    opacity: 1;
-    transform: translateX(0%);
-    transition: opacity 500ms, transform 500ms;
-  }
-  
-  .slide-exit {
-    opacity: 1;
-    transform: translateX(0%);
-  }
-  
-  .slide-exit-active {
-    opacity: 0;
-    transform: translateX(100%);
-    transition: opacity 500ms, transform 500ms;
-  }
+  opacity: 0;
+  transform: translateX(-100%);
+}
 
-  
+.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0%);
+  transition: opacity 500ms, transform 500ms;
+}
+
+.slide-exit {
+  opacity: 1;
+  transform: translateX(0%);
+}
+
+.hover-card:hover {
+  transform: scale(1.05); /* Adjust the scale factor as needed */
+  transition: transform 0.3s ease-in-out;
+}
+
+.slide-exit-active {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 500ms, transform 500ms;
+}
+
+/* Hide the scrollbar */
+::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}

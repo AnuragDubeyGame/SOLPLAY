@@ -57,7 +57,7 @@ const Home = () => {
                                 />
                                 <div>
                                     <h2 className="text-3xl font-bold ml-5 pt-5">{game.title.toUpperCase()}</h2>
-                                    <p className="ml-5 font-semibold pt-5 mb-[-1rem]">{game.publisher}</p>
+                                    <p className="ml-5 font-semibold pt-0 mb-[-1rem] italic capitalize">by {game.publisher}</p>
                                     <p
                                         className={` mt-5 ml-4 mb-5  p-1 my-1 font-bold rounded-lg  border-gray-500 border-1.5 ${
                                             game.price === 0 ? 'bg-green-600' : 'bg-black'
@@ -68,7 +68,7 @@ const Home = () => {
 
                                     <a
                                         href="#_"
-                                        className="ml-2 right-0 relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
+                                        className="ml-3 right-0 relative inline-flex items-center justify-center p-4 px-5 py-3 overflow-hidden font-medium text-indigo-600 transition duration-300 ease-out rounded-full shadow-xl group hover:ring-1 hover:ring-purple-500"
                                     >
                                         <span className="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-700"></span>
                                         <span className="absolute  block w-64 h-64 mb-32 mr-4 transition duration-500 origin-bottom-left transform rotate-45 translate-x-24 bg-pink-500 rounded-full opacity-30 group-hover:rotate-90 ease"></span>
@@ -90,18 +90,8 @@ const Home = () => {
                             <Link to={`/game/${game._id}`} key={index} className="card relative overflow-hidden">
                                 <img src={`data:image/png;base64,${game.banner}`} alt={game.title} />
 
-                                <div className="absolute left-0 right-0 bottom-0 gradient-bg p-4">
-                                    <p className="absolute left-1 bottom-2 text-white">
-                                        <span className="relative font-bold rounded-sm first-letter:font-bold text-2xl">
-                                            {game.title}
-                                        </span>
-                                        <br />
-                                        <span className="text-sm">{game.publisher}</span>
-                                    </p>
-                                </div>
-
                                 <div className="additional-details">
-                                    <div className="absolute top-[-0.5rem] w-full px-5 bg-purple-900 text-white">
+                                    <div className="absolute top-[-0.8rem] w-full px-5 bg-purple-900 text-white rounded-xl">
                                         <strong>{game.title}</strong>
                                     </div>
                                     <p>

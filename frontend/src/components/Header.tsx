@@ -149,7 +149,7 @@ const Header = ({ setPublicKey }) => {
                                     </button>
                                 </span>
                                 <div style={contentStyles}>
-                                    <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', marginRight: '0px' }}>
                                         <WalletMultiButton />
                                     </div>
                                 </div>

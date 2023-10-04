@@ -74,9 +74,9 @@ export const SendLamportToAddress: FC<{
     return (
         <>
             {isPopupOpen && (
-                <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75">
-                    <div className="bg-gray-700 mt-14 p-6 rounded-lg shadow-md text-white max-w-2xl flex flex-col items-center">
-                        <div className=" relative left-[8rem] first-letter:mt-4">
+               <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75">
+               <div className="bg-gray-700 mt-14 p-6 rounded-lg shadow-md text-white max-w-2xl flex flex-col items-center">
+               <div className=" relative left-[8rem] first-letter:mt-4">
                             <button onClick={onPopupClose} className="px-4 py-2 text-white bg-red-500 rounded-lg">
                                 Close
                             </button>
