@@ -34,7 +34,7 @@ const UploadGame = () => {
         category: categoryOptions[0],
         developer: '',
         publisher: '',
-        publicKey: localStorage.getItem('publicKey') || '',
+        publicKey: localStorage.getItem('publicKey') ,
         releaseDate: '',
         isFree: false,
         price: '',
@@ -332,7 +332,7 @@ const UploadGame = () => {
                 <br />
                 <button
                     type="submit"
-                    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+                    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
                     disabled={loading || uploadSuccess}
                 >
                     {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}

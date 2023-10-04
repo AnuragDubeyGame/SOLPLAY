@@ -1,23 +1,25 @@
-import React, { FC, Suspense } from 'react';
+import React, { FC, Suspense, useState } from 'react';
 import Context from './Context';
 import SideBar from './SideBar';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { routes } from '../utils/routes';
 import Header from '../components/Header';
-
+import { useWallet } from '@solana/wallet-adapter-react';
 import LoadingSpinner from '../LoadingSpinner';
 
 require('../components/Styles/Home.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 const Index: FC = () => {
+    const { publicKey } = useWallet();
+    const [publicKeyState, setPublicKey] = useState(publicKey);
     return (
         <>
             <Suspense fallback={<LoadingSpinner />}>
                 <Context>
                     <div className="relative top-0 overflow-visible  left-0 right-0">
                         <div className="relative z-40">
-                            <Header />
+                        <Header publicKey={publicKeyState} setPublicKey={setPublicKey} />
                         </div>
                     </div>
                 </Context>
