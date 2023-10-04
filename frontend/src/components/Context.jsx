@@ -5,7 +5,7 @@ import { PhantomWalletAdapter, UnsafeBurnerWalletAdapter } from '@solana/wallet-
 import { clusterApiUrl } from '@solana/web3.js';
 import React, { FC, ReactNode, useMemo } from 'react';
 
-const Context: FC<{ children: ReactNode }> = ({ children }) => {
+const Context = ({ children }) => {
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
     const network = WalletAdapterNetwork.Devnet;
 
@@ -17,7 +17,6 @@ const Context: FC<{ children: ReactNode }> = ({ children }) => {
             new PhantomWalletAdapter(),
             new UnsafeBurnerWalletAdapter(),
         ],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         [network]
     );
 

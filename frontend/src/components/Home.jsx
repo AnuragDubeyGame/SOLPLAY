@@ -19,7 +19,6 @@ const Home = () => {
             });
     }, []);
 
-    // Group games by category
     const groupedGames = games.reduce((acc, game) => {
         if (!acc[game.category]) {
             acc[game.category] = [];
@@ -31,7 +30,7 @@ const Home = () => {
     const settings = {
         dots: true,
         infinite: true,
-        speed: 2000, // Change slide every 2 seconds
+        speed: 2000,
         autoplay: true,
         autoplaySpeed: 10000,
     };
@@ -41,8 +40,8 @@ const Home = () => {
             <div className="p-5">
                 <Slider {...settings}>
                     {games.map((game, index) => (
-                        <Link to={`/game/${game._id}`} key={index} className="banner-item ">
-                            <div className="aspect-w-16 aspect-h-9 rounded-lg ">
+                        <Link to={`/game/${game._id}`} key={index} className="banner-item">
+                            <div className="aspect-w-16 aspect-h-9 rounded-lg">
                                 <img
                                     src={`data:image/png;base64,${game.banner}`}
                                     alt={game.title}
@@ -57,9 +56,11 @@ const Home = () => {
                                 />
                                 <div>
                                     <h2 className="text-3xl font-bold ml-5 pt-5">{game.title.toUpperCase()}</h2>
-                                    <p className="ml-5 font-semibold pt-0 mb-[-1rem] italic capitalize">by {game.publisher}</p>
+                                    <p className="ml-5 font-semibold pt-0 mb-[-1rem] italic capitalize">
+                                        by {game.publisher}
+                                    </p>
                                     <p
-                                        className={` mt-5 ml-4 mb-5  p-1 my-1 font-bold rounded-lg  border-gray-500 border-1.5 ${
+                                        className={`mt-5 ml-4 mb-5  p-1 my-1 font-bold rounded-lg  border-gray-500 border-1.5 ${
                                             game.price === 0 ? 'bg-green-600' : 'bg-black'
                                         } px-2`}
                                     >

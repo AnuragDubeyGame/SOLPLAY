@@ -14,12 +14,12 @@ const Content: FC = () => {
 
   // Define the default and hover styles
   const defaultStyles = {
-    position: 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     right: '10px',
     transform: 'translateY(-50%)',
-    backgroundColor: isHovered ? '#4a90e2' : '#553c9a', // Change the background color on hover
-    transition: 'background-color 0.3s ease', // Add a transition effect
+    backgroundColor: isHovered ? '#4a90e2' : '#553c9a',
+    transition: 'background-color 0.3s ease',
   };
 
   return (

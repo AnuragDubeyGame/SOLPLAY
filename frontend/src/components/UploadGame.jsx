@@ -29,7 +29,7 @@ const UploadGame = () => {
     const { publicKey } = useWallet();
     const [formData, setFormData] = useState({
         title: '',
-        banner: null as File | null,
+        banner: null,
         description: '',
         category: categoryOptions[0],
         developer: '',
@@ -38,11 +38,11 @@ const UploadGame = () => {
         releaseDate: '',
         isFree: false,
         price: '',
-        GameFile: null as File | null,
+        GameFile: null,
     });
 
-    const [bannerFileName, setBannerFileName] = useState<string>('');
-    const [zipFileName, setZipFileName] = useState<string>('');
+    const [bannerFileName, setBannerFileName] = useState('');
+    const [zipFileName, setZipFileName] = useState('');
     const [loading, setLoading] = useState(false);
     const [uploadSuccess, setUploadSuccess] = useState(false);
 
@@ -54,7 +54,7 @@ const UploadGame = () => {
         console.log('public key get item......', localStorage.getItem('publicKey'));
     };
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
 
         if (type === 'checkbox') {
@@ -64,7 +64,7 @@ const UploadGame = () => {
         }
     };
 
-    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = (e) => {
         const { name, files } = e.target;
         const selectedFile = files ? files[0] : null;
 
@@ -97,7 +97,7 @@ const UploadGame = () => {
         }
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (
@@ -122,8 +122,8 @@ const UploadGame = () => {
 
         const form = new FormData();
         for (const key in formData) {
-            if (formData[key as keyof typeof formData] !== null) {
-                form.append(key, formData[key as keyof typeof formData] as File | string);
+            if (formData[key] !== null) {
+                form.append(key, formData[key]);
             }
         }
 
@@ -289,7 +289,6 @@ const UploadGame = () => {
                             />
                         </label>
                         <div className='flex'>
-
                             <label className="block mb-6 mr-6 flex items-center">
                                 <span className="text-white text-lg mr-2">Free:</span>
                                 <input
@@ -344,20 +343,17 @@ const UploadGame = () => {
 
                     {/* Submit Button */}
                     <div className="col-span-2 flex items-center justify-center">
-  <button
-    type="submit"
-    className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-6 rounded-full focus:outline-none focus:shadow-outline text-lg`}
-    disabled={loading || uploadSuccess}
-  >
-    {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
-  </button>
-</div>
-
+                        <button
+                            type="submit"
+                            className={`bg-${uploadSuccess ? 'green' : 'blue'}-500 hover:bg-${uploadSuccess ? 'green' : 'blue'}-600 text-white bg-[#553c9a] font-bold py-2 px-6 rounded-full focus:outline-none focus:shadow-outline text-lg`}
+                            disabled={loading || uploadSuccess}
+                        >
+                            {loading ? 'Uploading...' : uploadSuccess ? 'Uploaded Success!' : 'Upload Game'}
+                        </button>
+                    </div>
                 </form>
             </div>
         </div>
-
-
     );
 };
 

@@ -1,11 +1,11 @@
-// PublicKeyParent.tsx
-import React from 'react';
+// PublicKeyParent.jsx
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import GameDetails from '../components/GameDetails';
 import UploadGame from '../components/UploadGame';
 
 const PublicKeyParent = () => {
-  const [publicKey, setPublicKey] = React.useState(null);
+  const [publicKey, setPublicKey] = useState(null);
 
   // Define a function to set the publicKey
   const handleSetPublicKey = (newPublicKey) => {

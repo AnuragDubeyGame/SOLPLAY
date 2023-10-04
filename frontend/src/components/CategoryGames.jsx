@@ -2,34 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { API_URL } from '../utils/constant';
-import './Styles/CategoryGames.css'; 
+import './Styles/CategoryGames.css';
 
-
-interface Game {
-  _id: string;
-  banner: string;
-  title: string;
-  description: string;
-  developer: string;
-  publisher: string;
-  releaseDate: string;
-  price: string;
-}
-
-interface CategoryGamesProps {
-  category: string;
-}
-
-const truncateText = (text: string, maxLength: number) => {
+const truncateText = (text, maxLength) => {
   if (text.length <= maxLength) {
     return text;
   }
   return text.substring(0, maxLength) + '...';
 };
 
-const CategoryGames: React.FC<CategoryGamesProps> = ({ category: propCategory }) => {
-  const { category } = useParams<{ category: string }>();
-  const [games, setGames] = useState<Game[]>([]);
+const CategoryGames = ({ category: propCategory }) => {
+  const { category } = useParams();
+  const [games, setGames] = useState([]);
 
   useEffect(() => {
     fetch(`${API_URL}/api/getGamesByCategory?category=${category}`)
@@ -48,8 +32,8 @@ const CategoryGames: React.FC<CategoryGamesProps> = ({ category: propCategory })
       <TransitionGroup className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {games.map((game, index) => (
           <CSSTransition key={index} classNames="slide" timeout={500}>
-          <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover-card transition-shadow duration-200">
-            <Link to={`/game/${game._id}`} className="block">
+            <div className="bg-gray-800 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl hover-card transition-shadow duration-200">
+              <Link to={`/game/${game._id}`} className="block">
                 <div className="aspect-w-16 aspect-h-9">
                   <img
                     className="w-full h-full object-cover"

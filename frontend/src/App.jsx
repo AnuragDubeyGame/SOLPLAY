@@ -8,11 +8,10 @@ import LoadingSpinner from './LoadingSpinner';
 
 import Index from './components';
 import UploadGame from './components/UploadGame';
-import { routesWithoutNav } from './utils/routesWithoutNav';
 require('./App.css');
 require('@solana/wallet-adapter-react-ui/styles.css');
 
-const App: FC = () => {
+const App =  () => {
     return (
         <>
 

@@ -27,7 +27,7 @@ const logoStyles = {
     marginRight: '10px',
     position: 'absolute',
     left: '5px',
-    cursor: 'pointer', // Add cursor style to indicate it's clickable
+    cursor: 'pointer',
 };
 
 const labelStyles = {
@@ -59,45 +59,40 @@ const buttonHoverStyles = {
 };
 
 function callSaveUserAPI(publicKey) {
-    if (publicKey) {
-        const payload = {
-            publicKey: publicKey.toBase58(),
-            purchasedGames: '',
-        };
+    const payload = {
+        publicKey: typeof publicKey === 'string' ? publicKey : (publicKey)?.toBase58(),
+        purchasedGames: '',
+    };
 
-        fetch(`${API_URL}/api/saveUserData`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
+    fetch(`${API_URL}/api/saveUserData`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
         })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log('Sent SaveUser API Successfully:', data);
-
-            })
-            .catch((error) => {
-                console.error('Error While Sending SaveUser API Purchasing:', error);
-            });
-    }
+        .then((data) => {
+            console.log('Sent SaveUser API Successfully:', data);
+        })
+        .catch((error) => {
+            console.error('Error While Sending SaveUser API Purchasing:', error);
+        });
 }
 
 const Header = ({ setPublicKey }) => {
     const { publicKey } = useWallet();
 
-
     useEffect(() => {
         console.log('Public Key:', publicKey?.toBase58());
         localStorage.setItem('publicKey', publicKey?.toBase58() || '');
-        setPublicKey(publicKey?.toBase58() || null);
-        callSaveUserAPI(publicKey);
-
+        setPublicKey(publicKey?.toBase58() || '');
+        callSaveUserAPI(publicKey?.toBase58() || '');
     }, [publicKey, setPublicKey]);
 
     const [isMobile, setIsMobile] = useState(false);
@@ -135,7 +130,6 @@ const Header = ({ setPublicKey }) => {
             {publicKey ? (
                 <div className="container mx-auto text-white">
                     <Suspense fallback={<div>loading...</div>}>
-
                         <Context>
                             <div style={{ display: 'flex', alignItems: 'center' }}>
                                 <a href="/" style={logoStyles}>
@@ -158,12 +152,10 @@ const Header = ({ setPublicKey }) => {
                                 </div>
                             </div>
                         </Context>
-
                     </Suspense>
                 </div>
             ) : (
                 <>
-
                     <div className="container mx-auto text-white">
                         <a href="/" style={logoStyles}>
                             <img src={require('../assets/SOLPLAYBANNER.png')} alt="Logo" />
@@ -174,7 +166,6 @@ const Header = ({ setPublicKey }) => {
                             </div>
                         </div>
                     </div>
-
                 </>
             )}
         </header>

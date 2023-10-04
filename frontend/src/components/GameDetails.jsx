@@ -8,10 +8,9 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import PublicKeyParent from '../utils/publicKeyParent';
 
 const GameDetails = ({ publicKey }) => {
-    const { id } = useParams<{ id: string }>();
-    const [game, setGame] = useState<any | null>(null);
+    const { id } = useParams();
+    const [game, setGame] = useState(null);
     const [showPopup, setShowPopup] = useState(false);
-    // const { publicKey } = useWallet();
 
     const handlePlayButtonClick = () => {
         const publicKey = localStorage.getItem('publicKey');
@@ -45,8 +44,6 @@ const GameDetails = ({ publicKey }) => {
                     .catch((error) => {
                         console.error(error);
                     });
-
-                // Open the popup
             }
         }
     };
@@ -99,7 +96,6 @@ const GameDetails = ({ publicKey }) => {
                             >
                                 By: {game.developer}
                             </p>
-
                             <p
                                 className="bg-opacity-10 font-bold top-48 ml-3 relative"
                                 style={{ textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)' }}
@@ -156,11 +152,13 @@ const GameDetails = ({ publicKey }) => {
                     {showPopup && (
                         <Context>
                             <SendTenLamportToRandomAddress
-                                fromPublicKey={localStorage.getItem('publicKey')}
+                                fromPublicKey={localStorage.getItem('publicKey') || ''}
                                 toPublicKey={game.publicKey}
                                 amount={game.price}
                                 gameId={game._id}
                                 banner={game.banner}
+                                title={game.title}
+                                category={game.category}
                             />
                         </Context>
                     )}
