@@ -1,3 +1,4 @@
 /node_modules
 /Games
 /.env
+/AWS_SERVER.js
