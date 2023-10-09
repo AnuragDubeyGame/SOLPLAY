@@ -60,7 +60,7 @@ const Home = () => {
                                         by {game.publisher}
                                     </p>
                                     <p
-                                        className={`mt-5 ml-4 mb-5  p-1 my-1 font-bold rounded-lg  border-gray-500 border-1.5 ${
+                                        className={`mt-5 ml-4 mb-5  p-1 my-1 font-bold rounded-lg w-40  border-gray-500 border-1.5 ${
                                             game.price === 0 ? 'bg-green-600' : 'bg-black'
                                         } px-2`}
                                     >
