@@ -1,0 +1,33 @@
+/* AboutUs.css */
+
+.logo-fade-in {
+    opacity: 5;
+    transition: slideIn 1s ease-in-out;
+}
+
+.slogan-slide-in {
+    opacity: 0;
+    animation: slideIn 1s ease-in-out forwards;
+}
+
+@keyframes slideIn {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+.scroll-container {
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    height: 100vh;
+}
+
+.section {
+    scroll-snap-align: start;
+    height: 100%;
+    
+}
