@@ -65,46 +65,54 @@ const AboutUs = () => {
                     }}
                 ></div>
 
-                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b  text-white font-bold">
+                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b text-white font-bold">
                     <img src={game_2} alt="game_1" className="absolute w-[25rem] left-32 flying-img" />
 
-                    <div className="ml-[40rem] mr-[5rem] text-left">
+                    <div className="ml-[40rem] mr-[5rem] text-left grid grid-cols-1 gap-2">
                         <div class="glitch-wrapper">
-                            <div class="glitch" data-glitch="WEB3 Gaming Faces several critical issues">
-                                WEB3 Gaming Faces several critical issues
+                            <div class="glitch" data-glitch="WEB3 GAMING - THE PROBLEMS">
+                                <h1>
+                                    WEB3 GAMING - THE PROBLEMS
+                                </h1>
                             </div>
                         </div>
-                        <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
-                        <ul>
-                            <li className="my-2">
-                                <b className="bg-purple-800 px-2  rounded-lg ">High Fees:</b> Traditional gaming
-                                platforms impose significant fees on developers and gamers, restricting accessibility
-                                and profitability.
-                            </li>
-                            <li className="my-2">
-                                <b className="bg-purple-800 px-2  rounded-lg ">Centralization:</b> Centralized platforms
-                                compromise data security and control, inhibiting the true potential of Web3 gaming.
-                            </li>
-                            <li className="my-2">
-                                <b className="bg-purple-800 px-2  rounded-lg ">Transition to Web3:</b> The persistent
-                                challenge of moving from traditional gaming to the intricate realm of Web3, still
-                                presenting hurdles for the average gamer.
-                            </li>
-                        </ul>
+
+                        <div className="bg-gray-500-enter-right p-1 w-auto pl-2 text-xl leading-relaxed"></div>
+
+                        <div className="grid grid-cols-1 gap-3">
+                            <div className="bg-purple-800 p-4 rounded-lg">
+                                <h2 className="text-2xl font-bold mb-2">Accessibility</h2>
+                                <p>Lack of awareness and centralized hubs makes it hard for gamers to find and explore web3 games.</p>
+                            </div>
+                            <div className="bg-purple-800 p-4 rounded-lg">
+                                <h2 className="text-2xl font-bold mb-2">Complexity</h2>
+                                <p>Many gamers find blockchain gaming overly complex, from setting up wallets to understanding blockchain technology.</p>
+                            </div>
+                            <div className="bg-purple-800 p-4 rounded-lg">
+                                <h2 className="text-2xl font-bold mb-2">Usability</h2>
+                                <p>User interfaces of existing blockchain gaming platforms are not user-friendly.</p>
+                            </div>
+                        </div>
                     </div>
+
                     <div className="scroll-button mb-[60px]">
-                    <a href="#section_three">
-                        <span className="text-white text-3xl">
-                            <i className="fas fa-arrow-down"></i>
-                        </span>
-                    </a>
-                </div>
+                        <a href="#section_three">
+                            <span className="text-white text-3xl">
+                                <i className="fas fa-arrow-down"></i>
+                            </span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE PROBLEM</span>
                 </div>
             </div>
+
+
+
+
+
             <div id="section_three" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
@@ -113,41 +121,51 @@ const AboutUs = () => {
                     }}
                 ></div>
 
-                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b  text-white font-bold">
+                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b text-white font-bold">
                     <img src={game_4} alt="game_1" className="absolute w-[25rem] left-32 flying-img" />
 
                     <div className="ml-[40rem] mr-[5rem] text-left">
-                        <div className="glitch-wrapper">
-                            <div className="glitch-wrapper-sloplay">
-                                <p className="text-xl">Introducing, </p>
-                                <div className="glitch-solplay" data-glitch="SOLPLAY">
-                                    SOLPLAY
-                                </div>
-                            </div>
+                        <p className="text-4xl">Introducing</p>
+                        <div className="glitch-solplay text-center" data-glitch="SOLPLAY">
+                            &nbsp;
                         </div>
                         <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
-                        <ul>
-                            <li>
-                                The pioneering Web3 game hosting platform on Solana. With an unwavering mission to make
-                                Web3 gaming accessible to millions, we've built a platform that empowers both gamers and
-                                developers. Enjoy a secure, lightning-fast experience on the Solana blockchain, powered
-                                by Phantom Wallet.
-                            </li>
-                        </ul>
+                        <div className="grid grid-cols-1 gap-8 mt-8">
+                            <div className="bg-purple-800 p-4 rounded-lg">
+                                <h2 className="text-2xl font-bold">SOLPLAY: Gateway to Web3 Gaming</h2>
+                                SOLPLAY is the first-of-its-kind Web3 game hosting platform on the Solana blockchain, simplifying the transition for average gamers into the world of Web3.
+                            </div>
+                            <div className="bg-purple-800 p-4 rounded-lg">
+                                <h2 className="text-2xl font-bold">Addressing a Critical Need</h2>
+                                In a rapidly expanding blockchain gaming market, there's a glaring gap in platforms that cater to gamers. SOLPLAY fills this void by offering a hub for discovering and playing Web3 games.
+                            </div>
+                            <div className="bg-purple-800 p-4 rounded-lg">
+                                <h2 className="text-2xl font-bold">Simplifying Web3 Adoption</h2>
+                                Our user-friendly interface and straightforward approach help alleviate the complexity associated with Web3 gaming, making it accessible to a broader audience.
+                            </div>
+                        </div>
                     </div>
                     <div className="scroll-button mb-[60px]">
-                    <a href="#section_four">
-                        <span className="text-white text-3xl">
-                            <i className="fas fa-arrow-down"></i>
-                        </span>
-                    </a>
-                </div>
+                        <a href="#section_four">
+                            <span className="text-white text-3xl">
+                                <i className="fas fa-arrow-down"></i>
+                            </span>
+                        </a>
+                    </div>
                 </div>
                 <div className="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0"></div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE SOLUTION</span>
                 </div>
             </div>
+
+
+
+
+
+
+
+
             <div id="section_four" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
@@ -181,6 +199,17 @@ const AboutUs = () => {
                     <span class="text-white text-center text-3xl font-bold">THE DEMO</span>
                 </div>
             </div>
+
+
+
+
+
+
+
+
+
+
+
 
             <div id="section_five" className="section text-white bg-gray-800 relative">
                 <div
@@ -239,6 +268,13 @@ const AboutUs = () => {
                 </div>
             </div>
 
+
+
+
+
+
+
+
             <div id="section_six" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
@@ -267,12 +303,12 @@ const AboutUs = () => {
                         </ul>
                     </div>
                     <div className="scroll-button mb-[60px]">
-                    <a href="#section_seven">
-                        <span className="text-white text-3xl">
-                            <i className="fas fa-arrow-down"></i>
-                        </span>
-                    </a>
-                </div>
+                        <a href="#section_seven">
+                            <span className="text-white text-3xl">
+                                <i className="fas fa-arrow-down"></i>
+                            </span>
+                        </a>
+                    </div>
                 </div>
 
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
@@ -325,7 +361,7 @@ const AboutUs = () => {
             </div>
 
             <div id="section_eight" className="section flex justify-center text-white pt-20 bg-[#5C718F] relative">
-            <div className="scroll-button mb-[60px]">
+                <div className="scroll-button mb-[60px]">
                     <a href="#section_nine">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -336,7 +372,7 @@ const AboutUs = () => {
                     <span class="text-white text-center text-3xl font-bold">ROADMAP</span>
                 </div>
 
-                <img src={roadmap} alt="solplay_roadmap" className="w-[28rem]  h-[50rem]" />
+                <img src={roadmap} alt="solplay_roadmap" className="w-[30rem]  h-[50rem]" />
             </div>
             <div id="section_nine" className="section text-white pt-20 bg-gray-800 relative">
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
