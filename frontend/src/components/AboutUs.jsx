@@ -235,6 +235,42 @@ const AboutUs = () => {
                     <span class="text-white text-center text-3xl font-bold">WHY NOW?</span>
                 </div>
             </div>
+            <div id="why_us" className="section text-white bg-gray-800 relative">
+                <div
+                    className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
+                    style={{
+                        backgroundImage: `url('')`,
+                    }}
+                ></div>
+
+                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b  text-white font-bold">
+                    <img src={check_1} alt="game_1" className="absolute w-[25rem] left-32 flying-img" />
+
+                    <div className="ml-[40rem] mr-[5rem] text-left">
+                        <div class="glitch-wrapper">
+                            <div class="glitch" data-glitch="Why Us?">
+                                Why Us?
+                            </div>
+                        </div>
+                        <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
+                        <ul>
+                            <li className="my-2">
+                                <b>We are the Perfect Team</b>: As game developers, we understand the intricacies of the Web3 gaming industry and its current landscape. Our background in game development positions us perfectly to pioneer this project and bring Web3 gaming into mainstream gaming for the betterment of gamers.
+                            </li>
+                            <li className="my-2">
+                                <b>Passionate About the Future</b>: We are passionate about reshaping the future of gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives us to create a platform that will revolutionize the gaming experience on Solana.
+                            </li>
+                            <li className="my-2">
+                                <b>Connect with Us</b>: Stay updated with our journey by following us on <a href="https://twitter.com/SOLPLAY666494" target="_blank" rel="noopener noreferrer" className="underline">Twitter</a>. We welcome your support and feedback as we embark on this exciting endeavor.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
+                    <span class="text-white text-center text-3xl font-bold">WHY US?</span>
+                </div>
+            </div>
 
             <div
                 id="section_three"
