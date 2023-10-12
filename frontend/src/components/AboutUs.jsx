@@ -78,7 +78,9 @@ const AboutUs = () => {
                                 compromise data security and control, inhibiting the true potential of Web3 gaming.
                             </li>
                             <li className="my-2">
-                                <b className="bg-purple-800 px-2  rounded-lg ">Transition to Web3:</b> The persistent challenge of moving from traditional gaming to the intricate realm of Web3, still presenting hurdles for the average gamer.
+                                <b className="bg-purple-800 px-2  rounded-lg ">Transition to Web3:</b> The persistent
+                                challenge of moving from traditional gaming to the intricate realm of Web3, still
+                                presenting hurdles for the average gamer.
                             </li>
                         </ul>
                     </div>
@@ -111,9 +113,11 @@ const AboutUs = () => {
                         <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
                         <ul>
                             <li>
-                                The pioneering Web3 game hosting platform on Solana. With an unwavering mission to make Web3 gaming accessible to millions, we've built a platform that empowers both gamers and developers. Enjoy a secure, lightning-fast experience on the Solana blockchain, powered by Phantom Wallet.
+                                The pioneering Web3 game hosting platform on Solana. With an unwavering mission to make
+                                Web3 gaming accessible to millions, we've built a platform that empowers both gamers and
+                                developers. Enjoy a secure, lightning-fast experience on the Solana blockchain, powered
+                                by Phantom Wallet.
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -149,8 +153,6 @@ const AboutUs = () => {
                 </div>
             </div>
 
-
-
             <div id="section_four" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
@@ -167,7 +169,6 @@ const AboutUs = () => {
                         <div className="flex items-center">
                             <h2 className="text-3xl mb-4">Solplay vs. Traditional Game Hosting Platforms</h2>
                         </div>
-
 
                         <table className="text-white shadow-lg w-[70rem] text-center table-auto h-[20rem]">
                             <thead>
@@ -195,9 +196,7 @@ const AboutUs = () => {
                                 </tr>
                             </tbody>
                         </table>
-
                     </div>
-
                 </div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE DIFFERENCE</span>
@@ -224,11 +223,13 @@ const AboutUs = () => {
                         <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
                         <ul>
                             <li className="my-2">
-                                <b></b>SOLPLAY is launching now to meet the surging demand for a Web3 gaming platform on Solana, taking advantage of the rapid expansion of the Solana ecosystem. Our platform empowers both gamers and developers, leveraging the vibrant momentum in the blockchain space to redefine the future of Web3 gaming.
+                                <b></b>SOLPLAY is launching now to meet the surging demand for a Web3 gaming platform on
+                                Solana, taking advantage of the rapid expansion of the Solana ecosystem. Our platform
+                                empowers both gamers and developers, leveraging the vibrant momentum in the blockchain
+                                space to redefine the future of Web3 gaming.
                             </li>
                         </ul>
                     </div>
-
                 </div>
 
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
@@ -255,10 +256,15 @@ const AboutUs = () => {
                         <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
                         <ul>
                             <li className="my-2">
-                                <b>We are the Perfect Team</b>: As game developers, we understand the intricacies of the Web3 gaming industry and its current landscape. Our background in game development positions us perfectly to pioneer this project and bring Web3 gaming into mainstream gaming for the betterment of gamers.
+                                <b>We are the Perfect Team</b>: As game developers, we understand the intricacies of the
+                                Web3 gaming industry and its current landscape. Our background in game development
+                                positions us perfectly to pioneer this project and bring Web3 gaming into mainstream
+                                gaming for the betterment of gamers.
                             </li>
                             <li className="my-2">
-                                <b>Passionate About the Future</b>: We are passionate about reshaping the future of gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives us to create a platform that will revolutionize the gaming experience on Solana.
+                                <b>Passionate About the Future</b>: We are passionate about reshaping the future of
+                                gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives
+                                us to create a platform that will revolutionize the gaming experience on Solana.
                             </li>
                         </ul>
                     </div>
@@ -269,17 +275,12 @@ const AboutUs = () => {
                 </div>
             </div>
 
-            <div
-                id="section_three"
-                className="section text-white bg-gradient-to-b from-purple-900 to-blue-500 relative"
-            >
-                <div
-                    className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
-                    style={{
-                        backgroundImage: `url('')`,
-                    }}
-                ></div>
-                <img src={roadmap} alt="solplay_roadmap" className="w-[50rem]" />
+            <div id="section_three" className="section flex justify-center text-white pt-20 bg-[#5C718F] relative">
+                <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
+                    <span class="text-white text-center text-3xl font-bold">ROADMAP</span>
+                </div>
+
+                <img src={roadmap} alt="solplay_roadmap" className="w-[22rem]  h-[40rem]" />
             </div>
 
             {/* Add more sections here */}
