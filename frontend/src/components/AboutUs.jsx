@@ -282,6 +282,46 @@ const AboutUs = () => {
 
                 <img src={roadmap} alt="solplay_roadmap" className="w-[22rem]  h-[40rem]" />
             </div>
+            <div id="section_three" className="section text-white pt-20 bg-gray-800 relative">
+                <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
+                    <span class="text-white text-center text-3xl font-bold">TEAM</span>
+                </div>
+
+                <div className="flex items-center h-[100%] justify-center grid-cols-1 md:grid-cols-2 gap-6 p-4">
+                    <div className="bg-purple-600 w-[40%] rounded-lg p-4 flex flex-col items-center text-center">
+                        <img
+                            src="https://avatars.githubusercontent.com/u/124233582?v=4"
+                            alt="Team Member"
+                            className="rounded-full w-24 h-24 border-4 border-white"
+                        />
+                        <p className="text-white font-bold mt-2">Anurag Dubey</p>
+                        <p className="text-gray-300">Game Developer & Blockchain Enthusiast</p>
+                        <p>
+                            I, the Team Leader, bring over three years of game development experience to our team. With
+                            a strong passion for blockchain technology and its potential, I'm on a mission to
+                            revolutionize the Web3 gaming industry. By combining technical expertise in Unity with a
+                            forward-thinking approach, I create innovative gaming experiences that leverage the power of
+                            blockchain.
+                        </p>
+                    </div>
+                    <div className="bg-purple-600 w-[40%] rounded-lg p-4 flex flex-col items-center text-center">
+                        <img
+                            src="https://pbs.twimg.com/profile_images/1484528690398924805/Xg58F8fd_400x400.jpg"
+                            alt="Team Member"
+                            className="rounded-full w-24 h-24 border-4 border-white"
+                        />
+                        <p className="text-white font-bold mt-2">Saurabh Shukla</p>
+                        <p className="text-gray-300">Frontend Engineer</p>
+                        <p>
+                            Saurabh Shukla is a frontend engineer with two years of experience in crafting user-centric
+                            interfaces. His attention to detail and design sensibility are essential in ensuring that
+                            the user experience on our platform is seamless and engaging. He is committed to creating an
+                            intuitive and visually appealing interface that enhances the accessibility of Web3 gaming
+                            through SOLPLAY.
+                        </p>
+                    </div>
+                </div>
+            </div>
 
             {/* Add more sections here */}
         </div>
