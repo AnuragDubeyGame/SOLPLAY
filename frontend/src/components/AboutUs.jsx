@@ -48,7 +48,7 @@ const AboutUs = () => {
                 <p className="text-white text-xl mt-4 italic font-semibold slogan-slide-in">
                     Unlocking Web3 Gaming for Millions
                 </p>
-                <div className="scroll-button">
+                <div className="scroll-button mb-[60px]">
                     <a href="#section_two">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -92,7 +92,7 @@ const AboutUs = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className="scroll-button">
+                    <div className="scroll-button mb-[60px]">
                     <a href="#section_three">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -135,7 +135,7 @@ const AboutUs = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className="scroll-button">
+                    <div className="scroll-button mb-[60px]">
                     <a href="#section_four">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -169,7 +169,7 @@ const AboutUs = () => {
                         />
                     </div>
                 </div>
-                <div className="scroll-button">
+                <div className="scroll-button mb-[60px]">
                     <a href="#section_five">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -227,7 +227,7 @@ const AboutUs = () => {
                         </table>
                     </div>
                 </div>
-                <div className="scroll-button">
+                <div className="scroll-button mb-[60px]">
                     <a href="#section_six">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -266,7 +266,7 @@ const AboutUs = () => {
                             </li>
                         </ul>
                     </div>
-                    <div className="scroll-button">
+                    <div className="scroll-button mb-[60px]">
                     <a href="#section_seven">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -299,20 +299,20 @@ const AboutUs = () => {
                         <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
                         <ul>
                             <li className="my-2">
-                                <b>We are the Perfect Team</b>: As game developers, we understand the intricacies of the
+                                <b className="bg-purple-800 px-2  rounded-lg ">We are the Perfect Team</b>: As game developers, we understand the intricacies of the
                                 Web3 gaming industry and its current landscape. Our background in game development
                                 positions us perfectly to pioneer this project and bring Web3 gaming into mainstream
                                 gaming for the betterment of gamers.
                             </li>
                             <li className="my-2">
-                                <b>Passionate About the Future</b>: We are passionate about reshaping the future of
+                                <b className="bg-purple-800 px-2  rounded-lg ">Passionate About the Future</b>: We are passionate about reshaping the future of
                                 gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives
                                 us to create a platform that will revolutionize the gaming experience on Solana.
                             </li>
                         </ul>
                     </div>
                 </div>
-                <div className="scroll-button">
+                <div className="scroll-button mb-[60px]">
                     <a href="#section_eight">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -325,7 +325,7 @@ const AboutUs = () => {
             </div>
 
             <div id="section_eight" className="section flex justify-center text-white pt-20 bg-[#5C718F] relative">
-            <div className="scroll-button">
+            <div className="scroll-button mb-[60px]">
                     <a href="#section_nine">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -336,11 +336,11 @@ const AboutUs = () => {
                     <span class="text-white text-center text-3xl font-bold">ROADMAP</span>
                 </div>
 
-                <img src={roadmap} alt="solplay_roadmap" className="w-[22rem]  h-[40rem]" />
+                <img src={roadmap} alt="solplay_roadmap" className="w-[28rem]  h-[50rem]" />
             </div>
             <div id="section_nine" className="section text-white pt-20 bg-gray-800 relative">
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
-                    <span class="text-white text-center text-3xl font-bold">TEAM</span>
+                    <span class="text-white text-center text-3xl font-bold">THE TEAM</span>
                 </div>
 
                 <div className="flex items-center h-[100%] justify-center grid-cols-1 md:grid-cols-2 gap-6 p-4">
