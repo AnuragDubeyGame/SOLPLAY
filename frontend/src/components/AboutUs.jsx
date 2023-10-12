@@ -39,7 +39,7 @@ const AboutUs = () => {
         <div className="scroll-container w-screen italic">
             <div id="Section_one" className="section relative flex flex-col justify-center items-center">
                 <div
-                    className="absolute z-[-1] inset-0 bg-center bg-cover filter "
+                    className="absolute z-[-1] inset-0 bg-center bg-cover filter"
                     style={{
                         backgroundImage: `url(${ABOUTbg})`,
                     }}
@@ -48,7 +48,15 @@ const AboutUs = () => {
                 <p className="text-white text-xl mt-4 italic font-semibold slogan-slide-in">
                     Unlocking Web3 Gaming for Millions
                 </p>
+                <div className="scroll-button">
+                    <a href="#section_two">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
             </div>
+
             <div id="section_two" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
@@ -84,13 +92,20 @@ const AboutUs = () => {
                             </li>
                         </ul>
                     </div>
+                    <div className="scroll-button">
+                    <a href="#section_three">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
                 </div>
 
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE PROBLEM</span>
                 </div>
             </div>
-            <div id="section_four" className="section text-white bg-gray-800 relative">
+            <div id="section_three" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
                     style={{
@@ -120,13 +135,20 @@ const AboutUs = () => {
                             </li>
                         </ul>
                     </div>
+                    <div className="scroll-button">
+                    <a href="#section_four">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
                 </div>
                 <div className="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0"></div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE SOLUTION</span>
                 </div>
             </div>
-            <div id="section_three" className="section text-white bg-gray-800 relative">
+            <div id="section_four" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
                     style={{
@@ -147,13 +169,20 @@ const AboutUs = () => {
                         />
                     </div>
                 </div>
+                <div className="scroll-button">
+                    <a href="#section_five">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
 
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE DEMO</span>
                 </div>
             </div>
 
-            <div id="section_four" className="section text-white bg-gray-800 relative">
+            <div id="section_five" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
                     style={{
@@ -198,12 +227,19 @@ const AboutUs = () => {
                         </table>
                     </div>
                 </div>
+                <div className="scroll-button">
+                    <a href="#section_six">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">THE DIFFERENCE</span>
                 </div>
             </div>
 
-            <div id="section_two" className="section text-white bg-gray-800 relative">
+            <div id="section_six" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
                     style={{
@@ -230,13 +266,20 @@ const AboutUs = () => {
                             </li>
                         </ul>
                     </div>
+                    <div className="scroll-button">
+                    <a href="#section_seven">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
                 </div>
 
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">WHY NOW?</span>
                 </div>
             </div>
-            <div id="why_us" className="section text-white bg-gray-800 relative">
+            <div id="section_seven" className="section text-white bg-gray-800 relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
                     style={{
@@ -269,20 +312,33 @@ const AboutUs = () => {
                         </ul>
                     </div>
                 </div>
-
+                <div className="scroll-button">
+                    <a href="#section_eight">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">WHY US?</span>
                 </div>
             </div>
 
-            <div id="section_three" className="section flex justify-center text-white pt-20 bg-[#5C718F] relative">
+            <div id="section_eight" className="section flex justify-center text-white pt-20 bg-[#5C718F] relative">
+            <div className="scroll-button">
+                    <a href="#section_nine">
+                        <span className="text-white text-3xl">
+                            <i className="fas fa-arrow-down"></i>
+                        </span>
+                    </a>
+                </div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">ROADMAP</span>
                 </div>
 
                 <img src={roadmap} alt="solplay_roadmap" className="w-[22rem]  h-[40rem]" />
             </div>
-            <div id="section_three" className="section text-white pt-20 bg-gray-800 relative">
+            <div id="section_nine" className="section text-white pt-20 bg-gray-800 relative">
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
                     <span class="text-white text-center text-3xl font-bold">TEAM</span>
                 </div>

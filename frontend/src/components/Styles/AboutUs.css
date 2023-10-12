@@ -348,3 +348,24 @@
        transform: translate(0);
     }
  }
+ /* Add a class to style the scroll button */
+.scroll-button {
+   position: absolute;
+   bottom: 20px; /* Adjust the positioning as needed */
+   left: 50%;
+   transform: translateX(-50%);
+   transition: transform 0.3s; /* Add a smooth transition for the transform property */
+ }
+ 
+ /* Style the anchor element within the scroll button */
+ .scroll-button a {
+   text-decoration: none;
+   color: #fff;
+   font-size: 24px;
+ }
+ 
+ /* Define the hover effect to make it move slightly on hover */
+ .scroll-button:hover {
+   transform: translateX(-50%) translateY(-5px); /* Adjust translateY for the desired effect */
+ }
+ 
