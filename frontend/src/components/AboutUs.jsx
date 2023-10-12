@@ -260,9 +260,6 @@ const AboutUs = () => {
                             <li className="my-2">
                                 <b>Passionate About the Future</b>: We are passionate about reshaping the future of gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives us to create a platform that will revolutionize the gaming experience on Solana.
                             </li>
-                            <li className="my-2">
-                                <b>Connect with Us</b>: Stay updated with our journey by following us on <a href="https://twitter.com/SOLPLAY666494" target="_blank" rel="noopener noreferrer" className="underline">Twitter</a>. We welcome your support and feedback as we embark on this exciting endeavor.
-                            </li>
                         </ul>
                     </div>
                 </div>
