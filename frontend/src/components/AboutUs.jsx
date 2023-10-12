@@ -195,7 +195,7 @@ const AboutUs = () => {
                         <div className="glitch-wrapper"></div>
                     </div>
                     <div>
-                        <div className="flex items-center">
+                        <div className="flex justify-center items-center">
                             <h2 className="text-3xl mb-4">Solplay vs. Traditional Game Hosting Platforms</h2>
                         </div>
 
