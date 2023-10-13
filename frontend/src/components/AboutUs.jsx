@@ -211,52 +211,70 @@ const AboutUs = () => {
 
 
 
-            <div id="section_five" className="section text-white bg-gray-800 relative">
-                <div
-                    className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
-                    style={{
-                        backgroundImage: `url('')`,
-                    }}
-                ></div>
+            <div id="section_five" className="section text-white bg-black relative">
+                <div className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl" style={{ backgroundImage: `url('new-background-image.jpg')` }}></div>
 
-                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b text-white font-bold">
-                    <div className="text-left">
-                        <div className="glitch-wrapper"></div>
-                    </div>
-                    <div>
-                        <div className="flex justify-center items-center">
-                            <h2 className="text-3xl mb-4">Solplay vs. Traditional Game Hosting Platforms</h2>
+                <div className="flex flex-col items-center justify-center h-screen">
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">1. Game Upload by Developers</h2>
+                                Developers create Web3 games with features like NFTs, wallet interactions, and more.
+                            </div>
                         </div>
 
-                        <table className="text-white shadow-lg w-[70rem] text-center table-auto h-[20rem]">
-                            <thead>
-                                <tr>
-                                    <th className="border p-2">Feature</th>
-                                    <th className="border p-2 bg-purple-700">SolPlay</th>
-                                    <th className="border p-2 bg-purple-500">Traditional</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td className="border p-2 bg-gray-500">Fees</td>
-                                    <td className="border p-2 bg-green-500">Fee-Free</td>
-                                    <td className="border p-2 bg-red-500">Hefty fees (up to 30%)</td>
-                                </tr>
-                                <tr>
-                                    <td className="border p-2 bg-gray-500">Web3 Support</td>
-                                    <td className="border p-2 bg-green-600">Yes</td>
-                                    <td className="border p-2 bg-red-500">No Web3 Support</td>
-                                </tr>
-                                <tr>
-                                    <td className="border p-2 bg-gray-500">Ownership of In-Game Assets</td>
-                                    <td className="border p-2 bg-green-500">Yes</td>
-                                    <td className="border p-2 bg-red-500">No</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">2. Blockchain Integration</h2>
+                                SOLPLAY is built on the Solana blockchain for efficient and affordable transactions.
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">3. Game Tokenization (Demo)</h2>
+                                Web3 games will be tokenized on the Solana blockchain in the future, represented as unique tokens with their characteristics. For the demo, we are storing them on our server.
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">4. Game Marketplace</h2>
+                                SOLPLAY serves as a marketplace for tokenized games, allowing players to browse and purchase games.
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">5. Game Purchase and Ownership</h2>
+                                Players can buy and play Web3 games using SOL tokens.
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">6. Web3 Features in Games</h2>
+                                Web3 games hosted on SOLPLAY support blockchain features like NFTs for in-game assets and collectibles.
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">7. Wallet Interactions</h2>
+                                Players use compatible wallets for secure transactions, ownership management, and in-game purchases.
+                            </div>
+                        </div>
+
+                        <div className="mb-4">
+                            <div className="bg-purple-900 p-6 rounded-lg m-6 mt-2 mb-2">
+                                <h2 className="text-2xl font-bold">8. User Accessibility</h2>
+                                SOLPLAY offers a user-friendly interface for players to browse, purchase, and play Web3 games.
+                            </div>
+                        </div>
                     </div>
                 </div>
-                <div className="scroll-button mb-[60px]">
+
+                <div class="scroll-button mb-[60px]">
                     <a href="#section_six">
                         <span className="text-white text-3xl">
                             <i className="fas fa-arrow-down"></i>
@@ -264,101 +282,121 @@ const AboutUs = () => {
                     </a>
                 </div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
-                    <span class="text-white text-center text-3xl font-bold">THE DIFFERENCE</span>
-                </div>
-            </div>
-
-
-
-
-
-
-
-
-            <div id="section_six" className="section text-white bg-gray-800 relative">
-                <div
-                    className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
-                    style={{
-                        backgroundImage: `url('')`,
-                    }}
-                ></div>
-
-                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b  text-white font-bold">
-                    <img src={check_1} alt="game_1" className="absolute w-[25rem] left-32 flying-img" />
-
-                    <div className="ml-[40rem] mr-[5rem] text-left">
-                        <div class="glitch-wrapper">
-                            <div class="glitch" data-glitch="Now is the perfect Time!">
-                                Now is the perfect Time!
-                            </div>
-                        </div>
-                        <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
-                        <ul>
-                            <li className="my-2">
-                                <b></b>SOLPLAY is launching now to meet the surging demand for a Web3 gaming platform on
-                                Solana, taking advantage of the rapid expansion of the Solana ecosystem. Our platform
-                                empowers both gamers and developers, leveraging the vibrant momentum in the blockchain
-                                space to redefine the future of Web3 gaming.
-                            </li>
-                        </ul>
-                    </div>
-                    <div className="scroll-button mb-[60px]">
-                        <a href="#section_seven">
-                            <span className="text-white text-3xl">
-                                <i className="fas fa-arrow-down"></i>
-                            </span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
-                    <span class="text-white text-center text-3xl font-bold">WHY NOW?</span>
-                </div>
-            </div>
-            <div id="section_seven" className="section text-white bg-gray-800 relative">
-                <div
-                    className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
-                    style={{
-                        backgroundImage: `url('')`,
-                    }}
-                ></div>
-
-                <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b  text-white font-bold">
-                    <img src={check_1} alt="game_1" className="absolute w-[25rem] left-32 flying-img" />
-
-                    <div className="ml-[40rem] mr-[5rem] text-left">
-                        <div class="glitch-wrapper">
-                            <div class="glitch" data-glitch="Why Us?">
-                                Why Us?
-                            </div>
-                        </div>
-                        <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
-                        <ul>
-                            <li className="my-2">
-                                <b className="bg-purple-800 px-2  rounded-lg ">We are the Perfect Team</b>: As game developers, we understand the intricacies of the
-                                Web3 gaming industry and its current landscape. Our background in game development
-                                positions us perfectly to pioneer this project and bring Web3 gaming into mainstream
-                                gaming for the betterment of gamers.
-                            </li>
-                            <li className="my-2">
-                                <b className="bg-purple-800 px-2  rounded-lg ">Passionate About the Future</b>: We are passionate about reshaping the future of
-                                gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives
-                                us to create a platform that will revolutionize the gaming experience on Solana.
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <div className="scroll-button mb-[60px]">
-                    <a href="#section_eight">
-                        <span className="text-white text-3xl">
-                            <i className="fas fa-arrow-down"></i>
-                        </span>
-                    </a>
+                    <span class="text-white text-center text-3xl font-bold">THE ARCHITECTURE</span>
                 </div>
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
-                    <span class="text-white text-center text-3xl font-bold">WHY US?</span>
+                    <span class="text-white text-center text-3xl font-bold">THE ARCHITECTURE</span>
                 </div>
             </div>
+
+
+
+            <div id="section_six" className="section text-white bg-black relative">
+            <div className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl" style={{ backgroundImage: `url('new-background-image.jpg')` }}></div>
+
+            <h1 className="text-4xl font-bold text-center mt-16">EARLY TRACTION ON OUR WEBSITE</h1>
+
+            <div className="analytics-images grid grid-cols-1 sm:grid-cols-2">
+                <div className="m-6">
+                    <img src="/src/assets/solplayX.png" alt="SOLPLAY-X" className="max-h-64 my-4" />
+                </div>
+                <div className="m-6">
+                    <img src="/src/assets/solplayAnalytics.png" alt="Solplay Analytics" className="max-h-64 my-4" />
+                </div>
+            </div>
+
+            <div className="scroll-button mb-[60px]">
+                <a href="#section_seven">
+                    <span className="text-white text-3xl">
+                        <i className="fas fa-arrow-down"></i>
+                    </span>
+                </a>
+            </div>
+
+            <div className="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
+                <span className="text-white text-center text-3xl font-bold">EARLY TRACTION</span>
+            </div>
+        </div>
+    
+
+
+
+
+
+
+
+        <div id="section_seven" className="section text-white bg-gray-800 relative">
+    <div className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl" style={{ backgroundImage: `url('')` }}></div>
+
+    <div className="relative flex items-center justify-center min-h-screen bg-gradient-to-b  text-white font-bold">
+
+        <div className="ml-32 mr-8 text-left"> {/* Adjusted margins */}
+            <div class="glitch-wrapper">
+                <div class="glitch" data-glitch="Now is the perfect Time!">
+                    Now is the perfect Time!
+                </div>
+            </div>
+            <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
+            <ul>
+                <li className="my-2">
+                    <b></b>SOLPLAY is launching now to meet the surging demand for a Web3 gaming platform on
+                    Solana, taking advantage of the rapid expansion of the Solana ecosystem. Our platform
+                    empowers both gamers and developers, leveraging the vibrant momentum in the blockchain
+                    space to redefine the future of Web3 gaming.
+                </li>
+            </ul>
+        </div>
+        <div className="ml-32 mr-8 text-left"> {/* Adjusted margins */}
+            <div class="glitch-wrapper">
+                <div class="glitch" data-glitch="Why Us?">
+                    Why Us?
+                </div>
+            </div>
+            <div className="bg-gray-500-enter-right p-4 w-auto pl-4 text-xl leading-relaxed"></div>
+            <ul>
+                <li className="my-2">
+                    <b className="bg-purple-800 px-2  rounded-lg ">We are the Perfect Team</b>: As game developers, we understand the intricacies of the
+                    Web3 gaming industry and its current landscape. Our background in game development
+                    positions us perfectly to pioneer this project and bring Web3 gaming into mainstream
+                    gaming for the betterment of gamers.
+                </li>
+                <li className="my-2">
+                    <b className="bg-purple-800 px-2  rounded-lg ">Passionate About the Future</b>: We are passionate about reshaping the future of
+                    gaming. Our commitment to innovation, inclusivity, and the empowerment of gamers drives
+                    us to create a platform that will revolutionize the gaming experience on Solana.
+                </li>
+            </ul>
+        </div>
+        <div className="scroll-button mb-[60px]">
+            <a href="#section_seven">
+                <span className="text-white text-3xl">
+                    <i className="fas fa-arrow-down"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
+        <span class="text-white text-center text-3xl font-bold">WHY?</span>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            
 
             <div id="section_eight" className="section flex justify-center text-white pt-20 bg-[#5C718F] relative">
                 <div className="scroll-button mb-[60px]">
@@ -372,7 +410,7 @@ const AboutUs = () => {
                     <span class="text-white text-center text-3xl font-bold">ROADMAP</span>
                 </div>
 
-                <img src={roadmap} alt="solplay_roadmap" className="w-[30rem]  h-[50rem]" />
+                <img src={roadmap} alt="solplay_roadmap" className="w-[30rem]  h-[52rem]" />
             </div>
             <div id="section_nine" className="section text-white pt-20 bg-gray-800 relative">
                 <div class="absolute bg-gradient-to-r from-purple-900 to-green-500 w-screen h-16 top-0 flex justify-center items-center">
@@ -412,6 +450,13 @@ const AboutUs = () => {
                             through SOLPLAY.
                         </p>
                     </div>
+                </div>
+                <div className="scroll-button mb-[60px]">
+                    <a href="#section_nine">
+                        <span className="text-white text-1xl">
+                            SOLPLAY
+                        </span>
+                    </a>
                 </div>
             </div>
 
