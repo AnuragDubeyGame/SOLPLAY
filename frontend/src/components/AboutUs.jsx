@@ -286,7 +286,7 @@ const AboutUs = () => {
                 </div>
             </div>
 
-            <div id="section_six" className="section text-white bg-black relative">
+            <div id="section_six" className="section pt-5 text-white bg-black relative">
                 <div
                     className="absolute z-[-1] inset-0 bg-center bg-cover filter blur-2xl"
                     style={{ backgroundImage: `url('new-background-image.jpg')` }}
@@ -294,11 +294,9 @@ const AboutUs = () => {
 
                 <h1 className="text-4xl font-bold text-center mt-16">EARLY TRACTION ON OUR WEBSITE</h1>
 
-                <div className="analytics-images grid grid-cols-1 sm:grid-cols-2">
-                    <div className="m-6">
+                <div className="analytics-images flex justify-center items-center w-full h-[40rem]">
+                    <div className="m-6 w-[35rem] mt-[10rem]">
                         <img src={solplayx} alt="SOLPLAY-X" className="w-[90rem] my-4" />
-                    </div>
-                    <div className="m-6">
                         <img src={solAnalytics} alt="Solplay Analytics" className="w-[90rem] my-4" />
                     </div>
                 </div>
