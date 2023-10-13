@@ -10,6 +10,7 @@ import video from '../assets/SOLPLAY.mp4';
 import solplayx from '../assets/SOLPLAY-X.png';
 import solAnalytics from '../assets/Solplay-ANalytics.png';
 import './Styles/AboutUs.css';
+import ImageGallery from './ImageGallery';
 
 const AboutUs = () => {
     // Add a function to handle scroll animations
@@ -295,9 +296,8 @@ const AboutUs = () => {
                 <h1 className="text-4xl font-bold text-center mt-16">EARLY TRACTION ON OUR WEBSITE</h1>
 
                 <div className="analytics-images flex justify-center items-center w-full h-[40rem]">
-                    <div className="m-6 w-[35rem] mt-[10rem]">
-                        <img src={solplayx} alt="SOLPLAY-X" className="w-[90rem] my-4" />
-                        <img src={solAnalytics} alt="Solplay Analytics" className="w-[90rem] my-4" />
+                    <div className="m-6 w-[30rem] mt-[3rem]">
+                    <ImageGallery />
                     </div>
                 </div>
 
